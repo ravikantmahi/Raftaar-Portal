@@ -1,0 +1,931 @@
+// Pointing to the hosted backend on Render
+const API_URL = 'https://raftaar-backend-t93i.onrender.com/api/nomination';
+const ADMIN_API_URL = 'https://raftaar-backend-t93i.onrender.com/api/submissions';
+
+const rawSchools = [
+  [1, "AMRITSAR", "3020402402", "GSSS CHABBA", "PM SHRI"],
+  [2, "AMRITSAR", "3020812802", "GSSS WADALI GURU", "PM SHRI"],
+  [3, "AMRITSAR", "3020806102", "GSSS MURADPURA", "PM SHRI"],
+  [4, "AMRITSAR", "3020100104", "GSSS AJNALA GIRLS", "PM SHRI"],
+  [5, "AMRITSAR", "3020107302", "GSSS GAGGOMAHAL", "PM SHRI"],
+  [6, "AMRITSAR", "3020404002", "GSSS JANDIALA GURU BOYS", "PM SHRI"],
+  [7, "AMRITSAR", "3020405602", "GSSS WADALA JOHAL", "PM SHRI"],
+  [8, "AMRITSAR", "3020404402", "GSSS BANDALA", "PM SHRI"],
+  [9, "AMRITSAR", "3020504903", "GSSS NAG KALAN", "PM SHRI"],
+  [10, "AMRITSAR", "3020605704", "GSSS RAYYA GIRLS", "PM SHRI"],
+  [11, "AMRITSAR", "3020900110", "OLYMPIAN SHAMSHER SINGH GOVERNMENT SENIOR SECONDARY SCHOOL ATTARI", "PM SHRI"],
+  [12, "AMRITSAR", "3020807002", "GSSS BAL KALAN", "PM SHRI"],
+  [13, "AMRITSAR", "3020108202", "GHS JAGDEV KHURD", "PM SHRI"],
+  [14, "AMRITSAR", "3020207902", "GSSS Bhillowal Pacca", "PM SHRI"],
+  [15, "AMRITSAR", "3020303102", "COMRADE ACHHAR SINGH CHHINA GSSS HARSA CHHINA", "PM SHRI"],
+  [16, "AMRITSAR", "3020508003", "GSSS KATHUNANGAL GIRLS", "PM SHRI"],
+  [17, "AMRITSAR", "3020606702", "GHS WADALA KALAN", "PM SHRI"],
+  [18, "AMRITSAR", "3020302604", "GSSS RAJA SANSI GIRLS", "PM SHRI"],
+  [19, "AMRITSAR", "3020702402", "GSSS TARSIKKA", "PM SHRI"],
+  [20, "AMRITSAR", "3020601503", "GHS BABA BAKALA RMSA UPGRADED", "PM SHRI"],
+  [21, "AMRITSAR", "3020111602", "GSSS RAMDAS", "PM SHRI"],
+  [22, "AMRITSAR", "3020800104", "GSSS K.B.D.S. GIRLS", "PM SHRI"],
+  [23, "AMRITSAR", "3020500502", "GSSS MAJITHA", "PM SHRI"],
+  [24, "AMRITSAR", "3020600803", "GSSS BEAS", "PM SHRI"],
+  [25, "AMRITSAR", "3020608202", "GSSS KHILCHIAN", "Non-PM Shri"],
+  [26, "AMRITSAR", "3020505402", "GSSS SOHIYAN", "Non-PM Shri"],
+  [27, "AMRITSAR", "3020503002", "GSSS BHANGALI", "Non-PM Shri"],
+  [28, "BARNALA", "3200303402", "GSSS MAURAN", "PM SHRI"],
+  [29, "BARNALA", "3200306905", "GSSS TAPA BOYS", "PM SHRI"],
+  [30, "BARNALA", "3200200802", "GSSS CHHAPA", "PM SHRI"],
+  [31, "BARNALA", "3200305403", "GSSS BHADAUR GIRL", "PM SHRI"],
+  [32, "BARNALA", "3200108601", "GSSS DHANAULA B", "PM SHRI"],
+  [33, "BARNALA", "3200110604", "GHS JUMLA MALKAN RMSA", "PM SHRI"],
+  [34, "BARNALA", "3200110002", "GSSS HANDIAYA", "PM SHRI"],
+  [35, "BARNALA", "3200104402", "GSSS PHARWAHI NABARD", "PM SHRI"],
+  [36, "BARNALA", "3200105707", "GHS SANGHERA", "PM SHRI"],
+  [37, "BARNALA", "3200300902", "GSSS CHEEMA JODHPUR", "PM SHRI"],
+  [38, "BARNALA", "3200104802", "GSSS RUREKE KALAN NABARD", "PM SHRI"],
+  [39, "BARNALA", "3200104002", "GSSS PAKHO KALAN", "Non-PM Shri"],
+  [40, "BARNALA", "3200304517", "GSSS SEHNA GIRLS", "Non-PM Shri"],
+  [41, "BARNALA", "3200105211", "GSSS GIRLS THIKRIWAL", "Non-PM Shri"],
+  [42, "BATHINDA", "3140202003", "GHS G KOTHA GURU", "PM SHRI"],
+  [43, "BATHINDA", "3140401602", "GSSS GOBINDPURA", "PM SHRI"],
+  [44, "BATHINDA", "3140403402", "GSSS TUNGWALI", "PM SHRI"],
+  [45, "BATHINDA", "3140601601", "GHS JEOND", "PM SHRI"],
+  [46, "BATHINDA", "3140103602", "GSSS SANJAY NAGAR BATHINDA (RMSA)", "PM SHRI"],
+  [47, "BATHINDA", "3140300301", "GHS BHAI BAKHTAUR RMSA", "PM SHRI"],
+  [48, "BATHINDA", "3140106701", "GSSS GONIANA Girls", "PM SHRI"],
+  [49, "BATHINDA", "3140502201", "GSSS PATTI KARAMCHAND MEHRAJ Girls", "PM SHRI"],
+  [50, "BATHINDA", "3140101602", "GHS CHANDSAR BASTI BATHINDA", "PM SHRI"],
+  [51, "BATHINDA", "3140704002", "SHAHEED LABH SINGH GSSS SEKHU", "PM SHRI"],
+  [52, "BATHINDA", "3140402602", "GSSS LEHRA MOHABBAT", "PM SHRI"],
+  [53, "BATHINDA", "3140106902", "GSSS GONIANA Boys", "PM SHRI"],
+  [54, "BATHINDA", "3140502101", "GSSS PATTI KALA MEHRAJ Boys", "PM SHRI"],
+  [55, "BATHINDA", "3140600501", "GHS BHUNDAR", "PM SHRI"],
+  [56, "BATHINDA", "3140801702", "GHS KAILE WANDER (RMSA)", "PM SHRI"],
+  [57, "BATHINDA", "3140404102", "GHS BHUCHO MANDI Girls", "PM SHRI"],
+  [58, "BATHINDA", "3140404501", "GSSS BHUCHO MANDI Boys", "PM SHRI"],
+  [59, "BATHINDA", "3140804302", "GSSS TALWANDI SABO", "PM SHRI"],
+  [60, "BATHINDA", "3140402912", "GHS NATHANA Girls", "PM SHRI"],
+  [61, "BATHINDA", "3140703604", "GSSS RAI KE KALAN", "PM SHRI"],
+  [62, "BATHINDA", "3140110201", "GSSS MEHMA SARJA", "PM SHRI"],
+  [63, "BATHINDA", "3140304603", "GSSS MAUR MANDI Girls", "PM SHRI"],
+  [64, "BATHINDA", "3140111303", "GSSS BEER TALAB BASTI IV V", "PM SHRI"],
+  [65, "BATHINDA", "3140111201", "GSSS SIVIAN", "PM SHRI"],
+  [66, "BATHINDA", "3140504001", "GSSS RAMPURA MANDI Girls", "PM SHRI"],
+  [67, "BATHINDA", "3140305501", "GSSS KOT FATTA", "PM SHRI"],
+  [68, "BATHINDA", "3140104901", "GSSS BHOKHRA", "Non-PM Shri"],
+  [69, "BATHINDA", "3140108101", "GSSS JHUMBA", "Non-PM Shri"],
+  [70, "BATHINDA", "3140102202", "SHAHEED MAJOR RAVI INDER SINGH SANDHU GSSS MALL ROAD GIRLS BATHINDA", "Non-PM Shri"],
+  [71, "FARIDKOT", "3130212003", "GSSS SANDHWAN", "PM SHRI"],
+  [72, "FARIDKOT", "3130209402", "GHS SURGAPURI KKP", "PM SHRI"],
+  [73, "FARIDKOT", "3130200704", "GSSS BARGARI", "PM SHRI"],
+  [74, "FARIDKOT", "3130203603", "GSSS G JAITU", "PM SHRI"],
+  [75, "FARIDKOT", "3130202302", "GHS DHILWAN KALAN", "PM SHRI"],
+  [76, "FARIDKOT", "3130202503", "GHS DOAD", "PM SHRI"],
+  [77, "FARIDKOT", "3130111402", "GHS TEHNA", "PM SHRI"],
+  [78, "FARIDKOT", "3130105903", "GSSS GOLEWALA", "PM SHRI"],
+  [79, "FARIDKOT", "3130103802", "GSSSG FDK", "PM SHRI"],
+  [80, "FARIDKOT", "3130201802", "GSSS CHAND BHAN", "Non-PM Shri"],
+  [81, "FARIDKOT", "3130203402", "GSSS HARI NAU", "Non-PM Shri"],
+  [82, "FARIDKOT", "3130205202", "GSSS JIWAN WALA", "Non-PM Shri"],
+  [83, "FATEHGARH SAHIB", "3080111001", "GSSS SIRHIND GIRLS", "PM SHRI"],
+  [84, "FATEHGARH SAHIB", "3080200802", "GSSS AMLOH GIRL", "PM SHRI"],
+  [85, "FATEHGARH SAHIB", "3080205702", "GHS KHANIAN", "PM SHRI"],
+  [86, "FATEHGARH SAHIB", "3080207702", "GSSS NARAINGARH", "PM SHRI"],
+  [87, "FATEHGARH SAHIB", "3080211601", "GSSS BOY GOBINDGARH", "PM SHRI"],
+  [88, "FATEHGARH SAHIB", "3080104002", "GHS HARBANSPURA", "PM SHRI"],
+  [89, "FATEHGARH SAHIB", "3080300202", "GSSS Badali Ala Singh", "Non-PM Shri"],
+  [90, "FATEHGARH SAHIB", "3080209102", "GSSS Salana", "Non-PM Shri"],
+  [91, "FATEHGARH SAHIB", "3080102802", "GSSS Charnarthal Kalan", "Non-PM Shri"],
+  [92, "FAZILKA", "3210312803", "GSSS GIRLS SCHOOL FAZILKA", "PM SHRI"],
+  [93, "FAZILKA", "3210414802", "GOVT MODEL SENIOR SECONDARY SCHOOL CHAK MOCHAN WAL", "PM SHRI"],
+  [94, "FAZILKA", "3210203102", "GSSS BAZID PUR KATTIAN WALI", "PM SHRI"],
+  [95, "FAZILKA", "3210500302", "GHS ASLAM WALA", "PM SHRI"],
+  [96, "FAZILKA", "3210420302", "GSSS BALEL KE HASAL RMSA", "PM SHRI"],
+  [97, "FAZILKA", "3210409302", "GSSS DHANDHI KADIM", "PM SHRI"],
+  [98, "FAZILKA", "3210307202", "GSSS LALO WALI", "PM SHRI"],
+  [99, "FAZILKA", "3210202709", "GSSS NIHAL KHERA", "PM SHRI"],
+  [100, "FAZILKA", "3210503002", "GSSS MAHUANA BODLA (RMSA)", "PM SHRI"],
+  [101, "FAZILKA", "3210105702", "GSSS BALLUANA", "PM SHRI"],
+  [102, "FAZILKA", "3210100702", "GHS KIKKER KHERA", "PM SHRI"],
+  [103, "FAZILKA", "3210109902", "GSSS GIRLS ABOHAR", "PM SHRI"],
+  [104, "FAZILKA", "3210109502", "GHS BRANCH ABOHAR", "PM SHRI"],
+  [105, "FAZILKA", "3210415810", "GSSS (Girls) Jalalabad", "Non-PM Shri"],
+  [106, "FAZILKA", "3210201402", "GSSS Sabuana", "Non-PM Shri"],
+  [107, "FAZILKA", "3210107101", "GSSS (B) Abohar", "Non-PM Shri"],
+  [108, "FEROZEPUR", "3110811702", "GSSS GIRLS TALWANDI BHAI", "PM SHRI"],
+  [109, "FEROZEPUR", "3110909002", "GSSS TALWANDI JALE KHAN", "PM SHRI"],
+  [110, "FEROZEPUR", "3111015605", "GSSGIRLS MAKHU", "PM SHRI"],
+  [111, "FEROZEPUR", "3110903602", "GSSS BEHAK GUJARAN", "PM SHRI"],
+  [112, "FEROZEPUR", "3110811302", "GSSS MUDKI BOYS", "PM SHRI"],
+  [113, "FEROZEPUR", "3111009402", "GHS GHUDUWALA", "PM SHRI"],
+  [114, "FEROZEPUR", "3110513902", "GHS CHHANGARAI UTTAR", "PM SHRI"],
+  [115, "FEROZEPUR", "3110611702", "GHS JHOK TEHAL SINGH", "PM SHRI"],
+  [116, "FEROZEPUR", "3110515002", "GSSS BOYS GURUHARSAHAI", "PM SHRI"],
+  [117, "FEROZEPUR", "3110600102", "GSSS DONA MATTAR", "PM SHRI"],
+  [118, "FEROZEPUR", "3111015104", "GSSBOYS MAKHU", "PM SHRI"],
+  [119, "FEROZEPUR", "3110709702", "GHS PIR ISMAIL KHAN", "PM SHRI"],
+  [120, "FEROZEPUR", "3111000103", "GSSS KUSSU WALA", "PM SHRI"],
+  [121, "FEROZEPUR", "3110717002", "GSSS BOYS FZR", "PM SHRI"],
+  [122, "FEROZEPUR", "3110715002", "GSSS KARIAN PEHLWAN", "PM SHRI"],
+  [123, "FEROZEPUR", "3110811701", "GSSS BOYS TALWANDI BHAI", "PM SHRI"],
+  [124, "FEROZEPUR", "3110800703", "GSSS BAZIDPUR", "PM SHRI"],
+  [125, "FEROZEPUR", "3110806502", "GSSS MANA SINGH WALA", "Non-PM Shri"],
+  [126, "FEROZEPUR", "3110800302", "GSSS RUKNA BEGU", "Non-PM Shri"],
+  [127, "FEROZEPUR", "3110807802", "GSSS FEROZSHAH", "Non-PM Shri"],
+  [128, "GURDASPUR", "3010305702", "GSSS ALIWAL", "PM SHRI"],
+  [129, "GURDASPUR", "3011505902", "GSSS DAKOHA", "PM SHRI"],
+  [130, "GURDASPUR", "3010501412", "GSSS DERA BABA NANAK GIRLS", "PM SHRI"],
+  [131, "GURDASPUR", "3010605406", "shaheed mahinder singh attri gsss b dinanagar", "PM SHRI"],
+  [132, "GURDASPUR", "3010209705", "GSSS QADIAN", "PM SHRI"],
+  [133, "GURDASPUR", "3010304606", "GSSS FATEHGARH CHURIAN BOYS", "PM SHRI"],
+  [134, "GURDASPUR", "3010108102", "GSSS BARIAR", "PM SHRI"],
+  [135, "GURDASPUR", "3011509401", "GSSS BAHADURPUR RAJOYA", "PM SHRI"],
+  [136, "GURDASPUR", "3011202802", "GSSS SEKHWAN", "PM SHRI"],
+  [137, "GURDASPUR", "3010101002", "GSSS GURDASPUR GIRLS", "PM SHRI"],
+  [138, "GURDASPUR", "3010700402", "GSSS DHUPSARI", "PM SHRI"],
+  [139, "GURDASPUR", "3011603003", "GSSS DORANGLA", "PM SHRI"],
+  [140, "GURDASPUR", "3010108702", "GSSS KALA NANGAL", "PM SHRI"],
+  [141, "GURDASPUR", "3010601302", "GSSS JHABKRA", "PM SHRI"],
+  [142, "GURDASPUR", "3010706902", "GSSS CAMPG BATALA", "PM SHRI"],
+  [143, "GURDASPUR", "3010713802", "GSSS BATALA(B)", "PM SHRI"],
+  [144, "GURDASPUR", "3010203803", "GSSS HARPURA DHANDOI", "PM SHRI"],
+  [145, "GURDASPUR", "3011603301", "GSSS GAHLARI", "PM SHRI"],
+  [146, "GURDASPUR", "3010710402", "GOVT. SEN. SEC. SMART SCHOOL SHEIKHPUR", "PM SHRI"],
+  [147, "GURDASPUR", "3011308901", "GSSS NAUSHEHRA MAJJA SINGH", "PM SHRI"],
+  [148, "GURDASPUR", "3011303502", "GSSS KALER KALAN", "PM SHRI"],
+  [149, "GURDASPUR", "3011301302", "GHS MONI MANDIR", "PM SHRI"],
+  [150, "GURDASPUR", "3011208602", "G.S.S. SMART SCHOOL BHAINI MIAN KHAN", "PM SHRI"],
+  [151, "GURDASPUR", "3010508102", "GSSS DHAROWALI", "PM SHRI"],
+  [152, "GURDASPUR", "3010800104", "GSSS KALANAUR", "PM SHRI"],
+  [153, "GURDASPUR", "3010513002", "GSSS DHIANPUR", "PM SHRI"],
+  [154, "GURDASPUR", "3010304603", "GSSS FAITHGARH CHURIAN", "Non-PM Shri"],
+  [155, "GURDASPUR", "3010605407", "GSSS DINANAGAR GIRLS", "Non-PM Shri"],
+  [156, "GURDASPUR", "3011301906", "GSSS KOT SANTOKH RAI", "Non-PM Shri"],
+  [157, "HOSHIARPUR", "3051009302", "GSSS TANDAG", "PM SHRI"],
+  [158, "HOSHIARPUR", "3050216002", "GSSS SAGRAN", "PM SHRI"],
+  [159, "HOSHIARPUR", "3050423602", "GHS BASSI GHULAM HUSSAIN", "PM SHRI"],
+  [160, "HOSHIARPUR", "3050309702", "GHS BIRAMPUR", "PM SHRI"],
+  [161, "HOSHIARPUR", "3050600504", "GSSS HAJIPUR", "PM SHRI"],
+  [162, "HOSHIARPUR", "3050807902", "GSSS TANDA RAM SAHAI", "PM SHRI"],
+  [163, "HOSHIARPUR", "3050704501", "GSSS MAHILPUR BOYS", "PM SHRI"],
+  [164, "HOSHIARPUR", "3050510402", "GSSS NARA", "PM SHRI"],
+  [165, "HOSHIARPUR", "3050410802", "GSSS NASRALA", "PM SHRI"],
+  [166, "HOSHIARPUR", "3050506702", "GSSS SHERGARH", "PM SHRI"],
+  [167, "HOSHIARPUR", "3050902203", "GSSS DATARPUR", "PM SHRI"],
+  [168, "HOSHIARPUR", "3050117602", "GSSS MANHOTA", "PM SHRI"],
+  [169, "HOSHIARPUR", "3050900603", "GSSS KAMAHI DEVI", "PM SHRI"],
+  [170, "HOSHIARPUR", "3050810702", "GSSS HARDO KHUNDPUR", "PM SHRI"],
+  [171, "HOSHIARPUR", "3050806002", "GSSS MUKERIAN", "PM SHRI"],
+  [172, "HOSHIARPUR", "3050418002", "GSSS PIPLANWALA", "PM SHRI"],
+  [173, "HOSHIARPUR", "3050704701", "GSSS MAHILPUR GIRLS", "PM SHRI"],
+  [174, "HOSHIARPUR", "3051005402", "GHS MIANI", "PM SHRI"],
+  [175, "HOSHIARPUR", "3050908302", "GSSS TALWARA SEC ONE", "PM SHRI"],
+  [176, "HOSHIARPUR", "3050908402", "GM HS TALWARA SEC TWO", "PM SHRI"],
+  [177, "HOSHIARPUR", "3050501202", "GSSS NARU NANGAL", "Non-PM Shri"],
+  [178, "HOSHIARPUR", "3050905006", "GSSS BHAMBOTAR", "Non-PM Shri"],
+  [179, "HOSHIARPUR", "3050706602", "GSSS RAMPUR JHANJOWAL", "Non-PM Shri"],
+  [180, "JALANDHAR", "3040108602", "GHS SHEIKHE PIND", "PM SHRI"],
+  [181, "JALANDHAR", "3040112401", "Olympian Manpreet Singh GSSS Mithapur", "PM SHRI"],
+  [182, "JALANDHAR", "3041106501", "GSSS MEHATPUR (G)", "PM SHRI"],
+  [183, "JALANDHAR", "3041002702", "GSSS JANDIALA GIRLS", "PM SHRI"],
+  [184, "JALANDHAR", "3040205202", "GSSS GAKHAL DHALIWAL", "PM SHRI"],
+  [185, "JALANDHAR", "3041100101", "GHS ADARMAN", "PM SHRI"],
+  [186, "JALANDHAR", "3040605004", "GSSS MALSIAN G", "PM SHRI"],
+  [187, "JALANDHAR", "3040408902", "GSSS ALAWALPUR (G)", "PM SHRI"],
+  [188, "JALANDHAR", "3040212502", "GSSS RANDHAWA MASANDAN", "PM SHRI"],
+  [189, "JALANDHAR", "3040112632", "GSSS BASTI DANISHMANDA", "PM SHRI"],
+  [190, "JALANDHAR", "3040708002", "GHS RUPEWAL", "PM SHRI"],
+  [191, "JALANDHAR", "3040800101", "GHS ASHAHUR", "PM SHRI"],
+  [192, "JALANDHAR", "3040403603", "GSSS KHURDPUR (G)", "PM SHRI"],
+  [193, "JALANDHAR", "3040908103", "GHS TALWAN (G)", "PM SHRI"],
+  [194, "JALANDHAR", "3041004904", "GSSS SAMRAI JANDIALA", "PM SHRI"],
+  [195, "JALANDHAR", "3040516001", "GSSS NAKODAR (G)", "PM SHRI"],
+  [196, "JALANDHAR", "3040610804", "GHS SHAHKOT G", "PM SHRI"],
+  [197, "JALANDHAR", "3040309001", "GSSS BHOGPUR", "PM SHRI"],
+  [198, "JALANDHAR", "3040306502", "GHS ROHJARI", "PM SHRI"],
+  [199, "JALANDHAR", "3040104003", "GSSS JAMSHER B", "PM SHRI"],
+  [200, "JALANDHAR", "3040214102", "GSSS SAMIPUR", "Non-PM Shri"],
+  [201, "JALANDHAR", "3040109103", "GSSS SAPRAI", "Non-PM Shri"],
+  [202, "JALANDHAR", "3040219502", "GGSSS ADARSH NAGAR", "Non-PM Shri"],
+  [203, "KAPURTHALA", "3030410402", "GHS HADIABAD PHAGWARA", "PM SHRI"],
+  [204, "KAPURTHALA", "3030411610", "GSSS PHAGWARA G", "PM SHRI"],
+  [205, "KAPURTHALA", "3030402002", "GHS CHACHO KI", "PM SHRI"],
+  [206, "KAPURTHALA", "3030520702", "GSSS SULTANPUR LODHI GIRLS", "PM SHRI"],
+  [207, "KAPURTHALA", "3030200403", "GBHSSS KALA SANGIA", "PM SHRI"],
+  [208, "KAPURTHALA", "3030502802", "GHS BUREWAL", "PM SHRI"],
+  [209, "KAPURTHALA", "3030209008", "GSSS KAPURTHALA GIRLS", "PM SHRI"],
+  [210, "KAPURTHALA", "3030108902", "GSSS NOOR PUR LUBANA", "Non-PM Shri"],
+  [211, "KAPURTHALA", "3030217602", "GSSS WADALAN KALAN", "Non-PM Shri"],
+  [212, "KAPURTHALA", "3030216502", "GSSS SIDHWAN DONA", "Non-PM Shri"],
+  [213, "LUDHIANA", "3090200502", "GHS BEGOWAL", "PM SHRI"],
+  [214, "LUDHIANA", "3090407502", "GSSS RASULRA", "PM SHRI"],
+  [215, "LUDHIANA", "3090608502", "GSSS KASABAAD", "PM SHRI"],
+  [216, "LUDHIANA", "3091007203", "GSSS SAMRALA G", "PM SHRI"],
+  [217, "LUDHIANA", "3090101402", "GSSS DEHLON", "PM SHRI"],
+  [218, "LUDHIANA", "3090408802", "RAGVEER SINGH FREEDOM FIGHTER GHS AMLOH ROAD KHANNA", "PM SHRI"],
+  [219, "LUDHIANA", "3090904902", "GSSS AJITSAR RAIKOT", "PM SHRI"],
+  [220, "LUDHIANA", "3091108102", "GSSS SIDHWAN KALAN", "PM SHRI"],
+  [221, "LUDHIANA", "3090501702", "GSSS DHANDRA", "PM SHRI"],
+  [222, "LUDHIANA", "3090600202", "GSSS AYALI KHURD", "PM SHRI"],
+  [223, "LUDHIANA", "3090107102", "GSSS MALOUDG", "PM SHRI"],
+  [224, "LUDHIANA", "3090509802", "GHS MULLANPUR MANDI", "PM SHRI"],
+  [225, "LUDHIANA", "3090711203", "GSSS MACHHIWARA G", "PM SHRI"],
+  [226, "LUDHIANA", "3090905201", "GSSS B.M RAIKOT", "PM SHRI"],
+  [227, "LUDHIANA", "3090308401", "GSSS JAGRAON G", "PM SHRI"],
+  [228, "LUDHIANA", "3090709802", "GHS SHERPUR BET", "PM SHRI"],
+  [229, "LUDHIANA", "3090504302", "S.B.S GHS MULLANPUR", "PM SHRI"],
+  [230, "LUDHIANA", "3090102702", "GHS JASPAL BANGER", "PM SHRI"],
+  [231, "LUDHIANA", "3090509302", "GSSS HAIBOWAL KHURD", "PM SHRI"],
+  [232, "LUDHIANA", "3091102902", "GSSS GALIB KALAN", "PM SHRI"],
+  [233, "LUDHIANA", "3090900602", "GSSS BHAINI BARINGA", "PM SHRI"],
+  [234, "LUDHIANA", "3090509404", "GMSSS CEMETERY ROAD", "PM SHRI"],
+  [235, "LUDHIANA", "3091005402", "GSSS RUPALON", "PM SHRI"],
+  [236, "LUDHIANA", "3090613002", "GSSS SAHIBANA", "PM SHRI"],
+  [237, "LUDHIANA", "3090509103", "GSSS Sunet", "Non-PM Shri"],
+  [238, "LUDHIANA", "3090501503", "GSSS Dakha (BOYS)", "Non-PM Shri"],
+  [239, "LUDHIANA", "3090503802", "GSSS Lalton kalan", "Non-PM Shri"],
+  [240, "MALERKOTLA", "3160702902", "GHS HIMTANA", "PM SHRI"],
+  [241, "MALERKOTLA", "3160104402", "GSSS KANGANWAL", "PM SHRI"],
+  [242, "MALERKOTLA", "3160108402", "GSSS KUTHALA", "PM SHRI"],
+  [243, "MALERKOTLA", "3160104902", "GHS MOHALLA AMARPURA", "PM SHRI"],
+  [244, "MALERKOTLA", "3160702604", "GSSS AMARGARH", "PM SHRI"],
+  [245, "MALERKOTLA", "3160703902", "GSSS MALERKOTLA (BOYS)", "PM SHRI"],
+  [246, "MALERKOTLA", "3160108202", "GSSS BHOGIWAL", "PM SHRI"],
+  [247, "MALERKOTLA", "3160708802", "GSSS BANBHAURA", "Non-PM Shri"],
+  [248, "MALERKOTLA", "3160712402", "GSSS LASOI", "Non-PM Shri"],
+  [249, "MALERKOTLA", "3160703903", "GSSS MALERKOTLA (GIRLS)", "Non-PM Shri"],
+  [250, "MANSA", "3150300101", "GSSS BAJEWALA", "PM SHRI"],
+  [251, "MANSA", "3150103901", "GSS BOYS BHIKHI", "PM SHRI"],
+  [252, "MANSA", "3150200301", "GSS AKKANWALI", "PM SHRI"],
+  [253, "MANSA", "3150502401", "GSSS KARANDI", "PM SHRI"],
+  [254, "MANSA", "3150300301", "GHS BEHNIWAL", "PM SHRI"],
+  [255, "MANSA", "3150104401", "GSS GIRLS BHIKHI", "PM SHRI"],
+  [256, "MANSA", "3150208701", "GSS GIRLS BUDHLADA", "PM SHRI"],
+  [257, "MANSA", "3150100701", "GHS SAMAON", "PM SHRI"],
+  [258, "MANSA", "3150505404", "GSS GIRLS SARDULGARH", "PM SHRI"],
+  [259, "MANSA", "3150210001", "GSS BARETA", "PM SHRI"],
+  [260, "MANSA", "3150201802", "GSSS GIRLS BOHA", "PM SHRI"],
+  [261, "MANSA", "3150202409", "GOVT MODEL SENIOR SECONDARY SCHOOL DATEWAS", "PM SHRI"],
+  [262, "MANSA", "3150403301", "FREEDOM FIGHTER KUNDAN SINGH GSS SMART SCHOOL BHAINI BAGHA", "PM SHRI"],
+  [263, "MANSA", "3150402601", "GSS NANGAL KALAN", "PM SHRI"],
+  [264, "MANSA", "3150504001", "GSS SANGHA", "PM SHRI"],
+  [265, "MANSA", "3150101101", "GSSS KOTRA KALAN", "Non-PM Shri"],
+  [266, "MANSA", "3150400906", "GSSS KHIALA KALAN GIRLS", "Non-PM Shri"],
+  [267, "MANSA", "3150205001", "GSSS KISHANGARH", "Non-PM Shri"],
+  [268, "MOGA", "3100215902", "GSSS DHARAMKOT G", "PM SHRI"],
+  [269, "MOGA", "3100501502", "GSSS BILASPUR", "PM SHRI"],
+  [270, "MOGA", "3100105806", "GSSS G BAGHA PURANA", "PM SHRI"],
+  [271, "MOGA", "3100211802", "SHAHID JAIMAL SINGH G.S.S.S. GHALOTI", "PM SHRI"],
+  [272, "MOGA", "3100102102", "GSSS MARI MUSTAFA", "PM SHRI"],
+  [273, "MOGA", "3100303107", "GSSS DAUDAR", "PM SHRI"],
+  [274, "MOGA", "3100212003", "GSSS KOT ISSE KHAN G", "PM SHRI"],
+  [275, "MOGA", "3100301007", "GHS CHARIK B", "PM SHRI"],
+  [276, "MOGA", "3100403402", "GHS DHALLE KE", "PM SHRI"],
+  [277, "MOGA", "3100305904", "GSSS GODHE WALA W", "PM SHRI"],
+  [278, "MOGA", "3100205202", "GSSS FATEH GARH PANJTOOR", "PM SHRI"],
+  [279, "MOGA", "3100305901", "GSSS BHIM NAGAR W", "PM SHRI"],
+  [280, "MOGA", "3100500105", "GSSS BADHNI KALAN G", "PM SHRI"],
+  [281, "MOGA", "3100302505", "GSSS BUTTER BOYS", "Non-PM Shri"],
+  [282, "MOGA", "3100103003", "GSSS MEHTABGARGH NATHUWALA GARBI", "Non-PM Shri"],
+  [283, "MOGA", "3100304602", "GSSS TALWANDI BHANGERIAN", "Non-PM Shri"],
+  [284, "PATHANKOT", "3220400802", "GSSS BADHANI", "PM SHRI"],
+  [285, "PATHANKOT", "3220901502", "GSSS MANWAL", "PM SHRI"],
+  [286, "PATHANKOT", "3221100102", "GSSS TARAGARH (B)", "PM SHRI"],
+  [287, "PATHANKOT", "3220913202", "GSSS DAULATPUR KALAN", "PM SHRI"],
+  [288, "PATHANKOT", "3221100203", "GGSSS BEGOWAL", "PM SHRI"],
+  [289, "PATHANKOT", "3221502401", "Freedom Fighter Sh. Hans Raj Govt. Sr. Sec. Smart School Gharota", "PM SHRI"],
+  [290, "PATHANKOT", "3220917001", "GSSS KFC PATHANKOT", "PM SHRI"],
+  [291, "PATHANKOT", "3221400102", "GSSS BAMIAL", "PM SHRI"],
+  [292, "PATHANKOT", "3221006002", "GSSS FEROZEPUR KALAN", "PM SHRI"],
+  [293, "PATHANKOT", "3221001802", "GHS BANI LODHI", "PM SHRI"],
+  [294, "PATHANKOT", "3221003304", "GGSSS SUJANPUR", "PM SHRI"],
+  [295, "PATHANKOT", "3221503102", "GSSS JANGAL", "PM SHRI"],
+  [296, "PATHANKOT", "3221003305", "GSSS SUJANPUR BOYS", "PM SHRI"],
+  [297, "PATHANKOT", "3221505502", "GSSS PARMANAND", "Non-PM Shri"],
+  [298, "PATHANKOT", "3221502002", "GSSS DHOBRA", "Non-PM Shri"],
+  [299, "PATHANKOT", "3221101702", "GSSS DATIAL FEROZA", "Non-PM Shri"],
+  [300, "PATIALA", "3170810002", "GSSS G SAMANA", "PM SHRI"],
+  [301, "PATIALA", "3170707802", "GHS KHERA GAJJU", "PM SHRI"],
+  [302, "PATIALA", "3170311002", "GSSS ULANA", "PM SHRI"],
+  [303, "PATIALA", "3170715702", "GSSS G KALKA ROAD", "PM SHRI"],
+  [304, "PATIALA", "3170510902", "GSSS TRIPURI", "PM SHRI"],
+  [305, "PATIALA", "3170109202", "GSSS MASHINGAN", "PM SHRI"],
+  [306, "PATIALA", "3170606302", "GSSS TAIPUR", "PM SHRI"],
+  [307, "PATIALA", "3170708804", "GSSS B MANAKPUR", "PM SHRI"],
+  [308, "PATIALA", "3170802302", "GSSS DHANETHA", "PM SHRI"],
+  [309, "PATIALA", "3170604003", "GSSS KARAMGARH/SHUTRANA", "PM SHRI"],
+  [310, "PATIALA", "3170508902", "GSSS SEONA", "PM SHRI"],
+  [311, "PATIALA", "3170504802", "GSSS KALYAN", "PM SHRI"],
+  [312, "PATIALA", "3170507102", "GSSS NANDPURKESHO", "PM SHRI"],
+  [313, "PATIALA", "3170418002", "GOVT MODEL HIGH SCHOOL", "PM SHRI"],
+  [314, "PATIALA", "3170710702", "GSSS PABRI", "PM SHRI"],
+  [315, "PATIALA", "3170104002", "GSSS DEVIGARH", "PM SHRI"],
+  [316, "PATIALA", "3170514702", "GSSS MULTIPURPOSE", "PM SHRI"],
+  [317, "PATIALA", "3170305902", "GSSS LOH SIMBLY", "PM SHRI"],
+  [318, "PATIALA", "3170210902", "GSSS SANOUR G", "PM SHRI"],
+  [319, "PATIALA", "3170102102", "GSSS BHANKHAR", "PM SHRI"],
+  [320, "PATIALA", "3170404402", "GSSS DHANGERA", "PM SHRI"],
+  [321, "PATIALA", "3170311302", "GSSS GHANOUR", "PM SHRI"],
+  [322, "PATIALA", "3170703602", "GHS DHAKANSU KALAN", "PM SHRI"],
+  [323, "PATIALA", "3170717803", "GSSS NTC", "PM SHRI"],
+  [324, "PATIALA", "3170418503", "BHAI KAHAN SINGH NABHA GSSS(GIRLS) NABHA", "PM SHRI"],
+  [325, "PATIALA", "3170210002", "GSSS SANOUR B", "PM SHRI"],
+  [326, "PATIALA", "3170202002", "GHS CHAURA UPGRADE RMSA", "PM SHRI"],
+  [327, "PATIALA", "3170608002", "GSSS PATRAN", "PM SHRI"],
+  [328, "PATIALA", "3170805702", "GHS MARAURI", "PM SHRI"],
+  [329, "PATIALA", "3170304502", "Govt Sen Sec Smart School KAPOORI", "Non-PM Shri"],
+  [330, "PATIALA", "3170202302", "Govt.Sr.Sec.Smart School Dakala Patiala", "Non-PM Shri"],
+  [331, "PATIALA", "", "GSSS BEHAR JACHH", "Non-PM Shri"],
+  [332, "RUPNAGAR", "3070715802", "GSSS PHOOLPUR GAREWAL", "PM SHRI"],
+  [333, "RUPNAGAR", "3070607603", "GSSS KAHANPUR KHUHI", "PM SHRI"],
+  [334, "RUPNAGAR", "3070704303", "GSSS BHARATGARH", "PM SHRI"],
+  [335, "RUPNAGAR", "3070106902", "GSSS KATHERA", "PM SHRI"],
+  [336, "RUPNAGAR", "3070108702", "GSSS MASSEWAL", "PM SHRI"],
+  [337, "RUPNAGAR", "3070113702", "GHS MATOUR (S.S.P.S.)", "PM SHRI"],
+  [338, "RUPNAGAR", "3070607704", "GSSS NURPUR KALAN BOYS", "PM SHRI"],
+  [339, "RUPNAGAR", "3070101402", "GSSS BASSOWAL", "Non-PM Shri"],
+  [340, "RUPNAGAR", "3070712202", "GSSS LAUDI MAJRA", "Non-PM Shri"],
+  [341, "RUPNAGAR", "3070113302", "GGSSS SRI ANANDPUR SAHIB", "Non-PM Shri"],
+  [342, "S.A.S Nagar", "3180204002", "GHS DESU MAJRA", "PM SHRI"],
+  [343, "S.A.S Nagar", "3180214202", "GSSS SAHAURAN", "PM SHRI"],
+  [344, "S.A.S Nagar", "3180110104", "GHS MUBARKPUR GIRLS", "PM SHRI"],
+  [345, "S.A.S Nagar", "3180110103", "GSSS MUBARKPUR", "PM SHRI"],
+  [346, "S.A.S Nagar", "3180221802", "GHS HULKA", "PM SHRI"],
+  [347, "S.A.S Nagar", "3180120202", "GSSS LOHGARH", "PM SHRI"],
+  [348, "S.A.S Nagar", "3180104102", "GHS DHAKAULI", "PM SHRI"],
+  [349, "S.A.S Nagar", "3180211302", "GHS NAYAGAON", "PM SHRI"],
+  [350, "S.A.S Nagar", "3180212602", "GHS PHASE V U.G.", "PM SHRI"],
+  [351, "S.A.S Nagar", "3180305702", "GSSS KHIZRABAD", "PM SHRI"],
+  [352, "S.A.S Nagar", "3180108802", "GSSS LALRU PIND GIRLS", "PM SHRI"],
+  [353, "S.A.S Nagar", "3180111502", "GSSS RAMPUR SAINIAN", "PM SHRI"],
+  [354, "S.A.S Nagar", "3180112002", "GSSS SAMGAULI", "PM SHRI"],
+  [355, "S.A.S Nagar", "3180214702", "GHS SANETA", "PM SHRI"],
+  [356, "S.A.S Nagar", "3180207502", "GHS KUMBHRA", "PM SHRI"],
+  [357, "S.A.S Nagar", "3180118902", "GSSS DIYALPURA", "PM SHRI"],
+  [358, "S.A.S Nagar", "3180103502", "SHAHEED SUBEDAR BALBIR SINGH GOVT HIGH SCHOOL DAPPAR", "PM SHRI"],
+  [359, "SANGRUR", "3160205602", "GSSS MOONAK (GIRLS)", "PM SHRI"],
+  [360, "SANGRUR", "3161204702", "GHS RAMGARH JAVANDHE", "PM SHRI"],
+  [361, "SANGRUR", "3160908703", "Late Madan Singh Kapoor GSSS SANGRUR (Girls)", "PM SHRI"],
+  [362, "SANGRUR", "3161302602", "GSSS MEHLAN", "PM SHRI"],
+  [363, "SANGRUR", "3160901901", "GES RATTOKE", "PM SHRI"],
+  [364, "SANGRUR", "3160204802", "GSSS KHANAURI (GIRLS)", "PM SHRI"],
+  [365, "SANGRUR", "3161302302", "GHS KHETLA", "PM SHRI"],
+  [366, "SANGRUR", "3160206103", "GSSS KHANAURI KALAN", "PM SHRI"],
+  [367, "SANGRUR", "3160601102", "GSSS LEHAL KALAN", "PM SHRI"],
+  [368, "SANGRUR", "3160404001", "MASTER KARTAR SINGH GSSS (BOYS) BHAWANIGARH", "PM SHRI"],
+  [369, "SANGRUR", "3161202901", "GSSS CHEEMA", "PM SHRI"],
+  [370, "SANGRUR", "3161205803", "SHAHEED UDHAM SINGH GOVERNMENT GIRLS SENIOR SECONDARY SCHOOL, SUNAM UDHAM SINGH WALA", "PM SHRI"],
+  [371, "SANGRUR", "3160200802", "GSSS MOONAK BOYS", "PM SHRI"],
+  [372, "SANGRUR", "3160908502", "GSSS BADRUKHAN", "PM SHRI"],
+  [373, "SANGRUR", "3160200902", "GHS NAWAN GAON", "PM SHRI"],
+  [374, "SANGRUR", "3160404202", "GSSS BHAWANIGARH (GIRLS)", "PM SHRI"],
+  [375, "SANGRUR", "3161102202", "GHS ENNA BAJWA", "PM SHRI"],
+  [376, "SANGRUR", "3160603102", "GSSS LEHRAGAGA (GIRLS)", "PM SHRI"],
+  [377, "SANGRUR", "3160500402", "GHS BARDWAL", "PM SHRI"],
+  [378, "SANGRUR", "3161102402", "GSSS KATRON", "Non-PM Shri"],
+  [379, "SANGRUR", "3160902102", "GSSS DUGGAN", "Non-PM Shri"],
+  [380, "SANGRUR", "3160906602", "GSSS EALWAL GAGGARPUR", "Non-PM Shri"],
+  [381, "S.A.S Nagar", "3180216002", "GGSSS SOHANA", "Non-PM Shri"],
+  [382, "S.A.S Nagar", "3180310002", "GSSS SIALBA", "Non-PM Shri"],
+  [383, "S.A.S Nagar", "3180310202", "GSSS SINGHPURA", "Non-PM Shri"],
+  [384, "SBS NAGAR", "3060201502", "GSSS BHADDI", "Non-PM Shri"],
+  [385, "SBS NAGAR", "3060207702", "GSSS MEHATPUR", "Non-PM Shri"],
+  [386, "SBS NAGAR", "3060302902", "GSSS CHUNAGRA", "Non-PM Shri"],
+  [387, "SBS NAGAR", "3060411501", "GSSS RAHON (Girls)", "PM SHRI"],
+  [388, "SBS NAGAR", "3060305202", "GSSS KHOTHRAN", "PM SHRI"],
+  [389, "SBS NAGAR", "3060405403", "GSSS LANGROYA", "PM SHRI"],
+  [390, "SBS NAGAR", "3060102703", "GHS GUNA CHAUR", "PM SHRI"],
+  [391, "SBS NAGAR", "3060210302", "GSSS RATTEWAL", "PM SHRI"],
+  [392, "SBS NAGAR", "3060105502", "GSSS MUKANDPUR", "PM SHRI"],
+  [393, "SRI MUKATSAR SAHIB", "3120302006", "GSSS DODA", "Non-PM Shri"],
+  [394, "SRI MUKATSAR SAHIB", "3120300405", "GSSS BHALLAIANA", "Non-PM Shri"],
+  [395, "SRI MUKATSAR SAHIB", "3120100903", "GSSS Bhagsar(B)", "Non-PM Shri"],
+  [396, "SRI MUKATSAR SAHIB", "3120111407", "GSSS MUKTSAR (G) WNO.8 MKT", "PM SHRI"],
+  [397, "SRI MUKATSAR SAHIB", "3120108103", "GSSS RUPANA (G)", "PM SHRI"],
+  [398, "SRI MUKATSAR SAHIB", "3120203203", "GSSS PIND MALOUT", "PM SHRI"],
+  [399, "SRI MUKATSAR SAHIB", "3120306204", "GSSS GIDDERBAHA (G)", "PM SHRI"],
+  [400, "SRI MUKATSAR SAHIB", "3120404802", "GHS TARMALA", "PM SHRI"],
+  [401, "SRI MUKATSAR SAHIB", "3120204702", "GSSS MALOUT (B) W.N. 4", "PM SHRI"],
+  [402, "SRI MUKATSAR SAHIB", "3120304002", "GSSS KOTLI ABLU", "PM SHRI"],
+  [403, "SRI MUKATSAR SAHIB", "3120108104", "GSSS RUPANA (B)", "PM SHRI"],
+  [404, "SRI MUKATSAR SAHIB", "3120113701", "GHS PARK", "PM SHRI"],
+  [405, "SRI MUKATSAR SAHIB", "3120204703", "GSSS MALOUT (G) W.NO.4", "PM SHRI"],
+  [406, "Tarn Taran", "3190807002", "GSSS KHEMKARAN G", "PM SHRI"],
+  [407, "Tarn Taran", "3190607802", "GSSS PATTI G", "PM SHRI"],
+  [408, "Tarn Taran", "3190505705", "GSSS KAIRON G", "PM SHRI"],
+  [409, "Tarn Taran", "3190804502", "GHS RAJOKE", "PM SHRI"],
+  [410, "Tarn Taran", "3190805703", "GSSS VALTOHA G", "PM SHRI"],
+  [411, "Tarn Taran", "3190105804", "GSSS SURSINGH G", "PM SHRI"],
+  [412, "Tarn Taran", "3190408002", "SHAHEED NAIB SUBEDAAR PARAMJIT SINGH GOVT. SR. SEC. SCHOOL, VEIN POIN", "PM SHRI"],
+  [413, "Tarn Taran", "3190103603", "GSSS KHALRA B", "PM SHRI"],
+  [414, "Tarn Taran", "3190303602", "GHS SARAI AMANAT KHAN", "PM SHRI"],
+  [415, "Tarn Taran", "3190407804", "GSSS FATEHABAD G", "PM SHRI"],
+  [416, "Tarn Taran", "3190806102", "GSSS KHEMKARAN B", "PM SHRI"],
+  [417, "Tarn Taran", "3190302802", "GHS KHAIR DIN KE", "PM SHRI"],
+  [418, "Tarn Taran", "3190304504", "GSSS JHABAL KALAN G", "PM SHRI"],
+  [419, "Tarn Taran", "3190201702", "SHAHEED SUKHJINDER SINGH GOVERNMENT HIGH SCHOOL, GANDIWIND DHATTAL", "PM SHRI"],
+  [420, "Tarn Taran", "3190204602", "GHS THATHIAN MAHANTAN", "PM SHRI"],
+  [421, "Tarn Taran", "3190700902", "GSSS BATH", "PM SHRI"],
+  [422, "Tarn Taran", "3190602402", "GSSS HARIKE", "PM SHRI"],
+  [423, "TARN TARAN", "3190707302", "GSSS PANDORI SIDHWAN", "Non-PM Shri"],
+  [424, "TARN TARAN", "3190303802", "GSSS SOHAL", "Non-PM Shri"],
+  [425, "TARN TARAN", "3190405502", "GSSS MIANWIND", "Non-PM Shri"]
+];
+
+const schoolMasterData = rawSchools.map(s => ({
+  srNo: s[0], district: s[1], udise: s[2], schoolName: s[3], schoolType: s[4]
+}));
+let submissionsData = [];
+
+const canvas = document.getElementById('canvas-sig');
+const ctx = canvas.getContext('2d');
+let isDrawing = false;
+canvas.addEventListener('mousedown', () => isDrawing = true);
+canvas.addEventListener('mouseup', () => { isDrawing = false; ctx.beginPath(); });
+canvas.addEventListener('mousemove', (e) => {
+  if (!isDrawing) return;
+  const rect = canvas.getBoundingClientRect();
+  ctx.lineWidth = 2; ctx.lineCap = 'round'; ctx.strokeStyle = '#000';
+  ctx.lineTo(e.clientX - rect.left, e.clientY - rect.top);
+  ctx.stroke(); ctx.beginPath();
+  ctx.moveTo(e.clientX - rect.left, e.clientY - rect.top);
+});
+function clearSignature() { ctx.clearRect(0, 0, canvas.width, canvas.height); }
+
+window.addEventListener('DOMContentLoaded', () => {
+  const districts = [...new Set(schoolMasterData.map(s => s.district.toUpperCase()))].sort();
+  const districtSelect = document.getElementById('districtSelect');
+  districts.forEach(d => {
+    districtSelect.innerHTML += `<option value="${d}">${d}</option>`;
+  });
+});
+
+document.getElementById('districtSelect').addEventListener('change', (e) => {
+  const uSelect = document.getElementById('udiseSelect');
+  uSelect.innerHTML = '<option value="">-- Select UDISE --</option>';
+  document.getElementById('schoolName').value = "";
+  document.getElementById('schoolType').value = "";
+  
+  if (!e.target.value) { uSelect.disabled = true; return; }
+  
+  schoolMasterData.filter(s => s.district.toUpperCase() === e.target.value).forEach(s => {
+    uSelect.innerHTML += `<option value="${s.udise}">${s.udise} - ${s.schoolName}</option>`;
+  });
+  uSelect.disabled = false;
+});
+
+document.getElementById('udiseSelect').addEventListener('change', (e) => {
+  const school = schoolMasterData.find(s => s.udise == e.target.value);
+  if (school) {
+    document.getElementById('schoolName').value = school.schoolName;
+    document.getElementById('schoolType').value = school.schoolType;
+  }
+});
+
+
+// ══════════════════════════════════════════
+//  FORM VALIDATION ENGINE
+// ══════════════════════════════════════════
+
+/** Set a field as valid or invalid with inline message */
+function setFieldState(inputId, errId, isValid) {
+  const el = document.getElementById(inputId);
+  const err = document.getElementById(errId);
+  if (!el) return;
+  el.classList.remove('is-valid', 'is-invalid');
+  el.classList.add(isValid ? 'is-valid' : 'is-invalid');
+  if (err) {
+    err.classList.toggle('hidden', isValid);
+    // re-trigger animation
+    if (!isValid) { err.style.animation = 'none'; requestAnimationFrame(() => err.style.animation = ''); }
+  }
+  return isValid;
+}
+
+/** Check signature canvas is not blank */
+function isSignatureSigned() {
+  const c = document.getElementById('canvas-sig');
+  if (!c) return false;
+  const ctx = c.getContext('2d');
+  const data = ctx.getImageData(0, 0, c.width, c.height).data;
+  for (let i = 3; i < data.length; i += 4) { if (data[i] > 10) return true; }
+  return false;
+}
+
+/** Run all validations; returns true if all pass */
+function validateForm() {
+  let valid = true;
+  const today = new Date(); today.setHours(0, 0, 0, 0);
+  const minDate = new Date('1950-01-01');
+
+  // 1. District
+  const district = document.getElementById('districtSelect').value;
+  if (!setFieldState('districtSelect', 'err-district', !!district)) valid = false;
+
+  // 2. UDISE
+  const udise = document.getElementById('udiseSelect').value;
+  if (!setFieldState('udiseSelect', 'err-udise', !!udise)) valid = false;
+
+  // 3. Batch
+  const batch = document.getElementById('batchId').value;
+  if (!setFieldState('batchId', 'err-batch', !!batch)) valid = false;
+
+  // 4. Teacher Name — letters, spaces, dots; min 3 chars
+  const name = document.getElementById('candidateName').value.trim();
+  const nameOk = name.length >= 3 && /^[a-zA-Z\s.'-]+$/.test(name);
+  if (!setFieldState('candidateName', 'err-name', nameOk)) valid = false;
+
+  // 5. Father / Spouse Name — min 3 chars
+  const father = document.getElementById('fatherName').value.trim();
+  const fatherOk = father.length >= 3 && /^[a-zA-Z\s.'-]+$/.test(father);
+  if (!setFieldState('fatherName', 'err-father', fatherOk)) valid = false;
+
+  // 6. DOB — must be selected, not in future, born after 1950
+  const dobVal = document.getElementById('dob').value;
+  let dobOk = false;
+  if (dobVal) {
+    const dob = new Date(dobVal);
+    dobOk = dob < today && dob >= minDate;
+  }
+  if (!setFieldState('dob', 'err-dob', dobOk)) valid = false;
+
+  // 7. Gender
+  const gender = document.getElementById('gender').value;
+  if (!setFieldState('gender', 'err-gender', !!gender)) valid = false;
+
+  // 8. Designation
+  const desig = document.getElementById('designation').value;
+  if (!setFieldState('designation', 'err-designation', !!desig)) valid = false;
+
+  // 9. Branch
+  const subject = document.getElementById('subject').value.trim();
+  if (!setFieldState('subject', 'err-subject', subject.length >= 2)) valid = false;
+
+  // 10. Qualification
+  const qual = document.getElementById('qualification').value;
+  if (!setFieldState('qualification', 'err-qualification', !!qual)) valid = false;
+
+  // 11. Aadhaar — exactly 12 digits
+  const aadhaar = document.getElementById('aadhaar').value.trim();
+  const aadhaarOk = /^[0-9]{12}$/.test(aadhaar);
+  if (!setFieldState('aadhaar', 'err-aadhaar', aadhaarOk)) valid = false;
+
+  // 12. Mobile — 10 digits starting with 6-9
+  const mobile = document.getElementById('mobile').value.trim();
+  const mobileOk = /^[6-9][0-9]{9}$/.test(mobile);
+  if (!setFieldState('mobile', 'err-mobile', mobileOk)) valid = false;
+
+  // 13. Email
+  const email = document.getElementById('email').value.trim();
+  const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  if (!setFieldState('email', 'err-email', emailOk)) valid = false;
+
+  // 14. Photo
+  const photoFile = document.getElementById('photoInput').files[0];
+  const photoZone = document.getElementById('photoZone');
+  const photoErr = document.getElementById('err-photo');
+  let photoOk = false;
+  if (photoFile) {
+    if (!photoFile.type.startsWith('image/')) {
+      photoErr.textContent = 'Only image files (JPG/PNG/etc.) are allowed.';
+      photoOk = false;
+    } else if (photoFile.size > 2 * 1024 * 1024) {
+      photoErr.textContent = 'Photo must be less than 2MB.';
+      photoOk = false;
+    } else {
+      photoOk = true;
+    }
+  }
+  photoZone.classList.toggle('zone-invalid', !photoOk);
+  if (photoErr) photoErr.classList.toggle('hidden', photoOk);
+  if (!photoOk) valid = false;
+
+  // 15. Signature
+  const sigSigned = isSignatureSigned();
+  const sigWrapper = document.getElementById('sigWrapper');
+  const sigErr = document.getElementById('err-sig');
+  if (sigWrapper) sigWrapper.classList.toggle('sig-invalid', !sigSigned);
+  if (sigErr) sigErr.classList.toggle('hidden', sigSigned);
+  if (!sigSigned) valid = false;
+
+  // Show/hide banner
+  const banner = document.getElementById('validationBanner');
+  const bannerMsg = document.getElementById('validationBannerMsg');
+  if (!valid) {
+    const errCount = document.querySelectorAll('.field-error:not(.hidden)').length;
+    bannerMsg.textContent = `Please fix ${errCount} error${errCount > 1 ? 's' : ''} above before submitting.`;
+    banner.classList.add('show');
+    // Scroll to first error
+    const firstErr = document.querySelector('.form-control.is-invalid, .form-select.is-invalid, .zone-invalid, .sig-invalid');
+    if (firstErr) firstErr.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  } else {
+    banner.classList.remove('show');
+  }
+
+  return valid;
+}
+
+// ── REAL-TIME VALIDATION (on blur) ──
+function attachLiveValidation() {
+  const rules = [
+    { id: 'districtSelect', err: 'err-district', test: v => !!v },
+    { id: 'udiseSelect',    err: 'err-udise',    test: v => !!v },
+    { id: 'batchId',        err: 'err-batch',    test: v => !!v },
+    { id: 'candidateName',  err: 'err-name',     test: v => v.trim().length >= 3 && /^[a-zA-Z\s.'-]+$/.test(v.trim()) },
+    { id: 'fatherName',     err: 'err-father',   test: v => v.trim().length >= 3 && /^[a-zA-Z\s.'-]+$/.test(v.trim()) },
+    { id: 'gender',         err: 'err-gender',   test: v => !!v },
+    { id: 'designation',    err: 'err-designation', test: v => !!v },
+    { id: 'subject',        err: 'err-subject',  test: v => v.trim().length >= 2 },
+    { id: 'qualification',  err: 'err-qualification', test: v => !!v },
+    { id: 'aadhaar',        err: 'err-aadhaar',  test: v => /^[0-9]{12}$/.test(v.trim()) },
+    { id: 'mobile',         err: 'err-mobile',   test: v => /^[6-9][0-9]{9}$/.test(v.trim()) },
+    { id: 'email',          err: 'err-email',    test: v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim()) },
+  ];
+
+  rules.forEach(({ id, err, test }) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    const ev = (el.tagName === 'SELECT') ? 'change' : 'blur';
+    el.addEventListener(ev, () => setFieldState(id, err, test(el.value)));
+    // Clear invalid on input
+    el.addEventListener('input', () => {
+      if (el.classList.contains('is-invalid') && test(el.value)) {
+        setFieldState(id, err, true);
+      }
+    });
+  });
+
+  // DOB special — check on change
+  const dobEl = document.getElementById('dob');
+  if (dobEl) dobEl.addEventListener('change', () => {
+    const today = new Date(); today.setHours(0,0,0,0);
+    const dob = new Date(dobEl.value);
+    const ok = dobEl.value && dob < today && dob >= new Date('1950-01-01');
+    setFieldState('dob', 'err-dob', ok);
+  });
+
+  // Aadhaar — numbers only
+  const aaEl = document.getElementById('aadhaar');
+  if (aaEl) aaEl.addEventListener('input', () => { aaEl.value = aaEl.value.replace(/\D/g, ''); });
+
+  // Mobile — numbers only
+  const mobEl = document.getElementById('mobile');
+  if (mobEl) mobEl.addEventListener('input', () => { mobEl.value = mobEl.value.replace(/\D/g, ''); });
+
+  // Photo live check
+  document.getElementById('photoInput').addEventListener('change', function() {
+    const f = this.files[0];
+    const zone = document.getElementById('photoZone');
+    const err = document.getElementById('err-photo');
+    let ok = false;
+    if (f) {
+      if (!f.type.startsWith('image/')) { err.textContent = 'Only image files are allowed.'; }
+      else if (f.size > 2 * 1024 * 1024) { err.textContent = 'Photo must be less than 2MB.'; }
+      else ok = true;
+    }
+    zone.classList.toggle('zone-invalid', !ok);
+    if (err) err.classList.toggle('hidden', ok);
+  });
+}
+
+// Initialize live validation after DOM ready
+document.addEventListener('DOMContentLoaded', attachLiveValidation);
+
+// ── FORM SUBMIT ──
+document.getElementById('nominationForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+
+  // Run full validation first
+  if (!validateForm()) return;
+
+  const btn = document.getElementById('submitBtn');
+  btn.disabled = true; btn.innerHTML = '<span class="btn-icon">⏳</span> Submitting...';
+
+  const file = document.getElementById('photoInput').files[0];
+  const reader = new FileReader();
+  reader.readAsDataURL(file);
+  reader.onload = async () => {
+    const payload = {
+      state: document.getElementById('state').value,
+      district: document.getElementById('districtSelect').value,
+      udise: document.getElementById('udiseSelect').value,
+      batchId: document.getElementById('batchId').value,
+      schoolName: document.getElementById('schoolName').value,
+      schoolType: document.getElementById('schoolType').value,
+      // Teacher personal
+      name: document.getElementById('candidateName').value,
+      fatherName: document.getElementById('fatherName').value,
+      dob: document.getElementById('dob').value,
+      gender: document.getElementById('gender').value,
+      // Teacher professional
+      designation: document.getElementById('designation').value,
+      subject: document.getElementById('subject').value,
+      qualification: document.getElementById('qualification').value,
+      aadhaar: document.getElementById('aadhaar').value,
+      mobile: document.getElementById('mobile').value,
+      email: document.getElementById('email').value,
+      // Documents
+      photoBase64: reader.result,
+      photoMime: file.type,
+      sigBase64: canvas.toDataURL()
+    };
+
+    try {
+      const res = await fetch(API_URL, {
+        method: 'POST',
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      });
+
+      const r = await res.json();
+      if (r.status === 'success') {
+        alert('✅ Registration Successful!\nSubmission ID: ' + r.id + '\n\nYou have been registered for the RAFTAAR Teacher Training Programme at NIELIT Ropar.');
+        document.getElementById('nominationForm').reset();
+        // Reset validation styles
+        document.querySelectorAll('.is-valid, .is-invalid').forEach(el => el.classList.remove('is-valid', 'is-invalid'));
+        document.querySelectorAll('.field-error').forEach(el => el.classList.add('hidden'));
+        document.getElementById('validationBanner').classList.remove('show');
+        clearSignature();
+        document.getElementById('uploadName').style.display = 'none';
+        document.getElementById('photoPreview').style.display = 'none';
+      } else {
+        alert('Backend Error: ' + r.message);
+      }
+    } catch (err) {
+      alert('Network error. Please ensure the backend server is running.');
+      console.error(err);
+    }
+
+    btn.disabled = false; btn.innerHTML = '<span class="btn-icon">🚀</span> Register for RAFTAAR Training';
+  };
+});
+
+
+async function loadSubmissions() {
+  const tbody = document.getElementById('adminTableBody');
+  tbody.innerHTML = '<tr><td colspan="6" class="text-center">Loading...</td></tr>';
+  
+  try {
+    const res = await fetch(ADMIN_API_URL);
+    submissionsData = await res.json();
+    const filter = document.getElementById('batchFilter');
+    filter.innerHTML = '<option value="ALL">All Batches</option>';
+    [...new Set(submissionsData.map(s => s.batchId))].filter(Boolean).forEach(b => {
+      filter.innerHTML += `<option value="${b}">${b}</option>`;
+    });
+    filterSubmissions();
+  } catch(err) {
+      tbody.innerHTML = '<tr><td colspan="6" class="text-center text-danger">Error Loading Data</td></tr>';
+  }
+}
+
+
+function filterSubmissions() {
+  const batch = document.getElementById('batchFilter').value;
+  const data = batch === 'ALL' ? submissionsData : submissionsData.filter(s => s.batchId === batch);
+  document.getElementById('adminTableBody').innerHTML = data.map(s => `
+    <tr>
+      <td><span class="id-badge">${s.id}</span></td>
+      <td>${s.batchId || '—'}</td>
+      <td><strong>${s.name}</strong></td>
+      <td>${s.district}</td>
+      <td style="max-width:220px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="${s.schoolName}">${s.schoolName}</td>
+      <td style="text-align:center;">
+        <button class="btn-pdf" onclick="downloadPDF('${s.id}')">📄 PDF</button>
+      </td>
+    </tr>
+  `).join('') || '<tr><td colspan="6" style="text-align:center;padding:30px;color:#9aa3bf;">No submissions found.</td></tr>';
+}
+
+
+function exportExcel() {
+  const batch = document.getElementById('batchFilter').value;
+  if (!submissionsData.length) return alert('No data.');
+  const wb = XLSX.utils.book_new();
+
+  if (batch === 'ALL') {
+    const batches = [...new Set(submissionsData.map(s => s.batchId))].filter(Boolean);
+    batches.forEach(b => {
+      const ws = formatWorksheet(submissionsData.filter(s => s.batchId === b));
+      XLSX.utils.book_append_sheet(wb, ws, b.replace(/[\\/*?:\[\]]/g, "").substring(0, 31));
+    });
+  } else {
+    const ws = formatWorksheet(submissionsData.filter(s => s.batchId === batch));
+    XLSX.utils.book_append_sheet(wb, ws, batch.replace(/[\\/*?:\[\]]/g, "").substring(0, 31));
+  }
+  XLSX.writeFile(wb, `Nominations_${batch}.xlsx`);
+}
+
+function formatWorksheet(data) {
+  const ws = XLSX.utils.aoa_to_sheet([
+    ["ID", "Time", "Batch", "Name", "Father", "DOB", "Gender", "State", "District", "UDISE", "School", "Type", "Photo", "Signature"],
+    ...data.map(s => [s.id, s.timestamp, s.batchId, s.name, s.fatherName, s.dob, s.gender, s.state, s.district, s.udise, s.schoolName, s.schoolType, s.photoUrl, s.sigUrl])
+  ]);
+  ws['!cols'] = [{wch:15}, {wch:20}, {wch:15}, {wch:25}, {wch:25}, {wch:12}, {wch:10}, {wch:15}, {wch:15}, {wch:15}, {wch:40}, {wch:15}, {wch:40}, {wch:40}];
+  return ws;
+}
+
+// Helper: fetch an image URL and return a base64 data URI
+function urlToBase64(url) {
+  return new Promise((resolve) => {
+    if (!url) { resolve(''); return; }
+    // If already a data URI, return as-is
+    if (url.startsWith('data:')) { resolve(url); return; }
+    fetch(url)
+      .then(res => res.blob())
+      .then(blob => {
+        const reader = new FileReader();
+        reader.onloadend = () => resolve(reader.result);
+        reader.readAsDataURL(blob);
+      })
+      .catch(() => resolve(''));
+  });
+}
+
+async function downloadPDF(id) {
+  const item = submissionsData.find(s => s.id === id);
+  if (!item) return;
+
+  // Populate text fields
+  document.getElementById('pdfId').innerText = item.id || '';
+  document.getElementById('pdfBatch').innerText = item.batchId || '';
+  document.getElementById('pdfName').innerText = item.name || '';
+  document.getElementById('pdfFather').innerText = item.fatherName || '';
+  document.getElementById('pdfDob').innerText = item.dob || '';
+  document.getElementById('pdfGender').innerText = item.gender || '';
+  document.getElementById('pdfDistrict').innerText = item.district || '';
+  document.getElementById('pdfUdise').innerText = item.udise || '';
+  document.getElementById('pdfSchoolName').innerText = item.schoolName || '';
+  document.getElementById('pdfSchoolType').innerText = item.schoolType || '';
+  document.getElementById('pdfDate').innerText = new Date().toLocaleDateString('en-IN', { day:'2-digit', month:'long', year:'numeric' });
+  // Professional fields
+  document.getElementById('pdfDesignation').innerText = item.designation || '—';
+  document.getElementById('pdfSubject').innerText = item.subject || '—';
+  document.getElementById('pdfAadhaar').innerText = item.aadhaar ? 'XXXX-XXXX-' + item.aadhaar.slice(-4) : '—';
+  document.getElementById('pdfQualification').innerText = item.qualification || '—';
+  document.getElementById('pdfMobile').innerText = item.mobile || '—';
+  document.getElementById('pdfEmail').innerText = item.email || '—';
+
+  // Convert image URLs to base64 to fix html2canvas CORS rendering issue
+  const [photoBase64, sigBase64] = await Promise.all([
+    urlToBase64(item.photoUrl),
+    urlToBase64(item.sigUrl)
+  ]);
+
+  const photoEl = document.getElementById('pdfPhoto');
+  const sigEl = document.getElementById('pdfSig');
+  photoEl.src = photoBase64 || '';
+  sigEl.src = sigBase64 || '';
+
+  // Wait for images to load before generating PDF
+  await new Promise(resolve => {
+    let loaded = 0;
+    const total = (photoBase64 ? 1 : 0) + (sigBase64 ? 1 : 0);
+    if (total === 0) { resolve(); return; }
+    const onLoad = () => { loaded++; if (loaded >= total) resolve(); };
+    if (photoBase64) { photoEl.onload = onLoad; photoEl.onerror = onLoad; }
+    if (sigBase64) { sigEl.onload = onLoad; sigEl.onerror = onLoad; }
+  });
+
+  html2pdf().set({
+    margin: 0,
+    filename: `${item.id}_${item.name.replace(/\s+/g,'_')}.pdf`,
+    image: { type: 'jpeg', quality: 0.98 },
+    html2canvas: {
+      scale: 2,
+      useCORS: true,
+      allowTaint: false,
+      logging: false,
+      backgroundColor: '#ffffff'
+    },
+    jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
+  }).from(document.getElementById('pdfTemplate')).save();
+}
+
+const ADMIN_ID = "admin";
+const ADMIN_PASS = "nielit123";
+
+document.getElementById('loginForm').addEventListener('submit', function(e) {
+  e.preventDefault();
+  const idInput = document.getElementById('adminId').value;
+  const passInput = document.getElementById('adminPass').value;
+
+  if (idInput === ADMIN_ID && passInput === ADMIN_PASS) {
+    const loginModalEl = document.getElementById('loginModal');
+    const modalInstance = bootstrap.Modal.getInstance(loginModalEl) || new bootstrap.Modal(loginModalEl);
+    modalInstance.hide();
+    document.getElementById('loginForm').reset();
+    document.getElementById('adminTabContainer').classList.remove('d-none');
+    const adminTab = new bootstrap.Tab(document.getElementById('admin-tab'));
+    adminTab.show();
+    loadSubmissions();
+  } else {
+    alert("Invalid ID or Password.");
+  }
+});
+
+function logoutAdmin() {
+  document.getElementById('adminTabContainer').classList.add('d-none');
+  const formTab = new bootstrap.Tab(document.getElementById('form-tab'));
+  formTab.show();
+  submissionsData = [];
+  document.getElementById('adminTableBody').innerHTML = '<tr><td colspan="6" class="text-center">Loading...</td></tr>';
+}
