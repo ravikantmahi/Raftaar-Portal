@@ -430,13 +430,146 @@ const rawSchools = [
   [425, "TARN TARAN", "3190405502", "GSSS MIANWIND", "Non-PM Shri"]
 ];
 
+// UDISE → Batch mapping (all 425 schools)
+const udiseToBatch = {
+  // BATCH-1
+  "3020207902":"BATCH-1","3020303102":"BATCH-1","3140601601":"BATCH-1","3140300301":"BATCH-1",
+  "3210105702":"BATCH-1","3210100702":"BATCH-1","3110611702":"BATCH-1","3110600102":"BATCH-1",
+  "3010713802":"BATCH-1","3010203803":"BATCH-1","3050510402":"BATCH-1","3050410802":"BATCH-1",
+  "3040605004":"BATCH-1","3040408902":"BATCH-1","3090407502":"BATCH-1","3090711203":"BATCH-1",
+  "3150210001":"BATCH-1","3150202409":"BATCH-1","3150403301":"BATCH-1","3100403402":"BATCH-1",
+  "3100205202":"BATCH-1","3100500105":"BATCH-1","3221001802":"BATCH-1","3221003304":"BATCH-1",
+  "3221503102":"BATCH-1","3170418002":"BATCH-1","3170710702":"BATCH-1",
+  // BATCH-2
+  "3020508003":"BATCH-2","3020606702":"BATCH-2","3140101602":"BATCH-2","3140801702":"BATCH-2",
+  "3140804302":"BATCH-2","3111015104":"BATCH-2","3110709702":"BATCH-2","3011603301":"BATCH-2",
+  "3010710402":"BATCH-2","3050902203":"BATCH-2","3050117602":"BATCH-2","3040708002":"BATCH-2",
+  "3040800101":"BATCH-2","3090905201":"BATCH-2","3090308401":"BATCH-2","3150402601":"BATCH-2",
+  "3150504001":"BATCH-2","3170104002":"BATCH-2","3170305902":"BATCH-2","3180108802":"BATCH-2",
+  "3180111502":"BATCH-2","3161202901":"BATCH-2","3160200802":"BATCH-2","3120113701":"BATCH-2",
+  "3120204703":"BATCH-2","3190302802":"BATCH-2","3190304504":"BATCH-2",
+  // BATCH-3
+  "3020302604":"BATCH-3","3020702402":"BATCH-3","3140402912":"BATCH-3","3140703604":"BATCH-3",
+  "3210202709":"BATCH-3","3210109902":"BATCH-3","3210109502":"BATCH-3","3111000103":"BATCH-3",
+  "3110811701":"BATCH-3","3110800703":"BATCH-3","3011308901":"BATCH-3","3011303502":"BATCH-3",
+  "3011301302":"BATCH-3","3050900603":"BATCH-3","3050810702":"BATCH-3","3040403603":"BATCH-3",
+  "3040908103":"BATCH-3","3090504302":"BATCH-3","3090509302":"BATCH-3","3170404402":"BATCH-3",
+  "3170311302":"BATCH-3","3180112002":"BATCH-3","3180214702":"BATCH-3","3160908502":"BATCH-3",
+  "3160200902":"BATCH-3","3190201702":"BATCH-3","3190204602":"BATCH-3",
+  // BATCH-4
+  "3020405602":"BATCH-4","3020111602":"BATCH-4","3020800104":"BATCH-4","3140304603":"BATCH-4",
+  "3140305501":"BATCH-4","3080200802":"BATCH-4","3080104002":"BATCH-4","3011208602":"BATCH-4",
+  "3010508102":"BATCH-4","3050806002":"BATCH-4","3050418002":"BATCH-4","3041004904":"BATCH-4",
+  "3040610804":"BATCH-4","3040309001":"BATCH-4","3091102902":"BATCH-4","3091005402":"BATCH-4",
+  "3090613002":"BATCH-4","3170418503":"BATCH-4","3170210002":"BATCH-4","3170202002":"BATCH-4",
+  "3180207502":"BATCH-4","3180118902":"BATCH-4","3160404202":"BATCH-4","3161102202":"BATCH-4",
+  "3160603102":"BATCH-4","3190700902":"BATCH-4","3190602402":"BATCH-4",
+  // BATCH-5
+  "3020500502":"BATCH-5","3020600803":"BATCH-5","3200104402":"BATCH-5","3200300902":"BATCH-5",
+  "3140401602":"BATCH-5","3140106701":"BATCH-5","3130209402":"BATCH-5","3130202302":"BATCH-5",
+  "3210203102":"BATCH-5","3210307202":"BATCH-5","3010800104":"BATCH-5","3010513002":"BATCH-5",
+  "3050704701":"BATCH-5","3051005402":"BATCH-5","3040212502":"BATCH-5","3040112632":"BATCH-5",
+  "3160108402":"BATCH-5","3160703902":"BATCH-5","3150300101":"BATCH-5","3150200301":"BATCH-5",
+  "3100501502":"BATCH-5","3100305901":"BATCH-5","3221100102":"BATCH-5","3220913202":"BATCH-5",
+  "3170608002":"BATCH-5","3170805702":"BATCH-5","3161205803":"BATCH-5",
+  // BATCH-6
+  "3020605704":"BATCH-6","3020108202":"BATCH-6","3140704002":"BATCH-6","3140110201":"BATCH-6",
+  "3110515002":"BATCH-6","3110717002":"BATCH-6","3050506702":"BATCH-6","3050908302":"BATCH-6",
+  "3040104003":"BATCH-6","3090608502":"BATCH-6","3090408802":"BATCH-6","3090709802":"BATCH-6",
+  "3170311002":"BATCH-6","3170210902":"BATCH-6","3070607603":"BATCH-6","3070108702":"BATCH-6",
+  "3180110103":"BATCH-6","3180221802":"BATCH-6","3180120202":"BATCH-6","3161302302":"BATCH-6",
+  "3160500402":"BATCH-6","3060102703":"BATCH-6","3060105502":"BATCH-6","3120306204":"BATCH-6",
+  "3120204702":"BATCH-6","3190105804":"BATCH-6","3190407804":"BATCH-6",
+  // BATCH-7
+  "3020601503":"BATCH-7","3200200802":"BATCH-7","3200305403":"BATCH-7","3140404102":"BATCH-7",
+  "3140404501":"BATCH-7","3130200704":"BATCH-7","3130103802":"BATCH-7","3080111001":"BATCH-7",
+  "3080207702":"BATCH-7","3110811702":"BATCH-7","3110715002":"BATCH-7","3011505902":"BATCH-7",
+  "3010304606":"BATCH-7","3050216002":"BATCH-7","3050908402":"BATCH-7","3040516001":"BATCH-7",
+  "3040306502":"BATCH-7","3030411610":"BATCH-7","3030402002":"BATCH-7","3090900602":"BATCH-7",
+  "3090509404":"BATCH-7","3160104902":"BATCH-7","3160702604":"BATCH-7","3150208701":"BATCH-7",
+  "3150201802":"BATCH-7","3170102102":"BATCH-7","3170703602":"BATCH-7",
+  // BATCH-8
+  "3020402402":"BATCH-8","3020812802":"BATCH-8","3200303402":"BATCH-8","3200306905":"BATCH-8",
+  "3140202003":"BATCH-8","3140403402":"BATCH-8","3130212003":"BATCH-8","3130203603":"BATCH-8",
+  "3080205702":"BATCH-8","3080211601":"BATCH-8","3100211802":"BATCH-8","3100102102":"BATCH-8",
+  "3220400802":"BATCH-8","3221003305":"BATCH-8","3170514702":"BATCH-8","3170717803":"BATCH-8",
+  "3070106902":"BATCH-8","3070113702":"BATCH-8","3180212602":"BATCH-8","3180103502":"BATCH-8",
+  "3160205602":"BATCH-8","3160404001":"BATCH-8","3060411501":"BATCH-8","3120404802":"BATCH-8",
+  "3120304002":"BATCH-8","3190103603":"BATCH-8","3190303602":"BATCH-8",
+  // BATCH-9
+  "3020806102":"BATCH-9","3020100104":"BATCH-9","3200108601":"BATCH-9","3200110604":"BATCH-9",
+  "3140103602":"BATCH-9","3140502201":"BATCH-9","3130202503":"BATCH-9","3130111402":"BATCH-9",
+  "3210312803":"BATCH-9","3210414802":"BATCH-9","3110909002":"BATCH-9","3111015605":"BATCH-9",
+  "3010305702":"BATCH-9","3010501412":"BATCH-9","3051009302":"BATCH-9","3050423602":"BATCH-9",
+  "3040108602":"BATCH-9","3040112401":"BATCH-9","3030410402":"BATCH-9","3030520702":"BATCH-9",
+  "3090200502":"BATCH-9","3091007203":"BATCH-9","3160702902":"BATCH-9","3160104402":"BATCH-9",
+  "3160108202":"BATCH-9","3150103901":"BATCH-9","3150502401":"BATCH-9",
+  // BATCH-10
+  "3020107302":"BATCH-10","3020404002":"BATCH-10","3200110002":"BATCH-10","3200105707":"BATCH-10",
+  "3140402602":"BATCH-10","3140106902":"BATCH-10","3210500302":"BATCH-10","3210420302":"BATCH-10",
+  "3110903602":"BATCH-10","3110811302":"BATCH-10","3170810002":"BATCH-10","3170707802":"BATCH-10",
+  "3070715802":"BATCH-10","3070704303":"BATCH-10","3070607704":"BATCH-10","3180204002":"BATCH-10",
+  "3180214202":"BATCH-10","3161204702":"BATCH-10","3160908703":"BATCH-10","3060305202":"BATCH-10",
+  "3060405403":"BATCH-10","3060210302":"BATCH-10","3120111407":"BATCH-10","3120108103":"BATCH-10",
+  "3190807002":"BATCH-10","3190607802":"BATCH-10",
+  // BATCH-11
+  "3020404402":"BATCH-11","3020504903":"BATCH-11","3130105903":"BATCH-11","3010605406":"BATCH-11",
+  "3010209705":"BATCH-11","3010108102":"BATCH-11","3011509401":"BATCH-11","3050309702":"BATCH-11",
+  "3050600504":"BATCH-11","3041106501":"BATCH-11","3041002702":"BATCH-11","3030200403":"BATCH-11",
+  "3030502802":"BATCH-11","3030209008":"BATCH-11","3150300301":"BATCH-11","3150104401":"BATCH-11",
+  "3100215902":"BATCH-11","3100105806":"BATCH-11","3220901502":"BATCH-11","3221100203":"BATCH-11",
+  "3161302602":"BATCH-11","3160901901":"BATCH-11","3120203203":"BATCH-11","3120108104":"BATCH-11",
+  "3190505705":"BATCH-11","3190804502":"BATCH-11",
+  // BATCH-12
+  "3020900110":"BATCH-12","3020807002":"BATCH-12","3200104802":"BATCH-12","3140502101":"BATCH-12",
+  "3140600501":"BATCH-12","3210409302":"BATCH-12","3210503002":"BATCH-12","3111009402":"BATCH-12",
+  "3110513902":"BATCH-12","3011202802":"BATCH-12","3010101002":"BATCH-12","3010700402":"BATCH-12",
+  "3050807902":"BATCH-12","3050704501":"BATCH-12","3040205202":"BATCH-12","3041100101":"BATCH-12",
+  "3090101402":"BATCH-12","3090904902":"BATCH-12","3091108102":"BATCH-12","3150100701":"BATCH-12",
+  "3150505404":"BATCH-12","3100303107":"BATCH-12","3100212003":"BATCH-12","3190805703":"BATCH-12",
+  "3190408002":"BATCH-12","3190806102":"BATCH-12",
+  // BATCH-13
+  "3140111303":"BATCH-13","3140111201":"BATCH-13","3140504001":"BATCH-13","3011603003":"BATCH-13",
+  "3010108702":"BATCH-13","3010601302":"BATCH-13","3010706902":"BATCH-13","3090501702":"BATCH-13",
+  "3090600202":"BATCH-13","3090107102":"BATCH-13","3090509802":"BATCH-13","3090102702":"BATCH-13",
+  "3100301007":"BATCH-13","3100305904":"BATCH-13","3221502401":"BATCH-13","3220917001":"BATCH-13",
+  "3170715702":"BATCH-13","3170510902":"BATCH-13","3170109202":"BATCH-13","3170606302":"BATCH-13",
+  "3170708804":"BATCH-13","3180110104":"BATCH-13","3180104102":"BATCH-13","3160204802":"BATCH-13",
+  "3160206103":"BATCH-13","3160601102":"BATCH-13",
+  // BATCH-14
+  "3020608202":"BATCH-14","3020505402":"BATCH-14","3020503002":"BATCH-14","3200104002":"BATCH-14",
+  "3200304517":"BATCH-14","3200105211":"BATCH-14","3140104901":"BATCH-14","3140108101":"BATCH-14",
+  "3140102202":"BATCH-14","3130201802":"BATCH-14","3130203402":"BATCH-14","3130205202":"BATCH-14",
+  "3080300202":"BATCH-14","3080209102":"BATCH-14","3080102802":"BATCH-14","3221400102":"BATCH-14",
+  "3221006002":"BATCH-14","3170802302":"BATCH-14","3170604003":"BATCH-14","3170508902":"BATCH-14",
+  "3170504802":"BATCH-14","3170507102":"BATCH-14","3180211302":"BATCH-14","3180305702":"BATCH-14",
+  "3060201502":"BATCH-14","3060207702":"BATCH-14",
+  // BATCH-15
+  "3210415810":"BATCH-15","3210201402":"BATCH-15","3210107101":"BATCH-15","3110806502":"BATCH-15",
+  "3110800302":"BATCH-15","3110807802":"BATCH-15","3010304603":"BATCH-15","3010605407":"BATCH-15",
+  "3011301906":"BATCH-15","3050501202":"BATCH-15","3050905006":"BATCH-15","3050706602":"BATCH-15",
+  "3040214102":"BATCH-15","3040109103":"BATCH-15","3040219502":"BATCH-15","3030108902":"BATCH-15",
+  "3030217602":"BATCH-15","3030216502":"BATCH-15","3090509103":"BATCH-15","3090501503":"BATCH-15",
+  "3090503802":"BATCH-15","3160708802":"BATCH-15","3160712402":"BATCH-15","3160703903":"BATCH-15",
+  "3070113302":"BATCH-15","3180216002":"BATCH-15",
+  // BATCH-16
+  "3150101101":"BATCH-16","3150400906":"BATCH-16","3150205001":"BATCH-16","3100302505":"BATCH-16",
+  "3100103003":"BATCH-16","3100304602":"BATCH-16","3221505502":"BATCH-16","3221502002":"BATCH-16",
+  "3221101702":"BATCH-16","3170304502":"BATCH-16","3170202302":"BATCH-16","3070101402":"BATCH-16",
+  "3070712202":"BATCH-16","3180310002":"BATCH-16","3180310202":"BATCH-16","3161102402":"BATCH-16",
+  "3160902102":"BATCH-16","3160906602":"BATCH-16","3060302902":"BATCH-16","3120302006":"BATCH-16",
+  "3120300405":"BATCH-16","3120100903":"BATCH-16","3190707302":"BATCH-16","3190303802":"BATCH-16",
+  "3190405502":"BATCH-16"
+};
+
 const schoolMasterData = rawSchools.map(s => ({
-  srNo: s[0], district: s[1], udise: s[2], schoolName: s[3], schoolType: s[4]
+  srNo: s[0], district: s[1], udise: s[2], schoolName: s[3], schoolType: s[4],
+  batch: udiseToBatch[s[2]] || ""
 }));
 let submissionsData = [];
 
 const canvas = document.getElementById('canvas-sig');
-const ctx = canvas.getContext('2d');
+const ctx = canvas.getContext('2d', { willReadFrequently: true });
 let isDrawing = false;
 canvas.addEventListener('mousedown', () => isDrawing = true);
 canvas.addEventListener('mouseup', () => { isDrawing = false; ctx.beginPath(); });
@@ -448,27 +581,63 @@ canvas.addEventListener('mousemove', (e) => {
   ctx.stroke(); ctx.beginPath();
   ctx.moveTo(e.clientX - rect.left, e.clientY - rect.top);
 });
+// Touch support for signature
+canvas.addEventListener('touchstart', (e) => { e.preventDefault(); isDrawing = true; }, { passive: false });
+canvas.addEventListener('touchend', () => { isDrawing = false; ctx.beginPath(); });
+canvas.addEventListener('touchmove', (e) => {
+  e.preventDefault();
+  if (!isDrawing) return;
+  const rect = canvas.getBoundingClientRect();
+  const t = e.touches[0];
+  ctx.lineWidth = 2; ctx.lineCap = 'round'; ctx.strokeStyle = '#000';
+  ctx.lineTo(t.clientX - rect.left, t.clientY - rect.top);
+  ctx.stroke(); ctx.beginPath();
+  ctx.moveTo(t.clientX - rect.left, t.clientY - rect.top);
+}, { passive: false });
+
 function clearSignature() { ctx.clearRect(0, 0, canvas.width, canvas.height); }
 
+// ── CASCADE: Batch → District → UDISE ──
 window.addEventListener('DOMContentLoaded', () => {
-  const districts = [...new Set(schoolMasterData.map(s => s.district.toUpperCase()))].sort();
-  const districtSelect = document.getElementById('districtSelect');
+  // Districts are populated after Batch is selected
+  // (No auto-population on load)
+});
+
+document.getElementById('batchId').addEventListener('change', (e) => {
+  const dSelect = document.getElementById('districtSelect');
+  const uSelect = document.getElementById('udiseSelect');
+  dSelect.innerHTML = '<option value="">— Select District —</option>';
+  uSelect.innerHTML = '<option value="">— Select UDISE —</option>';
+  document.getElementById('schoolName').value = '';
+  document.getElementById('schoolType').value = '';
+  uSelect.disabled = true;
+
+  if (!e.target.value) { dSelect.disabled = true; return; }
+
+  const bv = e.target.value; // e.g. "BATCH-1"
+  const districts = [...new Set(
+    schoolMasterData.filter(s => s.batch === bv).map(s => s.district.toUpperCase())
+  )].sort();
   districts.forEach(d => {
-    districtSelect.innerHTML += `<option value="${d}">${d}</option>`;
+    dSelect.innerHTML += `<option value="${d}">${d}</option>`;
   });
+  dSelect.disabled = false;
 });
 
 document.getElementById('districtSelect').addEventListener('change', (e) => {
   const uSelect = document.getElementById('udiseSelect');
   uSelect.innerHTML = '<option value="">-- Select UDISE --</option>';
-  document.getElementById('schoolName').value = "";
-  document.getElementById('schoolType').value = "";
-  
+  document.getElementById('schoolName').value = '';
+  document.getElementById('schoolType').value = '';
+
   if (!e.target.value) { uSelect.disabled = true; return; }
-  
-  schoolMasterData.filter(s => s.district.toUpperCase() === e.target.value).forEach(s => {
-    uSelect.innerHTML += `<option value="${s.udise}">${s.udise} - ${s.schoolName}</option>`;
-  });
+
+  const bv = document.getElementById('batchId').value;
+  schoolMasterData
+    .filter(s => s.batch === bv && s.district.toUpperCase() === e.target.value)
+    .forEach(s => {
+      uSelect.innerHTML += `<option value="${s.udise}">${s.udise} - ${s.schoolName}</option>`;
+    });
   uSelect.disabled = false;
 });
 
@@ -479,7 +648,6 @@ document.getElementById('udiseSelect').addEventListener('change', (e) => {
     document.getElementById('schoolType').value = school.schoolType;
   }
 });
-
 
 // ══════════════════════════════════════════
 //  FORM VALIDATION ENGINE
@@ -516,17 +684,17 @@ function validateForm() {
   const today = new Date(); today.setHours(0, 0, 0, 0);
   const minDate = new Date('1950-01-01');
 
-  // 1. District
+  // 1. Batch
+  const batch = document.getElementById('batchId').value;
+  if (!setFieldState('batchId', 'err-batch', !!batch)) valid = false;
+
+  // 2. District
   const district = document.getElementById('districtSelect').value;
   if (!setFieldState('districtSelect', 'err-district', !!district)) valid = false;
 
-  // 2. UDISE
+  // 3. UDISE
   const udise = document.getElementById('udiseSelect').value;
   if (!setFieldState('udiseSelect', 'err-udise', !!udise)) valid = false;
-
-  // 3. Batch
-  const batch = document.getElementById('batchId').value;
-  if (!setFieldState('batchId', 'err-batch', !!batch)) valid = false;
 
   // 4. Teacher Name — letters, spaces, dots; min 3 chars
   const name = document.getElementById('candidateName').value.trim();
@@ -551,17 +719,17 @@ function validateForm() {
   const gender = document.getElementById('gender').value;
   if (!setFieldState('gender', 'err-gender', !!gender)) valid = false;
 
-  // 8. Designation
-  const desig = document.getElementById('designation').value;
-  if (!setFieldState('designation', 'err-designation', !!desig)) valid = false;
+  // 8. Designation (free text, min 2 chars)
+  const desig = document.getElementById('designation').value.trim();
+  if (!setFieldState('designation', 'err-designation', desig.length >= 2)) valid = false;
 
   // 9. Branch
   const subject = document.getElementById('subject').value.trim();
   if (!setFieldState('subject', 'err-subject', subject.length >= 2)) valid = false;
 
-  // 10. Qualification
-  const qual = document.getElementById('qualification').value;
-  if (!setFieldState('qualification', 'err-qualification', !!qual)) valid = false;
+  // 10. Qualification (free text, min 2 chars)
+  const qual = document.getElementById('qualification').value.trim();
+  if (!setFieldState('qualification', 'err-qualification', qual.length >= 2)) valid = false;
 
   // 11. Aadhaar — exactly 12 digits
   const aadhaar = document.getElementById('aadhaar').value.trim();
@@ -578,7 +746,11 @@ function validateForm() {
   const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
   if (!setFieldState('email', 'err-email', emailOk)) valid = false;
 
-  // 14. Photo
+  // 14. Address (min 10 chars)
+  const address = document.getElementById('address').value.trim();
+  if (!setFieldState('address', 'err-address', address.length >= 10)) valid = false;
+
+  // 15. Photo
   const photoFile = document.getElementById('photoInput').files[0];
   const photoZone = document.getElementById('photoZone');
   const photoErr = document.getElementById('err-photo');
@@ -598,13 +770,7 @@ function validateForm() {
   if (photoErr) photoErr.classList.toggle('hidden', photoOk);
   if (!photoOk) valid = false;
 
-  // 15. Signature
-  const sigSigned = isSignatureSigned();
-  const sigWrapper = document.getElementById('sigWrapper');
-  const sigErr = document.getElementById('err-sig');
-  if (sigWrapper) sigWrapper.classList.toggle('sig-invalid', !sigSigned);
-  if (sigErr) sigErr.classList.toggle('hidden', sigSigned);
-  if (!sigSigned) valid = false;
+  // 16. Signature — OPTIONAL (no validation block)
 
   // Show/hide banner
   const banner = document.getElementById('validationBanner');
@@ -614,7 +780,7 @@ function validateForm() {
     bannerMsg.textContent = `Please fix ${errCount} error${errCount > 1 ? 's' : ''} above before submitting.`;
     banner.classList.add('show');
     // Scroll to first error
-    const firstErr = document.querySelector('.form-control.is-invalid, .form-select.is-invalid, .zone-invalid, .sig-invalid');
+    const firstErr = document.querySelector('.form-control.is-invalid, .form-select.is-invalid, .zone-invalid');
     if (firstErr) firstErr.scrollIntoView({ behavior: 'smooth', block: 'center' });
   } else {
     banner.classList.remove('show');
@@ -626,18 +792,19 @@ function validateForm() {
 // ── REAL-TIME VALIDATION (on blur) ──
 function attachLiveValidation() {
   const rules = [
+    { id: 'batchId',        err: 'err-batch',    test: v => !!v },
     { id: 'districtSelect', err: 'err-district', test: v => !!v },
     { id: 'udiseSelect',    err: 'err-udise',    test: v => !!v },
-    { id: 'batchId',        err: 'err-batch',    test: v => !!v },
     { id: 'candidateName',  err: 'err-name',     test: v => v.trim().length >= 3 && /^[a-zA-Z\s.'-]+$/.test(v.trim()) },
     { id: 'fatherName',     err: 'err-father',   test: v => v.trim().length >= 3 && /^[a-zA-Z\s.'-]+$/.test(v.trim()) },
     { id: 'gender',         err: 'err-gender',   test: v => !!v },
-    { id: 'designation',    err: 'err-designation', test: v => !!v },
+    { id: 'designation',    err: 'err-designation', test: v => v.trim().length >= 2 },
     { id: 'subject',        err: 'err-subject',  test: v => v.trim().length >= 2 },
-    { id: 'qualification',  err: 'err-qualification', test: v => !!v },
+    { id: 'qualification',  err: 'err-qualification', test: v => v.trim().length >= 2 },
     { id: 'aadhaar',        err: 'err-aadhaar',  test: v => /^[0-9]{12}$/.test(v.trim()) },
     { id: 'mobile',         err: 'err-mobile',   test: v => /^[6-9][0-9]{9}$/.test(v.trim()) },
     { id: 'email',          err: 'err-email',    test: v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim()) },
+    { id: 'address',        err: 'err-address',  test: v => v.trim().length >= 10 },
   ];
 
   rules.forEach(({ id, err, test }) => {
@@ -669,6 +836,10 @@ function attachLiveValidation() {
   // Mobile — numbers only
   const mobEl = document.getElementById('mobile');
   if (mobEl) mobEl.addEventListener('input', () => { mobEl.value = mobEl.value.replace(/\D/g, ''); });
+
+  // Email — lowercase only
+  const emEl = document.getElementById('email');
+  if (emEl) emEl.addEventListener('input', () => { emEl.value = emEl.value.toLowerCase(); });
 
   // Photo live check
   document.getElementById('photoInput').addEventListener('change', function() {
@@ -703,6 +874,7 @@ document.getElementById('nominationForm').addEventListener('submit', async (e) =
   const reader = new FileReader();
   reader.readAsDataURL(file);
   reader.onload = async () => {
+    const sigData = isSignatureSigned() ? canvas.toDataURL() : '';
     const payload = {
       state: document.getElementById('state').value,
       district: document.getElementById('districtSelect').value,
@@ -722,10 +894,11 @@ document.getElementById('nominationForm').addEventListener('submit', async (e) =
       aadhaar: document.getElementById('aadhaar').value,
       mobile: document.getElementById('mobile').value,
       email: document.getElementById('email').value,
+      address: document.getElementById('address').value,
       // Documents
       photoBase64: reader.result,
       photoMime: file.type,
-      sigBase64: canvas.toDataURL()
+      sigBase64: sigData
     };
 
     try {
@@ -737,15 +910,23 @@ document.getElementById('nominationForm').addEventListener('submit', async (e) =
 
       const r = await res.json();
       if (r.status === 'success') {
-        alert('✅ Registration Successful!\nSubmission ID: ' + r.id + '\n\nYou have been registered for the RAFTAAR Teacher Training Programme at NIELIT Ropar.');
+        // Show beautiful success screen
+        document.getElementById('successId').textContent = r.id;
+        document.getElementById('successScreen').style.display = 'flex';
+        launchConfetti();
+        // Reset form silently in background
         document.getElementById('nominationForm').reset();
-        // Reset validation styles
         document.querySelectorAll('.is-valid, .is-invalid').forEach(el => el.classList.remove('is-valid', 'is-invalid'));
         document.querySelectorAll('.field-error').forEach(el => el.classList.add('hidden'));
         document.getElementById('validationBanner').classList.remove('show');
         clearSignature();
         document.getElementById('uploadName').style.display = 'none';
         document.getElementById('photoPreview').style.display = 'none';
+        // Reset cascade dropdowns
+        document.getElementById('districtSelect').innerHTML = '<option value="">— Select District —</option>';
+        document.getElementById('districtSelect').disabled = true;
+        document.getElementById('udiseSelect').innerHTML = '<option value="">— Select UDISE —</option>';
+        document.getElementById('udiseSelect').disabled = true;
       } else {
         alert('Backend Error: ' + r.message);
       }
@@ -757,6 +938,37 @@ document.getElementById('nominationForm').addEventListener('submit', async (e) =
     btn.disabled = false; btn.innerHTML = '<span class="btn-icon">🚀</span> Register for RAFTAAR Training';
   };
 });
+
+// Confetti animation
+function launchConfetti() {
+  const container = document.getElementById('confettiContainer');
+  if (!container) return;
+  container.innerHTML = '';
+  const colors = ['#f47920','#1a2d6b','#2d8c3e','#fff','#ffd700','#ff6b6b','#4ecdc4'];
+  for (let i = 0; i < 80; i++) {
+    const piece = document.createElement('div');
+    piece.className = 'confetti-piece';
+    const size = Math.random() * 12 + 6;
+    piece.style.cssText = `
+      left: ${Math.random() * 100}%;
+      width: ${size}px;
+      height: ${size}px;
+      background: ${colors[Math.floor(Math.random() * colors.length)]};
+      border-radius: ${Math.random() > 0.5 ? '50%' : '2px'};
+      animation-duration: ${Math.random() * 2 + 2}s;
+      animation-delay: ${Math.random() * 1.5}s;
+    `;
+    container.appendChild(piece);
+  }
+  setTimeout(() => { container.innerHTML = ''; }, 5000);
+}
+
+// Reset form and hide success screen
+function resetAndRegisterAgain() {
+  document.getElementById('successScreen').style.display = 'none';
+  document.getElementById('confettiContainer').innerHTML = '';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
 
 
 async function loadSubmissions() {
@@ -814,12 +1026,59 @@ function exportExcel() {
   XLSX.writeFile(wb, `Nominations_${batch}.xlsx`);
 }
 
+function formatExcelDate(dateStr, isDob = false) {
+  if (!dateStr) return '';
+  const str = String(dateStr).trim();
+  
+  // 1. If it's a long JS Date string from Google Apps Script (e.g., "Thu Apr 06 2023...")
+  const d = new Date(str);
+  if (!isNaN(d.getTime()) && str.length > 20) {
+    const dd = String(d.getDate()).padStart(2, '0');
+    const mm = String(d.getMonth() + 1).padStart(2, '0');
+    const yyyy = d.getFullYear();
+    
+    if (isDob) return `${dd}/${mm}/${yyyy}`;
+    
+    // Timestamp keeps the time
+    const hh = String(d.getHours()).padStart(2, '0');
+    const min = String(d.getMinutes()).padStart(2, '0');
+    const ss = String(d.getSeconds()).padStart(2, '0');
+    return `${dd}/${mm}/${yyyy} ${hh}:${min}:${ss}`;
+  }
+  
+  // 2. If it's YYYY-MM-DD
+  if (str.includes('-') && str.split('T')[0].split('-').length === 3 && str.split('-')[0].length === 4) {
+    const p = str.split('T')[0].split('-');
+    return `${p[2].substring(0, 2)}/${p[1]}/${p[0]}`;
+  }
+
+  // 3. Fallback: replace dashes with slashes (DD-MM-YYYY -> DD/MM/YYYY)
+  return str.replace(/\-/g, '/');
+}
+
 function formatWorksheet(data) {
   const ws = XLSX.utils.aoa_to_sheet([
-    ["ID", "Time", "Batch", "Name", "Father", "DOB", "Gender", "State", "District", "UDISE", "School", "Type", "Photo", "Signature"],
-    ...data.map(s => [s.id, s.timestamp, s.batchId, s.name, s.fatherName, s.dob, s.gender, s.state, s.district, s.udise, s.schoolName, s.schoolType, s.photoUrl, s.sigUrl])
+    ["ID", "Time", "Batch", "Name", "Father/Spouse", "DOB", "Gender", "State", "District", "UDISE",
+     "School Name", "School Type", "Designation", "Branch/Subject", "Qualification",
+     "Aadhaar", "Mobile", "Email", "Address", "Photo URL", "Signature URL"],
+    ...data.map(s => {
+      const formattedDob = formatExcelDate(s.dob, true);
+      const formattedTime = formatExcelDate(s.timestamp, false);
+      
+      return [
+        s.id, formattedTime, s.batchId, s.name, s.fatherName, formattedDob, s.gender, s.state,
+        s.district, s.udise, s.schoolName, s.schoolType,
+        s.designation, s.subject, s.qualification,
+        s.aadhaar, s.mobile, s.email, s.address, s.photoUrl, s.sigUrl
+      ];
+    })
   ]);
-  ws['!cols'] = [{wch:15}, {wch:20}, {wch:15}, {wch:25}, {wch:25}, {wch:12}, {wch:10}, {wch:15}, {wch:15}, {wch:15}, {wch:40}, {wch:15}, {wch:40}, {wch:40}];
+  ws['!cols'] = [
+    {wch:15},{wch:20},{wch:10},{wch:25},{wch:25},{wch:12},{wch:8},
+    {wch:10},{wch:15},{wch:15},{wch:40},{wch:12},
+    {wch:18},{wch:18},{wch:18},
+    {wch:14},{wch:14},{wch:28},{wch:40},{wch:40},{wch:40}
+  ];
   return ws;
 }
 
@@ -863,6 +1122,8 @@ async function downloadPDF(id) {
   document.getElementById('pdfQualification').innerText = item.qualification || '—';
   document.getElementById('pdfMobile').innerText = item.mobile || '—';
   document.getElementById('pdfEmail').innerText = item.email || '—';
+  const addrEl = document.getElementById('pdfAddress');
+  if (addrEl) addrEl.innerText = item.address || '—';
 
   // Convert image URLs to base64 to fix html2canvas CORS rendering issue
   const [photoBase64, sigBase64] = await Promise.all([

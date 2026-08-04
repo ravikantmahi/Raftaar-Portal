@@ -26,6 +26,10 @@
       <div class="header-logos">
         <img src="NIELIT-Logo.png" alt="NIELIT Logo" class="nielit-logo">
         <div class="header-divider"></div>
+        <img src="pbgovtlogo.png" alt="Punjab Govt Logo"
+          style="height:62px; object-fit:contain; filter:drop-shadow(0 2px 8px rgba(0,0,0,0.3)); transition:transform 0.3s ease;"
+          onmouseover="this.style.transform='scale(1.07)'" onmouseout="this.style.transform='scale(1)'">
+        <div class="header-divider"></div>
         <img src="Raftaarlogo.png" alt="Mission Raftaar Logo" class="raftaar-logo">
       </div>
 
@@ -118,12 +122,31 @@
                 </div>
                 <div class="row g-3 mb-2">
                   <div class="col-md-3">
-                    <label class="form-label">State</label>
-                    <input type="text" class="form-control" value="PUNJAB" readonly id="state">
+                    <label class="form-label">Batch <span class="req">*</span></label>
+                    <select class="form-select" id="batchId" required>
+                      <option value="">— Select Batch —</option>
+                      <option value="BATCH-1">Batch-1</option>
+                      <option value="BATCH-2">Batch-2</option>
+                      <option value="BATCH-3">Batch-3</option>
+                      <option value="BATCH-4">Batch-4</option>
+                      <option value="BATCH-5">Batch-5</option>
+                      <option value="BATCH-6">Batch-6</option>
+                      <option value="BATCH-7">Batch-7</option>
+                      <option value="BATCH-8">Batch-8</option>
+                      <option value="BATCH-9">Batch-9</option>
+                      <option value="BATCH-10">Batch-10</option>
+                      <option value="BATCH-11">Batch-11</option>
+                      <option value="BATCH-12">Batch-12</option>
+                      <option value="BATCH-13">Batch-13</option>
+                      <option value="BATCH-14">Batch-14</option>
+                      <option value="BATCH-15">Batch-15</option>
+                      <option value="BATCH-16">Batch-16</option>
+                    </select>
+                    <span class="field-error hidden" id="err-batch">Please select a batch.</span>
                   </div>
                   <div class="col-md-3">
                     <label class="form-label">District <span class="req">*</span></label>
-                    <select class="form-select" id="districtSelect" required>
+                    <select class="form-select" id="districtSelect" required disabled>
                       <option value="">— Select District —</option>
                     </select>
                     <span class="field-error hidden" id="err-district">Please select a district.</span>
@@ -136,25 +159,13 @@
                     <span class="field-error hidden" id="err-udise">Please select a UDISE code.</span>
                   </div>
                   <div class="col-md-3">
-                    <label class="form-label">Batch <span class="req">*</span></label>
-                    <select class="form-select" id="batchId" required>
-                      <option value="">— Select Batch —</option>
-                      <option value="Batch-1">Batch-1</option>
-                      <option value="Batch-2">Batch-2</option>
-                      <option value="Batch-3">Batch-3</option>
-                      <option value="Batch-4">Batch-4</option>
-                      <option value="Batch-5">Batch-5</option>
-                      <option value="Batch-6">Batch-6</option>
-                      <option value="Batch-7">Batch-7</option>
-                      <option value="Batch-8">Batch-8</option>
-                      <option value="Batch-9">Batch-9</option>
-                      <option value="Batch-10">Batch-10</option>
-                    </select>
-                    <span class="field-error hidden" id="err-batch">Please select a batch.</span>
+                    <label class="form-label">State</label>
+                    <input type="text" class="form-control" value="PUNJAB" readonly id="state">
                   </div>
                   <div class="col-md-8">
                     <label class="form-label">School Name</label>
-                    <input type="text" class="form-control" id="schoolName" readonly placeholder="Auto-filled on UDISE selection">
+                    <input type="text" class="form-control" id="schoolName" readonly
+                      placeholder="Auto-filled on UDISE selection">
                   </div>
                   <div class="col-md-4">
                     <label class="form-label">School Type</label>
@@ -172,13 +183,17 @@
                 <div class="row g-3">
                   <div class="col-md-4">
                     <label class="form-label">Teacher Name <span class="req">*</span></label>
-                    <input type="text" class="form-control" id="candidateName" required placeholder="Full Name (as per records)">
-                    <span class="field-error hidden" id="err-name">Enter full name (letters only, min 3 characters).</span>
+                    <input type="text" class="form-control" id="candidateName" required
+                      placeholder="Full Name (as per records)">
+                    <span class="field-error hidden" id="err-name">Enter full name (letters only, min 3
+                      characters).</span>
                   </div>
                   <div class="col-md-4">
                     <label class="form-label">Father's / Spouse Name <span class="req">*</span></label>
-                    <input type="text" class="form-control" id="fatherName" required placeholder="Father's / Spouse Full Name">
-                    <span class="field-error hidden" id="err-father">Enter father's / spouse name (min 3 characters).</span>
+                    <input type="text" class="form-control" id="fatherName" required
+                      placeholder="Father's / Spouse Full Name">
+                    <span class="field-error hidden" id="err-father">Enter father's / spouse name (min 3
+                      characters).</span>
                   </div>
                   <div class="col-md-2">
                     <label class="form-label">Date of Birth <span class="req">*</span></label>
@@ -206,50 +221,49 @@
                 <div class="row g-3">
                   <div class="col-md-3">
                     <label class="form-label">Designation <span class="req">*</span></label>
-                    <select class="form-select" id="designation" required>
-                      <option value="">— Select —</option>
-                      <option value="PGT">PGT (Post Graduate Teacher)</option>
-                      <option value="TGT">TGT (Trained Graduate Teacher)</option>
-                      <option value="C&V Teacher">C&V Teacher</option>
-                      <option value="Head Teacher">Head Teacher</option>
-                      <option value="Lecturer">Lecturer</option>
-                      <option value="Principal">Principal</option>
-                      <option value="Other">Other</option>
-                    </select>
-                    <span class="field-error hidden" id="err-designation">Please select a designation.</span>
+                    <input type="text" class="form-control" id="designation" required
+                      placeholder="e.g. PGT, TGT, Lecturer, Principal">
+                    <span class="field-error hidden" id="err-designation">Please enter your designation (min 2
+                      characters).</span>
                   </div>
                   <div class="col-md-3">
-                    <label class="form-label">Branch <span class="req">*</span></label>
-                    <input type="text" class="form-control" id="subject" required placeholder="e.g. Mathematics, Science">
+                    <label class="form-label">Branch / Subject <span class="req">*</span></label>
+                    <input type="text" class="form-control" id="subject" required
+                      placeholder="e.g. Mathematics, Science">
                     <span class="field-error hidden" id="err-subject">Please enter branch / subject taught.</span>
                   </div>
                   <div class="col-md-3">
                     <label class="form-label">Highest Qualification <span class="req">*</span></label>
-                    <select class="form-select" id="qualification" required>
-                      <option value="">— Select —</option>
-                      <option value="Graduate">Graduate (B.A./B.Sc./B.Com etc.)</option>
-                      <option value="B.Ed">B.Ed</option>
-                      <option value="Post Graduate">Post Graduate (M.A./M.Sc. etc.)</option>
-                      <option value="M.Ed">M.Ed</option>
-                      <option value="M.Phil">M.Phil</option>
-                      <option value="Ph.D">Ph.D</option>
-                    </select>
-                    <span class="field-error hidden" id="err-qualification">Please select highest qualification.</span>
+                    <input type="text" class="form-control" id="qualification" required
+                      placeholder="e.g. M.Sc., B.Ed., Ph.D">
+                    <span class="field-error hidden" id="err-qualification">Please enter your highest qualification (min
+                      2 characters).</span>
                   </div>
                   <div class="col-md-3">
                     <label class="form-label">Aadhaar Number <span class="req">*</span></label>
-                    <input type="text" class="form-control" id="aadhaar" required placeholder="12-digit Aadhaar No." maxlength="12" pattern="[0-9]{12}" inputmode="numeric">
-                    <span class="field-error hidden" id="err-aadhaar">Aadhaar must be exactly 12 digits (numbers only).</span>
+                    <input type="text" class="form-control" id="aadhaar" required placeholder="12-digit Aadhaar No."
+                      maxlength="12" pattern="[0-9]{12}" inputmode="numeric">
+                    <span class="field-error hidden" id="err-aadhaar">Aadhaar must be exactly 12 digits (numbers
+                      only).</span>
                   </div>
                   <div class="col-md-4">
                     <label class="form-label">Mobile Number <span class="req">*</span></label>
-                    <input type="tel" class="form-control" id="mobile" required placeholder="10-digit mobile number" maxlength="10" pattern="[6-9][0-9]{9}" inputmode="numeric">
-                    <span class="field-error hidden" id="err-mobile">Enter a valid 10-digit mobile number starting with 6–9.</span>
+                    <input type="tel" class="form-control" id="mobile" required placeholder="10-digit mobile number"
+                      maxlength="10" pattern="[6-9][0-9]{9}" inputmode="numeric">
+                    <span class="field-error hidden" id="err-mobile">Enter a valid 10-digit mobile number starting with
+                      6–9.</span>
                   </div>
                   <div class="col-md-4">
                     <label class="form-label">Email Address <span class="req">*</span></label>
                     <input type="email" class="form-control" id="email" required placeholder="teacher@example.com">
                     <span class="field-error hidden" id="err-email">Enter a valid email address.</span>
+                  </div>
+                  <div class="col-12">
+                    <label class="form-label">Full Residential Address <span class="req">*</span></label>
+                    <textarea class="form-control" id="address" rows="3" required
+                      placeholder="Enter your complete residential address (House No., Street, Village/Town, District, State, PIN)"></textarea>
+                    <span class="field-error hidden" id="err-address">Please enter your full address (min 10
+                      characters).</span>
                   </div>
                 </div>
               </div>
@@ -278,8 +292,9 @@
                   </div>
                   <!-- Signature -->
                   <div class="col-md-6">
-                    <label class="form-label">Digital Signature <span class="req">*</span>
-                      <span class="info-tag" style="font-weight:500; font-size:10px;">Draw with mouse/touch</span>
+                    <label class="form-label">Digital Signature
+                      <span class="info-tag" style="font-weight:500; font-size:10px;">Optional · Draw with
+                        mouse/touch</span>
                     </label>
                     <div class="sig-wrapper" id="sigWrapper">
                       <canvas id="canvas-sig" width="460" height="120"></canvas>
@@ -300,9 +315,12 @@
                   <span class="validation-banner-icon">🚫</span>
                   <span id="validationBannerMsg">Please fix the errors above before submitting.</span>
                 </div>
-                <div style="background:#f0f4ff; border:1px solid #d0daff; border-radius:10px; padding:14px 18px; margin-bottom:16px; font-size:12.5px; color:#1a2d6b; display:flex; align-items:flex-start; gap:10px;">
+                <div
+                  style="background:#f0f4ff; border:1px solid #d0daff; border-radius:10px; padding:14px 18px; margin-bottom:16px; font-size:12.5px; color:#1a2d6b; display:flex; align-items:flex-start; gap:10px;">
                   <span style="font-size:18px; flex-shrink:0;">ℹ️</span>
-                  <span>By submitting this form, I confirm that I am a government school teacher nominated by my school for the <strong>RAFTAAR Three-Day Teacher Training Programme</strong> at NIELIT Ropar, and the information provided is true and accurate.</span>
+                  <span>By submitting this form, I confirm that I am a government school teacher nominated by my school
+                    for the <strong>RAFTAAR Three-Day Teacher Training Programme</strong> at NIELIT Ropar, and the
+                    information provided is true and accurate.</span>
                 </div>
                 <button type="submit" class="btn-submit" id="submitBtn">
                   <span class="btn-icon">🚀</span> Register for RAFTAAR Training
@@ -398,8 +416,12 @@
       <!-- HEADER -->
       <div
         style="display:flex;align-items:center;justify-content:space-between;padding:18px 28px 14px;border-bottom:2.5px solid #1a2d6b;background:#f7f9fc;">
-        <img src="nielitlogo.png" alt="NIELIT" style="height:72px;object-fit:contain;" crossorigin="anonymous">
+        <div style="display:flex; align-items:center; gap:10px;">
+          <img src="NIELIT-Logo.png" alt="NIELIT" style="height:72px;object-fit:contain;" crossorigin="anonymous">
+          <!-- <img src="Raftaarlogo.png" alt="Raftaarlogo" style="height:72px;object-fit:contain;" crossorigin="anonymous"> -->
+        </div>
         <div style="text-align:center;flex:1;padding:0 20px;">
+          <!-- <img src="Raftaarlogo.png" alt="Raftaarlogo" style="height:92px;object-fit:contain;" crossorigin="anonymous"> -->
           <div style="font-size:11px;color:#555;letter-spacing:1px;text-transform:uppercase;margin-bottom:2px;">Ministry
             of Electronics &amp; Information Technology, Government of India</div>
           <div style="font-size:17px;font-weight:bold;color:#1a2d6b;letter-spacing:0.5px;">National Institute of
@@ -412,7 +434,7 @@
           <div style="font-size:10.5px;color:#f47920;margin-top:4px;font-weight:600;">Robotics and AI Framework for
             Teachers' Advancement and Academia Readiness &bull; Three-Day Programme</div>
         </div>
-        <img src="Raftaarlogo.png" alt="Raftaar" style="height:72px;object-fit:contain;" crossorigin="anonymous">
+        <img src="pbgovtlogo.png" alt="pbgovtlogo" style="height:90px;object-fit:contain;" crossorigin="anonymous">
       </div>
 
       <!-- BODY -->
@@ -510,6 +532,12 @@
               <td id="pdfMobile" style="padding:6px 10px;border-right:1px solid #fdd5b0;"></td>
               <td style="padding:6px 10px;font-weight:bold;border-right:1px solid #fdd5b0;color:#444;">Email</td>
               <td id="pdfEmail" style="padding:6px 10px;"></td>
+            </tr>
+            <tr>
+              <td
+                style="padding:6px 10px;font-weight:bold;border-right:1px solid #fdd5b0;border-top:1px solid #fdd5b0;color:#444;">
+                Full Address</td>
+              <td id="pdfAddress" colspan="3" style="padding:6px 10px;border-top:1px solid #fdd5b0;"></td>
             </tr>
           </table>
         </div>
@@ -628,9 +656,9 @@
     });
 
     // Step progress highlight
-    document.getElementById('districtSelect').addEventListener('change', () => updateStep(1));
+    document.getElementById('batchId').addEventListener('change', () => updateStep(1));
     document.getElementById('candidateName').addEventListener('input', () => updateStep(2));
-    document.getElementById('designation').addEventListener('change', () => updateStep(3));
+    document.getElementById('designation').addEventListener('input', () => updateStep(3));
     document.getElementById('photoInput').addEventListener('change', () => updateStep(4));
 
     function updateStep(done) {
@@ -643,6 +671,51 @@
       }
     }
   </script>
+
+  <!-- ══════════════════════════════════════════
+       SUCCESS SCREEN (shown after successful submit)
+  ══════════════════════════════════════════ -->
+  <div id="successScreen" class="success-screen" style="display:none;">
+    <div class="success-inner">
+      <div class="success-icon-wrap">
+        <div class="success-circle">
+          <span class="success-check">✓</span>
+        </div>
+      </div>
+      <h2 class="success-title">Registration Successful! 🎉</h2>
+      <p class="success-subtitle">
+        You have been successfully registered for the<br>
+        <strong>RAFTAAR Three-Day Teacher Training Programme</strong><br>
+        at NIELIT Ropar
+      </p>
+      <div class="success-id-card">
+        <div class="success-id-label">Your Submission ID</div>
+        <div class="success-id-value" id="successId">NOM-XXXXXX</div>
+      </div>
+      <div class="success-info-grid">
+        <div class="success-info-item">
+          <span class="success-info-icon">📋</span>
+          <span>Please note your Submission ID for future reference</span>
+        </div>
+        <div class="success-info-item">
+          <span class="success-info-icon">🏫</span>
+          <span>Contact your school for the exact training dates &amp; venue</span>
+        </div>
+        <div class="success-info-item">
+          <span class="success-info-icon">📧</span>
+          <span>Your registration is recorded with NIELIT Ropar</span>
+        </div>
+      </div>
+      <div class="success-actions">
+        <button class="btn-register-again" onclick="resetAndRegisterAgain()">
+          ➕ Register Another Teacher
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Confetti container -->
+  <div class="confetti-container" id="confettiContainer"></div>
 
 </body>
 
