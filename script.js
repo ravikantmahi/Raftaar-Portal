@@ -428,7 +428,8 @@ const rawSchools = [
   [423, "TARN TARAN", "3190707302", "GSSS PANDORI SIDHWAN", "Non-PM Shri"],
   [424, "TARN TARAN", "3190303802", "GSSS SOHAL", "Non-PM Shri"],
   [425, "BATHINDA", "03140402202", "GSSS KALYAN SUKHA", "PM Shri"],
-  [426, "TARN TARAN", "03140301601", " GSSS KOT BHARA", "PM Shri"]
+  [425, "TARN TARAN", "3190405502", "GSSS MIANWIND", "NoN-PM Shri"],
+  [426, "BATHINDA", "03140301601", "GSSS KOT BHARA", "PM Shri"]
 ];
 
 // UDISE → Batch mapping (all 425 schools)
