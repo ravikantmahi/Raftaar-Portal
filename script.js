@@ -975,19 +975,26 @@ function resetAndRegisterAgain() {
 
 async function loadSubmissions() {
   const tbody = document.getElementById('adminTableBody');
-  tbody.innerHTML = '<tr><td colspan="6" class="text-center">Loading...</td></tr>';
+  tbody.innerHTML = '<tr><td colspan="7" class="text-center">Loading...</td></tr>';
   
   try {
     const res = await fetch(ADMIN_API_URL);
     submissionsData = await res.json();
     const filter = document.getElementById('batchFilter');
     filter.innerHTML = '<option value="ALL">All Batches</option>';
-    [...new Set(submissionsData.map(s => s.batchId))].filter(Boolean).forEach(b => {
-      filter.innerHTML += `<option value="${b}">${b}</option>`;
-    });
+    // Sort batch options naturally
+    [...new Set(submissionsData.map(s => s.batchId))].filter(Boolean)
+      .sort((a, b) => {
+        const numA = parseInt(a.replace(/\D/g, '')) || 0;
+        const numB = parseInt(b.replace(/\D/g, '')) || 0;
+        return numA - numB;
+      })
+      .forEach(b => {
+        filter.innerHTML += `<option value="${b}">${b}</option>`;
+      });
     filterSubmissions();
   } catch(err) {
-      tbody.innerHTML = '<tr><td colspan="6" class="text-center text-danger">Error Loading Data</td></tr>';
+      tbody.innerHTML = '<tr><td colspan="7" class="text-center text-danger">Error Loading Data</td></tr>';
   }
 }
 
@@ -995,8 +1002,38 @@ async function loadSubmissions() {
 function filterSubmissions() {
   const batch = document.getElementById('batchFilter').value;
   const data = batch === 'ALL' ? submissionsData : submissionsData.filter(s => s.batchId === batch);
-  document.getElementById('adminTableBody').innerHTML = data.map(s => `
+
+  // Update stats bar
+  const statsBar = document.getElementById('adminStatsBar');
+  const totalCountEl = document.getElementById('statTotalCount');
+  const batchInfoEl = document.getElementById('statBatchInfo');
+  if (statsBar && totalCountEl) {
+    statsBar.style.display = 'flex';
+    totalCountEl.textContent = data.length;
+
+    if (batch === 'ALL') {
+      // Show per-batch breakdown
+      const batchCounts = {};
+      data.forEach(s => {
+        const b = s.batchId || 'Unknown';
+        batchCounts[b] = (batchCounts[b] || 0) + 1;
+      });
+      const sortedBatches = Object.keys(batchCounts).sort((a, b) => {
+        const numA = parseInt(a.replace(/\D/g, '')) || 0;
+        const numB = parseInt(b.replace(/\D/g, '')) || 0;
+        return numA - numB;
+      });
+      batchInfoEl.innerHTML = sortedBatches.map(b =>
+        `<span style="background:rgba(255,255,255,0.12); border-radius:5px; padding:2px 8px; margin:2px; display:inline-block; white-space:nowrap;"><strong style="color:#f47920;">${b}</strong>: ${batchCounts[b]}</span>`
+      ).join(' ');
+    } else {
+      batchInfoEl.innerHTML = `<span style="color:rgba(255,255,255,0.8);">Showing records for <strong style="color:#f0f4ff;">${batch}</strong></span>`;
+    }
+  }
+
+  document.getElementById('adminTableBody').innerHTML = data.map((s, idx) => `
     <tr>
+      <td style="text-align:center; font-weight:600; color:#555; font-size:13px;">${idx + 1}</td>
       <td><span class="id-badge">${s.id}</span></td>
       <td>${s.batchId || '—'}</td>
       <td><strong>${s.name}</strong></td>
@@ -1006,7 +1043,7 @@ function filterSubmissions() {
         <button class="btn-pdf" onclick="downloadPDF('${s.id}')">📄 PDF</button>
       </td>
     </tr>
-  `).join('') || '<tr><td colspan="6" style="text-align:center;padding:30px;color:#9aa3bf;">No submissions found.</td></tr>';
+  `).join('') || '<tr><td colspan="7" style="text-align:center;padding:30px;color:#9aa3bf;">No submissions found.</td></tr>';
 }
 
 
@@ -1084,84 +1121,224 @@ function formatWorksheet(data) {
   return ws;
 }
 
-// Helper: fetch an image URL and return a base64 data URI
-function urlToBase64(url) {
-  return new Promise((resolve) => {
-    if (!url) { resolve(''); return; }
-    // If already a data URI, return as-is
-    if (url.startsWith('data:')) { resolve(url); return; }
-    fetch(url)
-      .then(res => res.blob())
-      .then(blob => {
-        const reader = new FileReader();
-        reader.onloadend = () => resolve(reader.result);
-        reader.readAsDataURL(blob);
-      })
-      .catch(() => resolve(''));
-  });
+// Helper: Convert any Google Drive URL to a thumbnail/embed URL that loads without CORS
+function getDriveThumbnailUrl(url) {
+  if (!url) return '';
+  if (url.startsWith('data:')) return url;
+  const match = url.match(/\/file\/d\/([a-zA-Z0-9_-]+)/) ||
+                url.match(/[?&]id=([a-zA-Z0-9_-]+)/);
+  if (match && match[1]) {
+    return `https://drive.google.com/thumbnail?id=${match[1]}&sz=w400`;
+  }
+  return url;
 }
 
 async function downloadPDF(id) {
   const item = submissionsData.find(s => s.id === id);
-  if (!item) return;
 
-  // Populate text fields
-  document.getElementById('pdfId').innerText = item.id || '';
-  document.getElementById('pdfBatch').innerText = item.batchId || '';
-  document.getElementById('pdfName').innerText = item.name || '';
-  document.getElementById('pdfFather').innerText = item.fatherName || '';
-  document.getElementById('pdfDob').innerText = item.dob || '';
-  document.getElementById('pdfGender').innerText = item.gender || '';
-  document.getElementById('pdfDistrict').innerText = item.district || '';
-  document.getElementById('pdfUdise').innerText = item.udise || '';
-  document.getElementById('pdfSchoolName').innerText = item.schoolName || '';
-  document.getElementById('pdfSchoolType').innerText = item.schoolType || '';
-  document.getElementById('pdfDate').innerText = new Date().toLocaleDateString('en-IN', { day:'2-digit', month:'long', year:'numeric' });
-  // Professional fields
-  document.getElementById('pdfDesignation').innerText = item.designation || '—';
-  document.getElementById('pdfSubject').innerText = item.subject || '—';
-  document.getElementById('pdfAadhaar').innerText = item.aadhaar ? 'XXXX-XXXX-' + item.aadhaar.slice(-4) : '—';
-  document.getElementById('pdfQualification').innerText = item.qualification || '—';
-  document.getElementById('pdfMobile').innerText = item.mobile || '—';
-  document.getElementById('pdfEmail').innerText = item.email || '—';
-  const addrEl = document.getElementById('pdfAddress');
-  if (addrEl) addrEl.innerText = item.address || '—';
+  if (!item) {
+    alert('Submission record not found.');
+    return;
+  }
 
-  // Convert image URLs to base64 to fix html2canvas CORS rendering issue
-  const [photoBase64, sigBase64] = await Promise.all([
-    urlToBase64(item.photoUrl),
-    urlToBase64(item.sigUrl)
+  const btn = (typeof event !== 'undefined' && event && event.target) ? event.target : null;
+  if (btn) { btn.disabled = true; btn.textContent = '⏳ Generating...'; }
+
+  const BACKEND_ORIGIN = 'https://raftaar-backend-t93i.onrender.com';
+
+  // ── Format DOB ──
+  function formatDobDisplay(dobStr) {
+    if (!dobStr) return '—';
+    const s = String(dobStr).trim();
+    if (/^\d{2}\/\d{2}\/\d{4}$/.test(s)) return s;
+    if (/^\d{4}-\d{2}-\d{2}/.test(s)) {
+      const p = s.substring(0, 10).split('-');
+      return `${p[2]}/${p[1]}/${p[0]}`;
+    }
+    const d = new Date(s);
+    if (!isNaN(d.getTime())) {
+      return `${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}/${d.getFullYear()}`;
+    }
+    return s;
+  }
+
+  // ── Extract Google Drive file ID ──
+  function extractDriveId(url) {
+    if (!url) return '';
+    if (String(url).startsWith('data:')) return '';
+    const s = String(url);
+    const match = s.match(/\/file\/d\/([a-zA-Z0-9_-]+)/) || s.match(/[?&]id=([a-zA-Z0-9_-]+)/);
+    return match ? match[1] : '';
+  }
+
+  // ── Load Drive image via Render backend proxy (bypasses CORS) ──
+  async function loadDriveImageAsDataUrl(url) {
+    if (!url) return '';
+    if (String(url).startsWith('data:')) return url;
+    const fileId = extractDriveId(url);
+    if (!fileId) { console.warn('Could not extract Drive file ID:', url); return ''; }
+    try {
+      const response = await fetch(
+        `${BACKEND_ORIGIN}/api/drive-image/${encodeURIComponent(fileId)}?size=1200`,
+        { method: 'GET', cache: 'no-store' }
+      );
+      if (!response.ok) throw new Error(`Image proxy returned HTTP ${response.status}`);
+      const blob = await response.blob();
+      if (!blob.type.startsWith('image/')) throw new Error(`Invalid image response: ${blob.type}`);
+      return await new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = reject;
+        reader.readAsDataURL(blob);
+      });
+    } catch (error) {
+      console.error('Unable to load Google Drive image:', error);
+      return '';
+    }
+  }
+
+  // ── Safe text setter ──
+  function setText(elId, value, fallback = '—') {
+    const el = document.getElementById(elId);
+    if (!el) { console.warn(`PDF element not found: ${elId}`); return; }
+    el.textContent = (value !== undefined && value !== null && String(value).trim() !== '')
+      ? String(value) : fallback;
+  }
+
+  // ── Populate all text fields ──
+  setText('pdfId',    item.id,      '');
+  setText('pdfBatch', item.batchId, '');
+  setText('pdfName',  item.name,    '');
+  setText('pdfFather', item.fatherName, '');
+  setText('pdfDob',   formatDobDisplay(item.dob), '');
+  setText('pdfGender', item.gender, '');
+  setText('pdfDistrict', item.district, '');
+  setText('pdfUdise',    item.udise,    '');
+  setText('pdfSchoolName', item.schoolName, '');
+  setText('pdfSchoolType', item.schoolType, '');
+  setText('pdfDesignation',   item.designation,   '—');
+  setText('pdfSubject',       item.subject,        '—');
+  setText('pdfQualification', item.qualification,  '—');
+  setText('pdfMobile', item.mobile, '—');
+  setText('pdfEmail',  item.email,  '—');
+  setText('pdfAddress', item.address, '—');
+
+  // ── Show Full Aadhaar ──
+  let aadhaar = item.aadhaar ? String(item.aadhaar).replace(/\D/g, '') : '';
+  if (aadhaar.length === 12) {
+    aadhaar = aadhaar.slice(0,4) + ' ' + aadhaar.slice(4,8) + ' ' + aadhaar.slice(8);
+  }
+  setText('pdfAadhaar', aadhaar || '—', '—');
+
+  // ── Image elements ──
+  const photoEl          = document.getElementById('pdfPhoto');
+  const photoPlaceholder = document.getElementById('pdfPhotoPlaceholder');
+  const sigEl            = document.getElementById('pdfSig');
+  const sigPlaceholder   = document.getElementById('pdfSigPlaceholder');
+
+  if (!photoEl || !sigEl) { alert('PDF template image elements are missing.'); return; }
+
+  // Reset
+  photoEl.style.display = 'none'; photoEl.removeAttribute('src');
+  if (photoPlaceholder) photoPlaceholder.style.display = 'block';
+  sigEl.style.display = 'none';   sigEl.removeAttribute('src');
+  if (sigPlaceholder) sigPlaceholder.style.display = 'block';
+
+  // ── Load photo + signature via backend proxy ──
+  const [photoDataUrl, signatureDataUrl] = await Promise.all([
+    loadDriveImageAsDataUrl(item.photoUrl),
+    loadDriveImageAsDataUrl(item.sigUrl)
   ]);
 
-  const photoEl = document.getElementById('pdfPhoto');
-  const sigEl = document.getElementById('pdfSig');
-  photoEl.src = photoBase64 || '';
-  sigEl.src = sigBase64 || '';
+  if (photoDataUrl) {
+    photoEl.src = photoDataUrl;
+    photoEl.style.display = 'block';
+    if (photoPlaceholder) photoPlaceholder.style.display = 'none';
+  } else {
+    console.warn('Candidate photo could not be loaded.');
+  }
 
-  // Wait for images to load before generating PDF
-  await new Promise(resolve => {
-    let loaded = 0;
-    const total = (photoBase64 ? 1 : 0) + (sigBase64 ? 1 : 0);
-    if (total === 0) { resolve(); return; }
-    const onLoad = () => { loaded++; if (loaded >= total) resolve(); };
-    if (photoBase64) { photoEl.onload = onLoad; photoEl.onerror = onLoad; }
-    if (sigBase64) { sigEl.onload = onLoad; sigEl.onerror = onLoad; }
+  if (signatureDataUrl) {
+    sigEl.src = signatureDataUrl;
+    sigEl.style.display = 'block';
+    if (sigPlaceholder) sigPlaceholder.style.display = 'none';
+  } else {
+    console.warn('Candidate signature could not be loaded.');
+  }
+
+  // ── Wait for images to decode ──
+  const imagePromises = [];
+  [photoEl, sigEl].forEach(img => {
+    if (img && img.style.display !== 'none' && img.src) {
+      if (typeof img.decode === 'function') {
+        imagePromises.push(img.decode().catch(() => {}));
+      } else {
+        imagePromises.push(new Promise(resolve => {
+          if (img.complete) { resolve(); return; }
+          img.onload = resolve; img.onerror = resolve;
+        }));
+      }
+    }
   });
+  await Promise.all(imagePromises);
 
-  html2pdf().set({
-    margin: 0,
-    filename: `${item.id}_${item.name.replace(/\s+/g,'_')}.pdf`,
-    image: { type: 'jpeg', quality: 0.98 },
-    html2canvas: {
-      scale: 2,
-      useCORS: true,
-      allowTaint: false,
-      logging: false,
-      backgroundColor: '#ffffff'
-    },
-    jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
-  }).from(document.getElementById('pdfTemplate')).save();
+  // ── Get template ──
+  const wrapper  = document.getElementById('pdfWrapper');
+  const template = document.getElementById('pdfTemplate');
+  if (!wrapper || !template) { alert('PDF template was not found.'); return; }
+
+  // ── Show template for canvas capture ──
+  wrapper.style.position = 'absolute';
+  wrapper.style.left = '0';
+  wrapper.style.top  = '0';
+  wrapper.style.zIndex  = '99999';
+  wrapper.style.opacity = '1';
+
+  const savedScrollX = window.scrollX;
+  const savedScrollY = window.scrollY;
+  window.scrollTo(0, 0);
+
+  await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+
+  try {
+    // ── Render exact A4 to canvas ──
+    const canvas = await html2canvas(template, {
+      scale:        2.5,
+      width:        794,
+      height:       1122,
+      windowWidth:  794,
+      windowHeight: 1122,
+      x: 0, y: 0,
+      scrollX: 0, scrollY: 0,
+      useCORS:         true,
+      allowTaint:      false,
+      backgroundColor: '#ffffff',
+      logging:         false
+    });
+
+    // ── Create exactly one A4 page PDF ──
+    const pdf = new jspdf.jsPDF({ unit: 'mm', format: 'a4', orientation: 'portrait', compress: true });
+    const imageData = canvas.toDataURL('image/jpeg', 0.97);
+    pdf.addImage(imageData, 'JPEG', 0, 0, 210, 297, undefined, 'FAST');
+
+    const safeName = String(item.name || 'Candidate').replace(/[^\w\s-]/g, '').trim().replace(/\s+/g, '_');
+    pdf.save(`${item.id}_${safeName}_Nomination_Form.pdf`);
+
+  } catch (error) {
+    console.error('PDF generation failed:', error);
+    alert('Unable to generate the PDF. Please try again.');
+
+  } finally {
+    // ── Restore ──
+    wrapper.style.left    = '-10000px';
+    wrapper.style.top     = '0';
+    wrapper.style.zIndex  = '-1';
+    wrapper.style.opacity = '1';
+    window.scrollTo(savedScrollX, savedScrollY);
+    if (btn) { btn.disabled = false; btn.textContent = '📄 PDF'; }
+  }
 }
+
 
 const ADMIN_ID = "admin";
 const ADMIN_PASS = "nielit123";
