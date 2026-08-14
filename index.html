@@ -9,6 +9,7 @@
     content="NIELIT Ropar — RAFTAAR (Robotics and AI Framework for Teachers' Advancement and Academia Readiness). Official teacher registration portal for Three-Day Training Programme in collaboration with Department of Punjab School Education, Govt. of Punjab.">
 
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
   <link href="style.css" rel="stylesheet">
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
@@ -47,11 +48,12 @@
         </div>
       </div>
 
-      <!-- Admin link (right) -->
+      <!-- Header Links (right) -->
       <div class="header-admin-link">
-        <a href="#" data-bs-toggle="modal" data-bs-target="#loginModal" id="adminLoginTrigger">
-          🔐 Admin
-        </a>
+        <a href="#" onclick="document.getElementById('home-tab')?.click(); return false;">🏠 Home</a>
+        <a href="#" onclick="document.getElementById('form-tab')?.click(); return false;">📝 Teacher Registration</a>
+        <a href="gallery.html">📷 Photo Gallery</a>
+        <a href="#" data-bs-toggle="modal" data-bs-target="#loginModal" id="adminLoginTrigger">🔐 Admin</a>
       </div>
     </div>
     <div class="header-stripe"></div>
@@ -98,7 +100,7 @@
               Education, Government of Punjab</div>
             <div
               style="margin:7px auto 3px;display:inline-block;background:#172d6b;color:#fff;padding:5px 20px;border-radius:3px;font-size:10.2px;font-weight:800;letter-spacing:1.65px;">
-              NOMINATION FORM</div>
+              ADMISSION FORM</div>
             <div style="font-size:8.7px;color:#f47920;font-weight:700;">RAFTAAR —Robotics &amp; AI Framework for
               Teachers' Advancement &amp; Academia Readiness</div>
             <div style="font-size:7.5px;color:#5d6980;margin-top:1px;">Three-Day Teacher Training Programme</div>
@@ -174,7 +176,7 @@
                 <div id="pdfPhotoPlaceholder" style="font-size:8px;color:#6b768c;font-weight:700;letter-spacing:1px;">
                   CANDIDATE PHOTO</div>
               </div>
-              <div style="font-size:7.4px;color:#172d6b;font-weight:800;letter-spacing:1.2px;margin-top:4px;">PHOTOGRAPH
+              <div style="font-size:7.4px;color:#172d6b;font-weight:800;letter-spacing:1.2px;margin-top:4px;"> 
               </div>
             </div>
           </div>
@@ -318,12 +320,18 @@
     <!-- TAB BAR -->
     <ul class="portal-tabs nav" id="portalTab" role="tablist">
       <li class="nav-item">
-        <button class="nav-link active" id="form-tab" data-bs-toggle="tab" data-bs-target="#form-pane" role="tab">
+        <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home-pane" role="tab" onclick="loadDashboard()">
+          🏠 Home
+        </button>
+      </li>
+      <li class="nav-item">
+        <button class="nav-link" id="form-tab" data-bs-toggle="tab" data-bs-target="#form-pane" role="tab">
           📝 Teacher Registration
         </button>
       </li>
       <li class="nav-item">
-        <a class="nav-link" id="gallery-tab" href="gallery.html" role="tab" style="display:inline-flex; align-items:center; gap:6px;">
+        <a class="nav-link" id="gallery-tab" href="gallery.html" role="tab"
+          style="display:inline-flex; align-items:center; gap:6px;">
           📷 Photo Gallery
         </a>
       </li>
@@ -343,8 +351,230 @@
     <!-- TAB CONTENT -->
     <div class="tab-content" id="portalTabContent">
 
+      <!-- ══ HOME PANE ══ -->
+      <div class="tab-pane fade show active" id="home-pane" role="tabpanel">
+
+        <!-- ─── HERO SECTION ─── -->
+        <div class="home-hero">
+          <!-- Animated floating orbs -->
+          <div class="hero-orb orb-1"></div>
+          <div class="hero-orb orb-2"></div>
+          <div class="hero-orb orb-3"></div>
+          <!-- Animated grid lines background -->
+          <div class="hero-grid"></div>
+
+          <div class="hero-content">
+            <!-- Pill Badge -->
+            <div class="hero-badge">
+              <span class="badge-dot"></span>
+              <span>NIELIT Ropar × Punjab School Education</span>
+            </div>
+
+            <!-- Main Title -->
+            <h1 class="hero-title" style="font-size: clamp(1.8rem, 3.5vw, 3rem); animation: none;">
+              <span class="title-line" style="letter-spacing: 2px; animation: fadeInUp 0.7s ease 0.1s both;">Mission RAFTAAR</span>
+              <span class="title-accent" style="font-size: 0.75em; line-height: 1.3; margin-top: 10px; display: inline-block; animation: fadeInUp 0.7s ease 0.2s both, shimmerText 3.5s linear infinite;">National Institute of Electronics &amp; Information Technology (NIELIT) Ropar</span>
+            </h1>
+
+            <!-- Subtitle -->
+            <p class="hero-subtitle" style="font-size: 1.15rem; line-height: 1.6; color: rgba(255,255,255,0.95); margin-top: 20px; animation: none;">
+              <span style="display: inline-block; animation: fadeInUp 0.7s ease 0.3s both;">Three-Day Teacher Training Programme &bull;</span> <br> 
+              <span style="display: inline-block; animation: fadeInUp 0.7s ease 0.4s both;">In collaboration with Dept. of Punjab School Education, Govt. of Punjab</span>
+              <span class="typed-text" id="heroTyped" style="display:none;"></span><span class="typed-cursor" style="display:none;">|</span>
+            </p>
+
+            <!-- CTA Buttons -->
+            <div class="hero-ctas" style="animation-delay: 0.5s;">
+              <button class="cta-primary" onclick="document.getElementById('form-tab')?.click();">
+                <span class="cta-icon">📝</span>
+                <span>Register Now</span>
+                <span class="cta-arrow">→</span>
+              </button>
+              <a href="gallery.html" class="cta-secondary">
+                <span class="cta-icon">📷</span>
+                <span>View Gallery</span>
+              </a>
+            </div>
+
+            <!-- Quick Stats Strip -->
+            <div class="hero-stats" style="animation-delay: 0.6s;">
+              <div class="hero-stat-item">
+                <div class="hero-stat-num">425+</div>
+                <div class="hero-stat-lbl">Schools</div>
+              </div>
+              <div class="hero-stat-divider"></div>
+              <div class="hero-stat-item">
+                <div class="hero-stat-num">22</div>
+                <div class="hero-stat-lbl">Districts</div>
+              </div>
+              <div class="hero-stat-divider"></div>
+              <div class="hero-stat-item">
+                <div class="hero-stat-num">16</div>
+                <div class="hero-stat-lbl">Batches</div>
+              </div>
+              <div class="hero-stat-divider"></div>
+              <div class="hero-stat-item">
+                <div class="hero-stat-num">3</div>
+                <div class="hero-stat-lbl">Days Training</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ─── FEATURE CARDS SECTION ─── -->
+        <div class="home-features-section">
+          <div class="section-label">What We Offer</div>
+          <h2 class="section-heading">Empowering Education with Technology</h2>
+          <p class="section-sub">A transformative three-day programme designed to bridge the gap between modern technology and classroom teaching.</p>
+
+          <div class="features-grid">
+            <div class="feat-card feat-card--blue home-reveal">
+              <div class="feat-icon-wrap"><span class="feat-icon">🤖</span></div>
+              <h3 class="feat-title">Robotics & AI</h3>
+              <p class="feat-desc">Hands-on labs covering Artificial Intelligence, Machine Learning, and Robotics fundamentals tailored for school educators.</p>
+              <div class="feat-tag">Core Module</div>
+            </div>
+            <div class="feat-card feat-card--orange home-reveal" style="animation-delay:0.15s">
+              <div class="feat-icon-wrap"><span class="feat-icon">🏫</span></div>
+              <h3 class="feat-title">School Readiness</h3>
+              <p class="feat-desc">Practical guidance to integrate cutting-edge technology into daily lesson plans and school infrastructure.</p>
+              <div class="feat-tag">Infrastructure</div>
+            </div>
+            <div class="feat-card feat-card--green home-reveal" style="animation-delay:0.3s">
+              <div class="feat-icon-wrap"><span class="feat-icon">📈</span></div>
+              <h3 class="feat-title">Teacher Advancement</h3>
+              <p class="feat-desc">Upskilling educators to become technology champions, capable of inspiring the next generation of innovators.</p>
+              <div class="feat-tag">Leadership</div>
+            </div>
+            <div class="feat-card feat-card--purple home-reveal" style="animation-delay:0.45s">
+              <div class="feat-icon-wrap"><span class="feat-icon">🧠</span></div>
+              <h3 class="feat-title">Critical Thinking</h3>
+              <p class="feat-desc">Developing problem-solving mindsets and computational thinking skills through structured pedagogical approaches.</p>
+              <div class="feat-tag">Skills Dev</div>
+            </div>
+            <div class="feat-card feat-card--teal home-reveal" style="animation-delay:0.6s">
+              <div class="feat-icon-wrap"><span class="feat-icon">🤝</span></div>
+              <h3 class="feat-title">Collaboration</h3>
+              <p class="feat-desc">Connecting teachers across 22 districts of Punjab to build a powerful network of technology-savvy educators.</p>
+              <div class="feat-tag">Networking</div>
+            </div>
+            <div class="feat-card feat-card--red home-reveal" style="animation-delay:0.75s">
+              <div class="feat-icon-wrap"><span class="feat-icon">🏆</span></div>
+              <h3 class="feat-title">Certification</h3>
+              <p class="feat-desc">Receive an official NIELIT certification upon successful completion of the RAFTAAR training programme.</p>
+              <div class="feat-tag">Recognition</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ─── ANALYTICS SECTION ─── -->
+        <div class="home-analytics-section">
+          <div class="analytics-header">
+            <div>
+              <div class="section-label" style="color:rgba(255,255,255,0.7);">Live Data</div>
+              <h2 class="section-heading" style="color:#fff;">📊 Registration Analytics</h2>
+              <p class="section-sub" style="color:rgba(255,255,255,0.65);">Real-time insights from all teacher nomination records</p>
+            </div>
+            <button class="refresh-btn" onclick="loadDashboard()">
+              <span class="refresh-icon">🔄</span> Refresh Data
+            </button>
+          </div>
+
+          <!-- KPI Cards -->
+          <div id="dashKpiRow" class="kpi-grid">
+            <div class="dash-kpi kpi-v2" id="kpiTotal">
+              <div class="kpi-v2-glow"></div>
+              <div class="dash-kpi-icon">👥</div>
+              <div class="dash-kpi-val" id="kpiTotalVal">—</div>
+              <div class="dash-kpi-label">Total Registrations</div>
+            </div>
+            <div class="dash-kpi kpi-v2" id="kpiBatches">
+              <div class="kpi-v2-glow"></div>
+              <div class="dash-kpi-icon">📦</div>
+              <div class="dash-kpi-val" id="kpiBatchesVal">—</div>
+              <div class="dash-kpi-label">Active Batches</div>
+            </div>
+            <div class="dash-kpi kpi-v2" id="kpiDistricts">
+              <div class="kpi-v2-glow"></div>
+              <div class="dash-kpi-icon">📍</div>
+              <div class="dash-kpi-val" id="kpiDistrictsVal">—</div>
+              <div class="dash-kpi-label">Districts Covered</div>
+            </div>
+            <div class="dash-kpi kpi-v2" id="kpiSchools">
+              <div class="kpi-v2-glow"></div>
+              <div class="dash-kpi-icon">🏫</div>
+              <div class="dash-kpi-val" id="kpiSchoolsVal">—</div>
+              <div class="dash-kpi-label">Schools Represented</div>
+            </div>
+            <div class="dash-kpi kpi-v2" id="kpiFemale">
+              <div class="kpi-v2-glow"></div>
+              <div class="dash-kpi-icon">👩‍🏫</div>
+              <div class="dash-kpi-val" id="kpiFemaleVal">—</div>
+              <div class="dash-kpi-label">Female Teachers</div>
+            </div>
+            <div class="dash-kpi kpi-v2" id="kpiMale">
+              <div class="kpi-v2-glow"></div>
+              <div class="dash-kpi-icon">👨‍🏫</div>
+              <div class="dash-kpi-val" id="kpiMaleVal">—</div>
+              <div class="dash-kpi-label">Male Teachers</div>
+            </div>
+          </div>
+
+          <!-- Charts Row 1 -->
+          <div class="charts-grid-2">
+            <div class="dash-chart-card chart-v2">
+              <div class="dash-chart-title">📦 Registrations per Batch</div>
+              <div style="position:relative; height:300px;">
+                <canvas id="chartBatch"></canvas>
+              </div>
+            </div>
+            <div class="dash-chart-card chart-v2">
+              <div class="dash-chart-title">📍 Top 10 Districts</div>
+              <div style="position:relative; height:300px;">
+                <canvas id="chartDistrict"></canvas>
+              </div>
+            </div>
+          </div>
+
+          <!-- Charts Row 2 -->
+          <div class="charts-grid-2">
+            <div class="dash-chart-card chart-v2">
+              <div class="dash-chart-title">⚧ Gender Distribution</div>
+              <div style="position:relative; height:280px; display:flex; align-items:center; justify-content:center;">
+                <canvas id="chartGender"></canvas>
+              </div>
+            </div>
+            <div class="dash-chart-card chart-v2">
+              <div class="dash-chart-title">🏫 School Type Breakdown</div>
+              <div style="position:relative; height:280px; display:flex; align-items:center; justify-content:center;">
+                <canvas id="chartSchoolType"></canvas>
+              </div>
+            </div>
+          </div>
+
+          <!-- District Leaderboard -->
+          <div class="dash-chart-card chart-v2">
+            <div class="dash-chart-title">🏆 District Leaderboard</div>
+            <div style="overflow-x:auto;">
+              <table style="width:100%; border-collapse:collapse; font-size:13px;">
+                <thead>
+                  <tr style="background:rgba(255,255,255,0.08); border-bottom:2px solid rgba(244,121,32,0.4);">
+                    <th style="padding:13px 16px; text-align:center; width:48px; color:rgba(255,255,255,0.5); font-size:11px; letter-spacing:1px; text-transform:uppercase; font-weight:600;">#</th>
+                    <th style="padding:13px 16px; text-align:left; color:rgba(255,255,255,0.6); font-size:11px; letter-spacing:1.5px; text-transform:uppercase; font-weight:600;">District</th>
+                    <th style="padding:13px 16px; text-align:right; color:rgba(255,255,255,0.6); font-size:11px; letter-spacing:1.5px; text-transform:uppercase; font-weight:600;">Registrations</th>
+                    <th style="padding:13px 20px 13px 12px; color:rgba(255,255,255,0.6); font-size:11px; letter-spacing:1.5px; text-transform:uppercase; font-weight:600;">Progress</th>
+                  </tr>
+                </thead>
+                <tbody id="districtLeaderboard"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
       <!-- ══ NOMINATION FORM PANE ══ -->
-      <div class="tab-pane fade show active" id="form-pane" role="tabpanel">
+      <div class="tab-pane fade" id="form-pane" role="tabpanel">
         <div class="form-card">
 
           <!-- Progress Steps -->
@@ -555,8 +785,8 @@
                   </div>
                   <!-- Signature -->
                   <div class="col-md-6">
-                    <label class="form-label">Digital Signature
-                      <span class="info-tag" style="font-weight:500; font-size:10px;">Optional · Draw with
+                    <label class="form-label">Digital Signature <span class="req">*</span>
+                      <span class="info-tag" style="font-weight:500; font-size:10px;">Mandatory · Draw with
                         mouse/touch</span>
                     </label>
                     <div class="sig-wrapper" id="sigWrapper">
@@ -646,6 +876,8 @@
           </div>
         </div>
       </div><!-- /admin-pane -->
+
+      
 
     </div><!-- /tab-content -->
   </main>

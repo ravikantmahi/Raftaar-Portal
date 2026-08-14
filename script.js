@@ -605,6 +605,50 @@ window.addEventListener('DOMContentLoaded', () => {
   // (No auto-population on load)
 });
 
+// ── TYPEWRITER EFFECT ──────────────────────────────────────────────
+(function initTypewriter() {
+  const phrases = [
+    'Robotics & AI Framework for Teachers\' Advancement.',
+    'Empowering 22 Districts of Punjab.',
+    'Three-Day Training · NIELIT Ropar.',
+    'Academia Readiness for the Digital Age.'
+  ];
+  const el = document.getElementById('heroTyped');
+  if (!el) return;
+  let pi = 0, ci = 0, deleting = false;
+
+  function type() {
+    const phrase = phrases[pi];
+    if (!deleting) {
+      el.textContent = phrase.slice(0, ++ci);
+      if (ci === phrase.length) { deleting = true; return setTimeout(type, 2000); }
+    } else {
+      el.textContent = phrase.slice(0, --ci);
+      if (ci === 0) { deleting = false; pi = (pi + 1) % phrases.length; }
+    }
+    setTimeout(type, deleting ? 40 : 55);
+  }
+  setTimeout(type, 800);
+})();
+
+// ── SCROLL-REVEAL FOR HOME FEATURE CARDS ──────────────────────────
+(function initHomeReveal() {
+  const cards = document.querySelectorAll('.home-reveal');
+  if (!cards.length) return;
+  // Reset animation so it fires when in view
+  cards.forEach(c => { c.style.animationPlayState = 'paused'; });
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.style.animationPlayState = 'running';
+        obs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  cards.forEach(c => obs.observe(c));
+})();
+
+
 document.getElementById('batchId').addEventListener('change', (e) => {
   const dSelect = document.getElementById('districtSelect');
   const uSelect = document.getElementById('udiseSelect');
@@ -772,7 +816,17 @@ function validateForm() {
   if (photoErr) photoErr.classList.toggle('hidden', photoOk);
   if (!photoOk) valid = false;
 
-  // 16. Signature — OPTIONAL (no validation block)
+  // 16. Signature — MANDATORY
+  const sigOk = isSignatureSigned();
+  const sigWrapper = document.getElementById('sigWrapper');
+  const sigErr = document.getElementById('err-sig');
+  if (sigWrapper) sigWrapper.classList.toggle('sig-invalid', !sigOk);
+  if (sigErr) {
+    sigErr.classList.toggle('hidden', sigOk);
+    if (!sigOk) { sigErr.style.animation = 'none'; requestAnimationFrame(() => sigErr.style.animation = ''); }
+  }
+  if (!sigOk) valid = false;
+
 
   // Show/hide banner
   const banner = document.getElementById('validationBanner');
@@ -782,7 +836,7 @@ function validateForm() {
     bannerMsg.textContent = `Please fix ${errCount} error${errCount > 1 ? 's' : ''} above before submitting.`;
     banner.classList.add('show');
     // Scroll to first error
-    const firstErr = document.querySelector('.form-control.is-invalid, .form-select.is-invalid, .zone-invalid');
+    const firstErr = document.querySelector('.form-control.is-invalid, .form-select.is-invalid, .zone-invalid, .sig-invalid');
     if (firstErr) firstErr.scrollIntoView({ behavior: 'smooth', block: 'center' });
   } else {
     banner.classList.remove('show');
@@ -1369,3 +1423,244 @@ function logoutAdmin() {
   submissionsData = [];
   document.getElementById('adminTableBody').innerHTML = '<tr><td colspan="6" class="text-center">Loading...</td></tr>';
 }
+
+// ── DASHBOARD LOGIC ────────────────────────────────────────────────
+let _dashCharts = {};
+
+async function loadDashboard() {
+  try {
+    const res = await fetch(ADMIN_API_URL);
+    const json = await res.json();
+    const data = Array.isArray(json) ? json : (json.data || []);
+    submissionsData = data; // store globally for charts
+
+    const total = data.length;
+    
+    // Helper: count by key
+    function countBy(arr, key) {
+      return arr.reduce((acc, s) => {
+        const v = s[key] || 'Unknown';
+        acc[v] = (acc[v] || 0) + 1;
+        return acc;
+      }, {});
+    }
+
+    const batches = Object.keys(countBy(data, 'batchId')).length;
+    const districts = Object.keys(countBy(data, 'district')).length;
+    const schools = Object.keys(countBy(data, 'udise')).length;
+    const female = data.filter(s => (s.gender || '').toLowerCase() === 'female').length;
+    const male = data.filter(s => (s.gender || '').toLowerCase() === 'male').length;
+
+    // KPI cards
+    document.getElementById('kpiTotalVal').textContent = total;
+    document.getElementById('kpiBatchesVal').textContent = batches;
+    document.getElementById('kpiDistrictsVal').textContent = districts;
+    document.getElementById('kpiSchoolsVal').textContent = schools;
+    document.getElementById('kpiFemaleVal').textContent = female;
+    document.getElementById('kpiMaleVal').textContent = male;
+
+    // Destroy old charts
+    Object.values(_dashCharts).forEach(c => c.destroy());
+    _dashCharts = {};
+
+    // ── Chart 1: Batch Bar ────────────────────────────────────────
+    const batchCounts = countBy(data, 'batchId');
+    const batchLabels = Object.keys(batchCounts).sort((a,b) => {
+      return (parseInt(a.replace(/\D/g,''))||0) - (parseInt(b.replace(/\D/g,''))||0);
+    });
+    _dashCharts.batch = new Chart(document.getElementById('chartBatch'), {
+      type: 'bar',
+      data: {
+        labels: batchLabels,
+        datasets: [{
+          label: 'Registrations',
+          data: batchLabels.map(b => batchCounts[b]),
+          backgroundColor: 'rgba(59, 130, 246, 0.85)', // Bright blue for visibility
+          borderRadius: 6,
+          borderSkipped: false,
+        }]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: {
+          y: { 
+            beginAtZero: true, 
+            ticks: { stepSize: 1, color: 'rgba(255,255,255,0.7)' }, 
+            grid: { color: 'rgba(255,255,255,0.1)' } 
+          },
+          x: { 
+            ticks: { color: 'rgba(255,255,255,0.7)' },
+            grid: { display: false } 
+          }
+        }
+      }
+    });
+
+    // ── Chart 2: Top-10 Districts Horizontal Bar ──────────────────
+    const distCounts = countBy(data, 'district');
+    const distSorted = Object.entries(distCounts).sort((a,b) => b[1]-a[1]).slice(0,10);
+    _dashCharts.district = new Chart(document.getElementById('chartDistrict'), {
+      type: 'bar',
+      data: {
+        labels: distSorted.map(d => d[0]),
+        datasets: [{
+          label: 'Registrations',
+          data: distSorted.map(d => d[1]),
+          backgroundColor: [
+            '#f97316','#3b82f6','#22c55e','#f43f5e','#a855f7',
+            '#0ea5e9','#f59e0b','#14b8a6','#ef4444','#8b5cf6'
+          ],
+          borderRadius: 5,
+          borderSkipped: false,
+        }]
+      },
+      options: {
+        indexAxis: 'y',
+        responsive: true, maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: {
+          x: { 
+            beginAtZero: true, 
+            ticks: { color: 'rgba(255,255,255,0.7)' },
+            grid: { color: 'rgba(255,255,255,0.1)' } 
+          },
+          y: { 
+            grid: { display: false }, 
+            ticks: { font: { size: 11 }, color: 'rgba(255,255,255,0.7)' } 
+          }
+        }
+      }
+    });
+
+    // ── Chart 3: Gender Doughnut ──────────────────────────────────
+    _dashCharts.gender = new Chart(document.getElementById('chartGender'), {
+      type: 'doughnut',
+      data: {
+        labels: ['Female', 'Male', 'Not Specified'],
+        datasets: [{
+          data: [female, male, total - female - male],
+          backgroundColor: ['#f97316','#3b82f6','#94a3b8'],
+          borderWidth: 3,
+          borderColor: 'rgba(255,255,255,0.15)',
+          hoverOffset: 10,
+        }]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        cutout: '65%',
+        plugins: {
+          legend: { position: 'bottom', labels: { padding: 18, font: { size: 12 }, color: 'rgba(255,255,255,0.7)' } }
+        }
+      }
+    });
+
+    // ── Chart 4: School Type Doughnut ───────────────────────
+    const typeCounts = countBy(data, 'schoolType');
+    _dashCharts.schoolType = new Chart(document.getElementById('chartSchoolType'), {
+      type: 'doughnut',
+      data: {
+        labels: Object.keys(typeCounts),
+        datasets: [{
+          data: Object.values(typeCounts),
+          backgroundColor: ['#22c55e','#f97316','#3b82f6','#0ea5e9','#a855f7'],
+          borderWidth: 3,
+          borderColor: 'rgba(255,255,255,0.15)',
+          hoverOffset: 10,
+        }]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        cutout: '65%',
+        plugins: {
+          legend: { position: 'bottom', labels: { padding: 18, font: { size: 12 }, color: 'rgba(255,255,255,0.7)' } }
+        }
+      }
+    });
+
+    // ── District Leaderboard Table ────────────────────
+    const allDist = Object.entries(distCounts).sort((a,b) => b[1]-a[1]);
+    const maxCount = allDist[0]?.[1] || 1;
+    document.getElementById('districtLeaderboard').innerHTML = allDist.map(([dist, cnt], i) => {
+      const pct = Math.round((cnt / maxCount) * 100);
+      const medal = i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : `${i+1}`;
+      const rowBg = i % 2 === 0 ? 'rgba(255,255,255,0.05)' : 'rgba(255,255,255,0.02)';
+      const medalStyle = i < 3
+        ? `font-size:18px; filter:drop-shadow(0 0 6px rgba(251,191,36,0.5));`
+        : `font-size:13px; font-weight:700; color:rgba(255,255,255,0.4); font-family:'Outfit',sans-serif;`;
+      return `
+        <tr style="background:${rowBg}; border-bottom:1px solid rgba(255,255,255,0.06); transition:background 0.2s;" onmouseover="this.style.background='rgba(244,121,32,0.1)'" onmouseout="this.style.background='${rowBg}'">
+          <td style="padding:13px 16px; ${medalStyle} text-align:center; width:48px;">${medal}</td>
+          <td style="padding:13px 16px; font-weight:700; font-size:13.5px; color:${i<3?'#fbbf24':'rgba(255,255,255,0.85)'}; letter-spacing:0.5px; text-transform:uppercase;">${dist}</td>
+          <td style="padding:13px 16px; text-align:right; font-weight:800; color:#f97316; font-size:16px; font-family:'Outfit',sans-serif;">${cnt}</td>
+          <td style="padding:13px 20px 13px 12px; min-width:180px;">
+            <div style="background:rgba(255,255,255,0.08); border-radius:20px; overflow:hidden; height:8px; position:relative;">
+              <div style="height:100%; width:${pct}%; background:linear-gradient(90deg,#3b82f6,#f97316); border-radius:20px; transition:width 0.8s cubic-bezier(0.25,0.46,0.45,0.94); box-shadow:0 0 8px rgba(249,115,22,0.4);"></div>
+            </div>
+          </td>
+        </tr>
+      `;
+    }).join('');
+  } catch (err) {
+    console.error("Dashboard failed to load", err);
+  }
+}
+
+// ── Hash Routing for Tabs ──────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+  const handleHash = () => {
+    const hash = window.location.hash;
+    if (hash === '#form-pane') {
+      document.getElementById('form-tab')?.click();
+    }
+  };
+  
+  handleHash();
+  window.addEventListener('hashchange', handleHash);
+  
+  // Load dashboard automatically on home page
+  loadDashboard();
+});
+
+// ── TYPEWRITER EFFECT ──────────────────────────────────────────────
+(function initTypewriter() {
+  const phrases = [
+    "Robotics & AI Framework for Teachers' Advancement.",
+    "Empowering 22 Districts of Punjab.",
+    "Three-Day Training · NIELIT Ropar.",
+    "Academia Readiness for the Digital Age."
+  ];
+  const el = document.getElementById('heroTyped');
+  if (!el) return;
+  let pi = 0, ci = 0, deleting = false;
+
+  function type() {
+    const phrase = phrases[pi];
+    if (!deleting) {
+      el.textContent = phrase.slice(0, ++ci);
+      if (ci === phrase.length) { deleting = true; return setTimeout(type, 2000); }
+    } else {
+      el.textContent = phrase.slice(0, --ci);
+      if (ci === 0) { deleting = false; pi = (pi + 1) % phrases.length; }
+    }
+    setTimeout(type, deleting ? 40 : 55);
+  }
+  setTimeout(type, 800);
+})();
+
+// ── SCROLL-REVEAL FOR HOME FEATURE CARDS ──────────────────────────
+(function initHomeReveal() {
+  const cards = document.querySelectorAll('.home-reveal');
+  if (!cards.length) return;
+  // Reset animation so it fires when in view
+  cards.forEach(c => { c.style.animationPlayState = 'paused'; });
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.style.animationPlayState = 'running';
+        obs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  cards.forEach(c => obs.observe(c));
+})();

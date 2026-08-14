@@ -21,57 +21,169 @@
 
     /* HEADER STYLES */
     .portal-header {
-      background: linear-gradient(135deg, #0f1e4a 0%, #1a2d6b 100%);
-      color: #fff;
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      background: linear-gradient(135deg, #0f1e4a 0%, #1a2d6b 55%, #243580 100%);
+      padding: 0;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 4px 24px rgba(26,45,107,0.3);
+    }
+    .portal-header::before {
+      content: '';
+      position: absolute;
+      top: -60px; right: -60px;
+      width: 280px; height: 280px;
+      border-radius: 50%;
+      background: rgba(244,121,32,0.12);
+      animation: float 6s ease-in-out infinite;
+    }
+    .portal-header::after {
+      content: '';
+      position: absolute;
+      bottom: -80px; left: 20%;
+      width: 200px; height: 200px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.04);
+      animation: float 8s ease-in-out infinite reverse;
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-18px); }
     }
     .header-inner {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      flex-wrap: wrap;
-      padding: 15px 25px;
+      padding: 18px 32px;
+      position: relative;
+      z-index: 2;
       gap: 20px;
     }
-    .header-logos { display: flex; align-items: center; gap: 15px; }
-    .header-logos img { height: 50px; object-fit: contain; }
-    .header-divider { width: 1px; height: 45px; background: rgba(255, 255, 255, 0.2); }
-    .header-text { flex: 1; min-width: 300px; }
+    .header-logos { display: flex; align-items: center; gap: 18px; flex-shrink: 0; }
+    .header-logos img.nielit-logo {
+      height: 62px;
+      object-fit: contain;
+      filter: drop-shadow(0 2px 8px rgba(0,0,0,0.3));
+      transition: transform 0.3s ease;
+    }
+    .header-logos img.raftaar-logo {
+      height: 78px;
+      object-fit: contain;
+      filter: drop-shadow(0 2px 8px rgba(0,0,0,0.25));
+      transition: transform 0.3s ease;
+      animation: subtle-spin 20s linear infinite;
+    }
+    @keyframes subtle-spin {
+      0%, 100% { transform: rotate(-1deg) scale(1); }
+      50% { transform: rotate(1deg) scale(1.03); }
+    }
+    .header-logos img:hover { transform: scale(1.07) !important; }
+    .header-divider { width: 2px; height: 60px; background: linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.3), transparent); }
+    .header-text { flex: 1; text-align: left; padding: 0 10px; }
     .header-badge {
       display: inline-block;
       background: #f47920;
       color: #fff;
-      padding: 3px 10px;
-      border-radius: 4px;
-      font-size: 11px;
+      font-size: 10px;
       font-weight: 700;
+      letter-spacing: 2.5px;
+      padding: 3px 14px;
+      border-radius: 20px;
       text-transform: uppercase;
-      margin-bottom: 5px;
-      letter-spacing: 1px;
+      margin-bottom: 6px;
+      animation: pulse-badge 3s ease-in-out infinite;
     }
-    .header-title { font-size: 22px; font-weight: 800; margin-bottom: 3px; }
+    @keyframes pulse-badge {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(244,121,32,0.4); }
+      50% { box-shadow: 0 0 0 6px rgba(244,121,32,0); }
+    }
+    .header-title { font-size: 22px; font-weight: 800; color: #fff; letter-spacing: 0.5px; line-height: 1.2; text-shadow: 0 2px 8px rgba(0,0,0,0.3); }
     .header-title span { color: #f47920; }
-    .header-sub { font-size: 12px; color: rgba(255, 255, 255, 0.8); }
+    .header-sub { font-size: 12px; color: rgba(255, 255, 255, 0.65); margin-top: 4px; letter-spacing: 0.3px; }
     .header-stripe {
-      height: 6px;
-      background: linear-gradient(90deg, #172d6b 0%, #1f4c98 42%, #f47920 72%, #2d8c3e 100%);
+      height: 4px;
+      background: linear-gradient(90deg, #0f1e4a 0%, #f47920 40%, #2d8c3e 75%, #f47920 100%);
+      background-size: 200% 100%;
+      animation: stripe-move 4s linear infinite;
     }
-    .nav-actions a {
-      color: #fff;
+    @keyframes stripe-move {
+      0% { background-position: 0% 0%; }
+      100% { background-position: 200% 0%; }
+    }
+    .header-admin-link {
+      flex-shrink: 0;
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+    .header-admin-link a {
+      color: rgba(255,255,255,0.55);
+      font-size: 11px;
       text-decoration: none;
-      font-weight: 600;
-      font-size: 14px;
-      background: rgba(255,255,255,0.1);
-      padding: 8px 16px;
-      border-radius: 5px;
-      transition: background 0.3s;
+      letter-spacing: 0.5px;
+      padding: 5px 10px;
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 20px;
+      transition: all 0.2s;
     }
-    .nav-actions a:hover { background: #f47920; color: #fff; }
+    .header-admin-link a:hover {
+      color: #fff;
+      border-color: rgba(255,255,255,0.5);
+      background: rgba(255,255,255,0.1);
+    }
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .nav-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 13.5px;
+      padding: 8px 18px;
+      border-radius: 6px;
+      transition: all 0.25s ease;
+      white-space: nowrap;
+    }
+    /* Home — ghost/outline style */
+    .nav-btn-home {
+      color: #fff;
+      border: 1.5px solid rgba(255,255,255,0.45);
+      background: rgba(255,255,255,0.08);
+    }
+    .nav-btn-home:hover {
+      background: rgba(255,255,255,0.2);
+      border-color: #fff;
+      color: #fff;
+    }
+    /* Registration — filled orange */
+    .nav-btn-register {
+      color: #fff;
+      background: #f47920;
+      border: 1.5px solid #f47920;
+    }
+    .nav-btn-register:hover {
+      background: #d9640f;
+      border-color: #d9640f;
+      color: #fff;
+    }
 
-    /* GALLERY CONTAINER */
+    /* Dashboard — navy ghost style */
+    .nav-btn-dashboard {
+      color: #fff;
+      border: 1.5px solid rgba(255,255,255,0.45);
+      background: rgba(255,255,255,0.08);
+    }
+    .nav-btn-dashboard:hover {
+      background: #1a2d6b;
+      border-color: #fff;
+      color: #fff;
+    }
     .gallery-container { padding: 40px 20px; max-width: 1400px; margin: 0 auto; }
     
     .page-title {
@@ -230,6 +342,56 @@
     .btn-close-white { filter: invert(1); opacity: 1; }
     .lightbox-img { width: 100%; border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
 
+    /* DOWNLOAD BUTTON on thumbnail */
+    .img-download-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      z-index: 10;
+      background: rgba(26,45,107,0.85);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 6px 10px;
+      font-size: 18px;
+      line-height: 1;
+      cursor: pointer;
+      opacity: 0;
+      transform: translateY(-6px);
+      transition: opacity 0.25s ease, transform 0.25s ease, background 0.2s ease;
+      backdrop-filter: blur(4px);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    }
+    .img-wrapper:hover .img-download-btn {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .img-download-btn:hover {
+      background: #f47920;
+    }
+
+    /* LIGHTBOX DOWNLOAD BUTTON */
+    .lightbox-download-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 14px;
+      background: #f47920;
+      color: #fff;
+      border: none;
+      padding: 10px 26px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.2s ease, transform 0.15s ease;
+      box-shadow: 0 4px 12px rgba(244,121,32,0.4);
+    }
+    .lightbox-download-btn:hover {
+      background: #d9640f;
+      transform: translateY(-2px);
+    }
+
     /* ══════════════════════════════════════════
        RESPONSIVE BREAKPOINTS
     ══════════════════════════════════════════ */
@@ -345,22 +507,38 @@
   ══════════════════════════════════════════ -->
   <header class="portal-header">
     <div class="header-inner">
-      <a href="index.html" title="Go to Home" style="display:flex; align-items:center; text-decoration:none; opacity:1; transition:opacity 0.2s;" onmouseover="this.style.opacity='0.8'" onmouseout="this.style.opacity='1'">
-        <div class="header-logos">
-          <img src="NIELIT-Logo.png" alt="NIELIT Logo" onerror="this.src='https://via.placeholder.com/150x50?text=NIELIT'">
-          <div class="header-divider"></div>
-          <img src="pbgovtlogo.png" alt="Punjab Govt" onerror="this.src='https://via.placeholder.com/100x50?text=Govt'">
-          <div class="header-divider"></div>
-          <img src="Raftaarlogo.png" alt="Raftaar Logo" onerror="this.src='https://via.placeholder.com/100x50?text=RAFTAAR'">
-        </div>
-      </a>
-      <div class="header-text">
-        <div class="header-badge">📷 Official Photo Gallery</div>
-        <div class="header-title">Mission <span>RAFTAAR</span></div>
-        <div class="header-sub">National Institute of Electronics & Information Technology (NIELIT) Ropar</div>
+      <!-- Logos -->
+      <div class="header-logos">
+        <img src="NIELIT-Logo.png" alt="NIELIT Logo" class="nielit-logo">
+        <div class="header-divider"></div>
+        <img src="pbgovtlogo.png" alt="Punjab Govt Logo"
+          style="height:62px; object-fit:contain; filter:drop-shadow(0 2px 8px rgba(0,0,0,0.3)); transition:transform 0.3s ease;"
+          onmouseover="this.style.transform='scale(1.07)'" onmouseout="this.style.transform='scale(1)'">
+        <div class="header-divider"></div>
+        <img src="Raftaarlogo.png" alt="Mission Raftaar Logo" class="raftaar-logo">
       </div>
-      <div class="nav-actions">
-        <a href="index.html">← Back to Registration</a>
+
+      <!-- Title -->
+      <div class="header-text">
+        <div class="header-badge">📋 Official Teacher Registration Portal</div>
+        <div class="header-title">
+          Mission <span>RAFTAAR</span> — Teacher Registration
+        </div>
+        <div class="header-sub">
+          <strong style="color:rgba(255,255,255,0.9);">National Institute of Electronics &amp; Information Technology
+            (NIELIT) Ropar</strong><br>
+          Three-Day Teacher Training Programme &bull; In collaboration with Dept. of Punjab School Education, Govt. of
+          Punjab
+        </div>
+      </div>
+
+      <!-- Header Links (right) -->
+      <div class="header-admin-link">
+        <a href="index.html">🏠 Home</a>
+        <a href="index.html#form-pane">📝 Teacher Registration</a>
+        <a href="gallery.html">📷 Photo Gallery</a>
+        <a href="index.html#dashboard-pane">📊 Dashboard</a>
+        <a href="#" data-bs-toggle="modal" data-bs-target="#loginModal" id="adminLoginTrigger">🔐 Admin</a>
       </div>
     </div>
     <div class="header-stripe"></div>
@@ -391,6 +569,11 @@
         </div>
         <div class="modal-body text-center mt-2">
           <img src="" id="lightboxImg" class="lightbox-img" alt="Enlarged Image">
+          <div>
+            <button class="lightbox-download-btn" id="lightboxDownloadBtn" onclick="downloadImage(document.getElementById('lightboxImg').src, document.getElementById('lightboxTitle').textContent)">
+              ⬇ Download Photo
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -555,11 +738,21 @@
         imgs.forEach((img, idx) => {
           const escapedSrc     = img.src.replace(/'/g, "\\'");
           const escapedCaption = img.caption.replace(/'/g, "\\'");
+          // derive a clean filename from the src path
+          const filename = img.src.split('/').pop();
 
           galleryHTML += `
-              <div class="img-wrapper" onclick="openLightbox('${escapedSrc}', '${escapedCaption}')" data-bs-toggle="modal" data-bs-target="#imageModal">
-                <img src="${img.src}" alt="${img.caption}" loading="lazy">
-                <div class="img-overlay">
+              <div class="img-wrapper">
+                <!-- Download icon on hover -->
+                <button class="img-download-btn" title="Download" onclick="event.stopPropagation(); downloadImage('${escapedSrc}', '${filename}')">
+                  ⬇
+                </button>
+                <!-- Click image to open lightbox -->
+                <img src="${img.src}" alt="${img.caption}" loading="lazy"
+                     onclick="openLightbox('${escapedSrc}', '${escapedCaption}')"
+                     data-bs-toggle="modal" data-bs-target="#imageModal"
+                     style="cursor:pointer;">
+                <div class="img-overlay" onclick="openLightbox('${escapedSrc}', '${escapedCaption}')" data-bs-toggle="modal" data-bs-target="#imageModal">
                   <p class="img-caption">${img.caption}</p>
                 </div>
               </div>
@@ -603,6 +796,25 @@
     window.openLightbox = function(src, title) {
       document.getElementById('lightboxImg').src = src;
       document.getElementById('lightboxTitle').textContent = title;
+    };
+
+    // 5. Download helper — fetch+blob forces Save As instead of opening in browser
+    window.downloadImage = async function(src, filename) {
+      try {
+        const res  = await fetch(src);
+        const blob = await res.blob();
+        const url  = URL.createObjectURL(blob);
+        const a    = document.createElement('a');
+        a.href     = url;
+        a.download = filename || 'raftaar-photo.jpg';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+      } catch (e) {
+        // Fallback: open in new tab if fetch fails (e.g. cross-origin)
+        window.open(src, '_blank');
+      }
     };
   </script>
 </body>
