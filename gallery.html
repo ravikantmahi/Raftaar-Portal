@@ -340,7 +340,72 @@
     .modal-header { border-bottom: none; padding-bottom: 0; }
     .modal-title { color: #fff; font-weight: 600; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
     .btn-close-white { filter: invert(1); opacity: 1; }
-    .lightbox-img { width: 100%; border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+    .lightbox-img {
+      width: 100%;
+      border-radius: 8px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      transition: opacity 0.2s ease;
+    }
+
+    /* PREV / NEXT — fixed to modal sides, independent of image size */
+    .lb-img-wrap {
+      position: relative;
+      display: block;
+      width: 100%;
+    }
+    /* Make modal-dialog the positioning parent */
+    #imageModal .modal-dialog {
+      position: relative;
+    }
+    .lb-nav-btn {
+      position: fixed;
+      top: 50vh;
+      transform: translateY(-50%);
+      z-index: 1100;
+      background: rgba(10,18,42,0.82);
+      color: #fff;
+      border: 2px solid rgba(255,255,255,0.35);
+      border-radius: 50%;
+      width: 52px;
+      height: 52px;
+      font-size: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+      backdrop-filter: blur(8px);
+      box-shadow: 0 4px 18px rgba(0,0,0,0.55);
+      padding: 0;
+      line-height: 1;
+    }
+    .lb-nav-btn.lb-prev { left: 16px; }
+    .lb-nav-btn.lb-next { right: 16px; }
+    .lb-nav-btn:hover:not(:disabled) {
+      background: #f47920;
+      border-color: #f47920;
+      box-shadow: 0 6px 22px rgba(244,121,32,0.55);
+    }
+    .lb-nav-btn:disabled {
+      opacity: 0.2;
+      cursor: not-allowed;
+    }
+    .lb-counter {
+      display: inline-block;
+      margin-top: 10px;
+      background: rgba(0,0,0,0.5);
+      color: rgba(255,255,255,0.85);
+      font-size: 12px;
+      font-weight: 700;
+      padding: 4px 16px;
+      border-radius: 20px;
+      letter-spacing: 0.8px;
+    }
+    @media (max-width: 576px) {
+      .lb-nav-btn { width: 40px; height: 40px; font-size: 18px; }
+      .lb-nav-btn.lb-prev { left: 6px; }
+      .lb-nav-btn.lb-next { right: 6px; }
+    }
 
     /* DOWNLOAD BUTTON on thumbnail */
     .img-download-btn {
@@ -366,16 +431,14 @@
       opacity: 1;
       transform: translateY(0);
     }
-    .img-download-btn:hover {
-      background: #f47920;
-    }
+    .img-download-btn:hover { background: #f47920; }
 
     /* LIGHTBOX DOWNLOAD BUTTON */
     .lightbox-download-btn {
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      margin-top: 14px;
+      margin-top: 4px;
       background: #f47920;
       color: #fff;
       border: none;
@@ -559,7 +622,7 @@
   </main>
 
   <!-- ══════════════════════════════════════════
-       LIGHTBOX MODAL 
+       LIGHTBOX MODAL
   ══════════════════════════════════════════ -->
   <div class="modal fade" id="imageModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-xl">
@@ -568,11 +631,23 @@
           <h5 class="modal-title" id="lightboxTitle">Image Preview</h5>
           <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-        <div class="modal-body text-center mt-2">
-          <img src="" id="lightboxImg" class="lightbox-img" alt="Enlarged Image">
+        <div class="modal-body text-center mt-2" style="padding: 12px 20px;">
+
+          <!-- Image + side nav buttons -->
+          <div class="lb-img-wrap">
+            <button class="lb-nav-btn lb-prev" id="lbPrevBtn" onclick="lbNavigate(-1)" title="Previous">&#8592;</button>
+            <img src="" id="lightboxImg" class="lightbox-img" alt="Enlarged Image">
+            <button class="lb-nav-btn lb-next" id="lbNextBtn" onclick="lbNavigate(1)" title="Next">&#8594;</button>
+          </div>
+
+          <!-- Counter + Download -->
           <div>
-            <button class="lightbox-download-btn" id="lightboxDownloadBtn" onclick="downloadImage(document.getElementById('lightboxImg').src, document.getElementById('lightboxTitle').textContent)">
-              ⬇ Download Photo
+            <span class="lb-counter" id="lbCounter">1 / 1</span>
+          </div>
+          <div style="margin-top:10px;">
+            <button class="lightbox-download-btn" id="lightboxDownloadBtn"
+              onclick="downloadImage(document.getElementById('lightboxImg').src, document.getElementById('lightboxTitle').textContent)">
+              &#11015; Download Photo
             </button>
           </div>
         </div>
@@ -793,11 +868,58 @@
       });
     };
 
-    // 4. Lightbox Function
-    window.openLightbox = function(src, title) {
-      document.getElementById('lightboxImg').src = src;
-      document.getElementById('lightboxTitle').textContent = title;
+    // 4. Lightbox — with Prev/Next navigation
+    let _lbImages  = [];   // flat list of { src, caption } currently visible
+    let _lbIndex   = 0;    // current position
+
+    function buildImageList() {
+      // Collect all img-wrapper images that are currently visible
+      _lbImages = [];
+      document.querySelectorAll('.batch-section').forEach(section => {
+        if (section.style.display === 'none') return;
+        section.querySelectorAll('.img-wrapper img').forEach(img => {
+          _lbImages.push({
+            src:     img.getAttribute('src'),
+            caption: img.getAttribute('alt') || ''
+          });
+        });
+      });
+    }
+
+    function lbShow(index) {
+      if (!_lbImages.length) return;
+      _lbIndex = Math.max(0, Math.min(index, _lbImages.length - 1));
+      const item = _lbImages[_lbIndex];
+      const imgEl   = document.getElementById('lightboxImg');
+      imgEl.style.opacity = '0';
+      setTimeout(() => {
+        imgEl.src = item.src;
+        imgEl.onload = () => { imgEl.style.opacity = '1'; };
+        // fallback if already cached
+        if (imgEl.complete) imgEl.style.opacity = '1';
+      }, 150);
+      document.getElementById('lightboxTitle').textContent = item.caption;
+      document.getElementById('lbCounter').textContent = `${_lbIndex + 1} / ${_lbImages.length}`;
+      document.getElementById('lbPrevBtn').disabled = _lbIndex === 0;
+      document.getElementById('lbNextBtn').disabled = _lbIndex === _lbImages.length - 1;
+    }
+
+    window.lbNavigate = function(dir) {
+      lbShow(_lbIndex + dir);
     };
+
+    window.openLightbox = function(src, title) {
+      buildImageList();
+      // Find this image in the flat list
+      const idx = _lbImages.findIndex(i => i.src === src);
+      lbShow(idx >= 0 ? idx : 0);
+    };
+
+    // Keyboard arrow navigation
+    document.getElementById('imageModal').addEventListener('keydown', function(e) {
+      if (e.key === 'ArrowLeft')  lbNavigate(-1);
+      if (e.key === 'ArrowRight') lbNavigate(1);
+    });
 
     // 5. Download helper — fetch+blob forces Save As instead of opening in browser
     window.downloadImage = async function(src, filename) {

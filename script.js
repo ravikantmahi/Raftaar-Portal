@@ -2,6 +2,38 @@
 const API_URL = 'https://raftaar-backend-t93i.onrender.com/api/nomination';
 const ADMIN_API_URL = 'https://raftaar-backend-t93i.onrender.com/api/submissions';
 
+// ── RENDER WAKE-UP PING ─────────────────────────────────────────
+// Free-tier Render instances sleep after inactivity.
+// This silent ping fires immediately on page load to wake the server
+// so by the time the user opens the dashboard it's already warm.
+(function pingBackend() {
+  fetch('https://raftaar-backend-t93i.onrender.com/api/submissions', {
+    method: 'HEAD',
+    cache: 'no-store'
+  }).catch(() => {}); // intentionally silent
+})();
+
+// ── CACHE HELPERS (sessionStorage, 5-min TTL) ───────────────────
+const CACHE_KEY = 'raftaar_submissions';
+const CACHE_TTL = 5 * 60 * 1000; // 5 minutes
+
+function getCached() {
+  try {
+    const raw = sessionStorage.getItem(CACHE_KEY);
+    if (!raw) return null;
+    const { ts, data } = JSON.parse(raw);
+    if (Date.now() - ts > CACHE_TTL) { sessionStorage.removeItem(CACHE_KEY); return null; }
+    return data;
+  } catch { return null; }
+}
+
+function setCache(data) {
+  try { sessionStorage.setItem(CACHE_KEY, JSON.stringify({ ts: Date.now(), data })); } catch {}
+}
+
+// Pre-computed batch→district index for instant map filtering
+let _batchDistrictIndex = {}; // { 'BATCH-1': { 'AMRITSAR': 3, ... }, 'ALL': {...} }
+
 const rawSchools = [
   [1, "AMRITSAR", "3020402402", "GSSS CHABBA", "PM SHRI"],
   [2, "AMRITSAR", "3020812802", "GSSS WADALI GURU", "PM SHRI"],
@@ -599,10 +631,21 @@ canvas.addEventListener('touchmove', (e) => {
 
 function clearSignature() { ctx.clearRect(0, 0, canvas.width, canvas.height); }
 
-// ── CASCADE: Batch → District → UDISE ──
+// ── CASCADE: District → UDISE → Batch (auto-fill) ──
 window.addEventListener('DOMContentLoaded', () => {
-  // Districts are populated after Batch is selected
-  // (No auto-population on load)
+  // Populate District dropdown with all unique districts on load
+  const dSelect = document.getElementById('districtSelect');
+  if (dSelect) {
+    const allDistricts = [...new Set(
+      schoolMasterData.map(s => s.district.toUpperCase())
+    )].sort();
+    allDistricts.forEach(d => {
+      const opt = document.createElement('option');
+      opt.value = d;
+      opt.textContent = d;
+      dSelect.appendChild(opt);
+    });
+  }
 });
 
 // ── TYPEWRITER EFFECT ──────────────────────────────────────────────
@@ -648,39 +691,19 @@ window.addEventListener('DOMContentLoaded', () => {
   cards.forEach(c => obs.observe(c));
 })();
 
-
-document.getElementById('batchId').addEventListener('change', (e) => {
-  const dSelect = document.getElementById('districtSelect');
-  const uSelect = document.getElementById('udiseSelect');
-  dSelect.innerHTML = '<option value="">— Select District —</option>';
-  uSelect.innerHTML = '<option value="">— Select UDISE —</option>';
-  document.getElementById('schoolName').value = '';
-  document.getElementById('schoolType').value = '';
-  uSelect.disabled = true;
-
-  if (!e.target.value) { dSelect.disabled = true; return; }
-
-  const bv = e.target.value; // e.g. "BATCH-1"
-  const districts = [...new Set(
-    schoolMasterData.filter(s => s.batch === bv).map(s => s.district.toUpperCase())
-  )].sort();
-  districts.forEach(d => {
-    dSelect.innerHTML += `<option value="${d}">${d}</option>`;
-  });
-  dSelect.disabled = false;
-});
-
 document.getElementById('districtSelect').addEventListener('change', (e) => {
   const uSelect = document.getElementById('udiseSelect');
-  uSelect.innerHTML = '<option value="">-- Select UDISE --</option>';
+  const bSelect = document.getElementById('batchId');
+  uSelect.innerHTML = '<option value="">— Select UDISE —</option>';
+  bSelect.value = '';
   document.getElementById('schoolName').value = '';
   document.getElementById('schoolType').value = '';
+  bSelect.disabled = true;
 
   if (!e.target.value) { uSelect.disabled = true; return; }
 
-  const bv = document.getElementById('batchId').value;
   schoolMasterData
-    .filter(s => s.batch === bv && s.district.toUpperCase() === e.target.value)
+    .filter(s => s.district.toUpperCase() === e.target.value)
     .forEach(s => {
       uSelect.innerHTML += `<option value="${s.udise}">${s.udise} - ${s.schoolName}</option>`;
     });
@@ -688,10 +711,18 @@ document.getElementById('districtSelect').addEventListener('change', (e) => {
 });
 
 document.getElementById('udiseSelect').addEventListener('change', (e) => {
+  const bSelect = document.getElementById('batchId');
   const school = schoolMasterData.find(s => s.udise == e.target.value);
   if (school) {
     document.getElementById('schoolName').value = school.schoolName;
     document.getElementById('schoolType').value = school.schoolType;
+    // Enable batch for manual selection
+    bSelect.disabled = false;
+  } else {
+    bSelect.disabled = true;
+    bSelect.value = '';
+    document.getElementById('schoolName').value = '';
+    document.getElementById('schoolType').value = '';
   }
 });
 
@@ -1405,12 +1436,25 @@ document.getElementById('loginForm').addEventListener('submit', function(e) {
   if (idInput === ADMIN_ID && passInput === ADMIN_PASS) {
     const loginModalEl = document.getElementById('loginModal');
     const modalInstance = bootstrap.Modal.getInstance(loginModalEl) || new bootstrap.Modal(loginModalEl);
+    
+    // Wait for Bootstrap to finish its closing animation before switching tabs
+    loginModalEl.addEventListener('hidden.bs.modal', function onHidden() {
+      loginModalEl.removeEventListener('hidden.bs.modal', onHidden);
+      
+      // Extra safety cleanup for scrolling/clicking issues
+      document.body.classList.remove('modal-open');
+      document.body.style.overflow = 'auto';
+      document.body.style.paddingRight = '';
+      document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
+
+      document.getElementById('loginForm').reset();
+      document.getElementById('adminTabContainer').classList.remove('d-none');
+      const adminTab = new bootstrap.Tab(document.getElementById('admin-tab'));
+      adminTab.show();
+      loadSubmissions();
+    });
+
     modalInstance.hide();
-    document.getElementById('loginForm').reset();
-    document.getElementById('adminTabContainer').classList.remove('d-none');
-    const adminTab = new bootstrap.Tab(document.getElementById('admin-tab'));
-    adminTab.show();
-    loadSubmissions();
   } else {
     alert("Invalid ID or Password.");
   }
@@ -1429,10 +1473,27 @@ let _dashCharts = {};
 
 async function loadDashboard() {
   try {
-    const res = await fetch(ADMIN_API_URL);
+    // ── 1. Show cached data instantly, then refresh in background ─────────────
+    const cached = getCached();
+    if (cached && cached.length > 0) {
+      // Render immediately from cache (no network wait)
+      _renderDashboard(cached);
+    }
+
+    // ── 2. Always fetch fresh data from backend ──────────────────────
+    const res  = await fetch(ADMIN_API_URL);
     const json = await res.json();
     const data = Array.isArray(json) ? json : (json.data || []);
-    submissionsData = data; // store globally for charts
+    setCache(data); // update cache with fresh data
+    _renderDashboard(data);
+
+  } catch (err) {
+    console.error('Dashboard failed to load', err);
+    // If network failed but we have cache, silently stay on cached view
+  }
+}
+
+async function _renderDashboard(data) {
 
     const total = data.length;
     
@@ -1601,9 +1662,56 @@ async function loadDashboard() {
         </tr>
       `;
     }).join('');
-  } catch (err) {
-    console.error("Dashboard failed to load", err);
-  }
+
+    // ── Pre-build batch→district index for instant filtering ──────────────
+    _batchDistrictIndex = {};
+    _batchDistrictIndex['ALL'] = distCounts;
+    data.forEach(s => {
+      const b = s.batchId || 'Unknown';
+      const d = s.district || 'Unknown';
+      if (!_batchDistrictIndex[b]) _batchDistrictIndex[b] = {};
+      _batchDistrictIndex[b][d] = (_batchDistrictIndex[b][d] || 0) + 1;
+    });
+
+    // ── Punjab District Map ───────────────────────────────────────────────
+    updatePunjabMap(distCounts);
+
+    // ── Build Batch Filter Buttons ────────────────────────────────────────
+    const bar = document.getElementById('mapBatchBar');
+    if (bar) {
+      bar.querySelectorAll('[data-batch]:not([data-batch="ALL"])').forEach(b => b.remove());
+      const batchSet = [...new Set(data.map(s => s.batchId).filter(Boolean))]
+        .sort((a, b) => (parseInt(a.replace(/\D/g,''))||0) - (parseInt(b.replace(/\D/g,''))||0));
+      batchSet.forEach(bId => {
+        const btn = document.createElement('button');
+        btn.setAttribute('data-batch', bId);
+        btn.className = 'map-batch-btn';
+        btn.textContent = bId.replace('BATCH-', 'B-');
+        btn.title = bId;
+        btn.style.cssText = `flex-shrink:0; padding:5px 12px; border-radius:20px;
+          border:1.5px solid rgba(27, 26, 26, 0.15); background:rgba(255,255,255,0.07);
+          color:rgba(255,255,255,0.7); font-size:11px; font-weight:700;
+          cursor:pointer; white-space:nowrap; transition:all 0.2s;
+          letter-spacing:0.3px; font-family:'Inter',sans-serif;`;
+        btn.onclick = () => filterMapByBatch(bId);
+        bar.appendChild(btn);
+      });
+    }
+
+} // end _renderDashboard
+
+// ── MAP BATCH FILTER — O(1) pre-indexed lookup ────────────────────
+function filterMapByBatch(batchId) {
+  document.querySelectorAll('.map-batch-btn').forEach(btn => {
+    const active = btn.getAttribute('data-batch') === batchId;
+    btn.style.background  = active ? 'rgba(244,121,32,0.22)' : 'rgba(255,255,255,0.07)';
+    btn.style.borderColor = active ? 'rgba(244,121,32,0.8)'  : 'rgba(255,255,255,0.15)';
+    btn.style.color       = active ? '#f47920'                : 'rgba(255,255,255,0.7)';
+    btn.style.boxShadow   = active ? '0 0 12px rgba(244,121,32,0.3)' : 'none';
+  });
+  const label = document.getElementById('mapBatchLabel');
+  if (label) label.textContent = batchId === 'ALL' ? 'Showing: All Batches' : `Showing: ${batchId}`;
+  updatePunjabMap(_batchDistrictIndex[batchId] || {});
 }
 
 // ── Hash Routing for Tabs ──────────────────────────────────────────
@@ -1663,4 +1771,158 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }, { threshold: 0.15 });
   cards.forEach(c => obs.observe(c));
+})();
+
+// ═══════════════════════════════════════════════════════════════════
+// PUNJAB DISTRICT MAP  (Leaflet + same GeoJSON as ICT project)
+// ═══════════════════════════════════════════════════════════════════
+(function initPunjabMap() {
+
+  // Resolver: normalise GeoJSON district names → match API district strings
+  function resolveDistrictName(rawName) {
+    if (!rawName) return '';
+    const c = rawName.trim().toLowerCase().replace(/[^a-z0-9]/g, '');
+    if (c.includes('sasnagar') || c.includes('mohali') || c.includes('sahibzada')) return 'SAS NAGAR';
+    if (c.includes('muktsar'))   return 'MUKTSAR';
+    if (c.includes('rupnagar') || c.includes('ropar')) return 'RUPNAGAR';
+    if (c.includes('nawanshahr') || c.includes('sbsnagar') || c.includes('shahidbhagat') || c.includes('nawanshahr')) return 'NAWANSHAHR';
+    if (c.includes('tarntaran') || c.includes('tarantaran') || c.includes('tarn')) return 'TARN TARAN';
+    if (c.includes('ferozepur') || c.includes('firozpur')) return 'FEROZEPUR';
+    if (c.includes('fatehgarh')) return 'FATEHGARH SAHIB';
+    if (c.includes('srimuktsar') || c.includes('muktsar')) return 'MUKTSAR';
+    return rawName.trim().toUpperCase();
+  }
+
+  // Colour: white for zero participants, sky blue for any covered district
+  function getColor(count) {
+    if (!count || count === 0) return '#ffffff'; // uncovered → white
+    return '#38bdf8';                            // covered   → sky blue
+  }
+
+  // Leaflet map instance (created once)
+  let _pbMap = null;
+  let _geoLayer = null;
+  let _geoData = null;   // cached GeoJSON
+  let _highlighted = null;
+
+  // Create the Leaflet map the first time
+  function ensureMap() {
+    if (_pbMap) return;
+    _pbMap = L.map('punjabDistrictMap', {
+      zoomControl: true,
+      attributionControl: false,
+      dragging: true,
+      scrollWheelZoom: false,
+      doubleClickZoom: false,
+      touchZoom: true,
+    });
+    // Zoom control to top-right to avoid overlap with title
+    _pbMap.zoomControl.setPosition('topright');
+  }
+
+  // Render or re-render the district layer with new counts
+  function renderLayer(districtCounts) {
+    if (!_geoData || !_pbMap) return;
+
+    if (_geoLayer) { _pbMap.removeLayer(_geoLayer); _geoLayer = null; }
+
+    const maxVal = Math.max(...Object.values(districtCounts), 1);
+
+    _geoLayer = L.geoJSON(_geoData, {
+      style: function(feature) {
+        const rawName = feature.properties.district || feature.properties.dtname || feature.properties.NAME_2 || '';
+        const csvName = resolveDistrictName(rawName);
+        const count   = districtCounts[csvName] || 0;
+        return {
+          color: '#1a2d6b',
+          weight: count > 0 ? 2 : 1,
+          fillColor: getColor(count),
+          fillOpacity: count > 0 ? 0.88 : 0.75,
+        };
+      },
+      onEachFeature: function(feature, layer) {
+        const rawName = feature.properties.district || feature.properties.dtname || feature.properties.NAME_2 || 'Unknown';
+        const csvName = resolveDistrictName(rawName);
+        const count   = districtCounts[csvName] || 0;
+
+        // Tooltip matching ICT project style
+        layer.bindTooltip(
+          `<div style="font-weight:900; font-size:13px; text-transform:uppercase; color:#fbbf24; letter-spacing:0.5px;">${rawName}</div>` +
+          `<div style="font-weight:700; font-size:15px; color:#fff; margin-top:2px;">${count} Registered</div>`,
+          { sticky: true, className: 'raftaar-map-tooltip', direction: 'top', offset: [0, -8] }
+        );
+
+        // Hover highlight
+        layer.on('mouseover', function() {
+          layer.setStyle({ weight: 3, color: '#ffffff', fillOpacity: 1 });
+        });
+        layer.on('mouseout', function() {
+          if (_highlighted !== layer) {
+            _geoLayer.resetStyle(layer);
+          }
+        });
+
+        // Click: bold-highlight the district
+        layer.on('click', function() {
+          if (_highlighted && _highlighted !== layer) _geoLayer.resetStyle(_highlighted);
+          _highlighted = layer;
+          layer.setStyle({ weight: 3, color: '#f97316', fillOpacity: 1 });
+        });
+      }
+    }).addTo(_pbMap);
+
+    _pbMap.fitBounds(_geoLayer.getBounds(), { padding: [10, 10] });
+    setTimeout(() => _pbMap.invalidateSize(), 200);
+  }
+
+  // Build colour legend in sidebar
+  function buildLegend(districtCounts) {
+    const container = document.getElementById('mapLegendItems');
+    if (!container) return;
+    const ranges = [
+      { label: 'No data',  color: '#e2e8f0' },
+      { label: '1 – 5',    color: '#fef9c3' },
+      { label: '6 – 10',   color: '#fde68a' },
+      { label: '11 – 15',  color: '#fbbf24' },
+      { label: '16 – 20',  color: '#f97316' },
+      { label: '21 – 30',  color: '#ea580c' },
+      { label: '31 – 50',  color: '#dc2626' },
+      { label: '51+',      color: '#991b1b' },
+    ];
+    container.innerHTML = ranges.map(r => `
+      <div style="display:flex; align-items:center; gap:8px;">
+        <div style="width:16px; height:16px; border-radius:4px; background:${r.color}; flex-shrink:0; border:1px solid rgba(255,255,255,0.35);"></div>
+        <span style="color:rgba(255,255,255,0.85); font-weight:600;">${r.label}</span>
+      </div>
+    `).join('');
+  }
+
+  // Public: called from loadDashboard with fresh districtCounts object
+  window.updatePunjabMap = async function(districtCounts) {
+    ensureMap();
+
+    // Load GeoJSON only once
+    if (!_geoData) {
+      try {
+        const res = await fetch('punjab_districts.geojson');
+        _geoData = await res.json();
+      } catch (e) {
+        console.warn('Punjab GeoJSON not found:', e);
+        return;
+      }
+    }
+
+    renderLayer(districtCounts);
+    // Trigger resize so map fills new dimensions
+    setTimeout(() => _pbMap && _pbMap.invalidateSize(), 300);
+  };
+
+  // Re-fit map on window resize for responsiveness
+  window.addEventListener('resize', () => {
+    if (_pbMap) {
+      _pbMap.invalidateSize();
+      if (_geoLayer) _pbMap.fitBounds(_geoLayer.getBounds(), { padding: [10, 10] });
+    }
+  });
+
 })();
