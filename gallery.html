@@ -5,10 +5,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Mission RAFTAAR — Training Gallery | NIELIT Ropar</title>
-  
+
   <!-- Bootstrap 5 CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  
+
   <style>
     /* ══════════════════════════════════════════
        THEME STYLES (Matching your portal)
@@ -25,30 +25,45 @@
       padding: 0;
       position: relative;
       overflow: hidden;
-      box-shadow: 0 4px 24px rgba(26,45,107,0.3);
+      box-shadow: 0 4px 24px rgba(26, 45, 107, 0.3);
     }
+
     .portal-header::before {
       content: '';
       position: absolute;
-      top: -60px; right: -60px;
-      width: 280px; height: 280px;
+      top: -60px;
+      right: -60px;
+      width: 280px;
+      height: 280px;
       border-radius: 50%;
-      background: rgba(244,121,32,0.12);
+      background: rgba(244, 121, 32, 0.12);
       animation: float 6s ease-in-out infinite;
     }
+
     .portal-header::after {
       content: '';
       position: absolute;
-      bottom: -80px; left: 20%;
-      width: 200px; height: 200px;
+      bottom: -80px;
+      left: 20%;
+      width: 200px;
+      height: 200px;
       border-radius: 50%;
-      background: rgba(255,255,255,0.04);
+      background: rgba(255, 255, 255, 0.04);
       animation: float 8s ease-in-out infinite reverse;
     }
+
     @keyframes float {
-      0%, 100% { transform: translateY(0px); }
-      50% { transform: translateY(-18px); }
+
+      0%,
+      100% {
+        transform: translateY(0px);
+      }
+
+      50% {
+        transform: translateY(-18px);
+      }
     }
+
     .header-inner {
       display: flex;
       align-items: center;
@@ -58,27 +73,57 @@
       z-index: 2;
       gap: 20px;
     }
-    .header-logos { display: flex; align-items: center; gap: 18px; flex-shrink: 0; }
+
+    .header-logos {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      flex-shrink: 0;
+    }
+
     .header-logos img.nielit-logo {
       height: 62px;
       object-fit: contain;
-      filter: drop-shadow(0 2px 8px rgba(0,0,0,0.3));
+      filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.3));
       transition: transform 0.3s ease;
     }
+
     .header-logos img.raftaar-logo {
       height: 78px;
       object-fit: contain;
-      filter: drop-shadow(0 2px 8px rgba(0,0,0,0.25));
+      filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.25));
       transition: transform 0.3s ease;
       animation: subtle-spin 20s linear infinite;
     }
+
     @keyframes subtle-spin {
-      0%, 100% { transform: rotate(-1deg) scale(1); }
-      50% { transform: rotate(1deg) scale(1.03); }
+
+      0%,
+      100% {
+        transform: rotate(-1deg) scale(1);
+      }
+
+      50% {
+        transform: rotate(1deg) scale(1.03);
+      }
     }
-    .header-logos img:hover { transform: scale(1.07) !important; }
-    .header-divider { width: 2px; height: 60px; background: linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.3), transparent); }
-    .header-text { flex: 1; text-align: left; padding: 0 10px; }
+
+    .header-logos img:hover {
+      transform: scale(1.07) !important;
+    }
+
+    .header-divider {
+      width: 2px;
+      height: 60px;
+      background: linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.3), transparent);
+    }
+
+    .header-text {
+      flex: 1;
+      text-align: left;
+      padding: 0 10px;
+    }
+
     .header-badge {
       display: inline-block;
       background: #f47920;
@@ -92,23 +137,56 @@
       margin-bottom: 6px;
       animation: pulse-badge 3s ease-in-out infinite;
     }
+
     @keyframes pulse-badge {
-      0%, 100% { box-shadow: 0 0 0 0 rgba(244,121,32,0.4); }
-      50% { box-shadow: 0 0 0 6px rgba(244,121,32,0); }
+
+      0%,
+      100% {
+        box-shadow: 0 0 0 0 rgba(244, 121, 32, 0.4);
+      }
+
+      50% {
+        box-shadow: 0 0 0 6px rgba(244, 121, 32, 0);
+      }
     }
-    .header-title { font-size: 22px; font-weight: 800; color: #fff; letter-spacing: 0.5px; line-height: 1.2; text-shadow: 0 2px 8px rgba(0,0,0,0.3); }
-    .header-title span { color: #f47920; }
-    .header-sub { font-size: 12px; color: rgba(255, 255, 255, 0.65); margin-top: 4px; letter-spacing: 0.3px; }
+
+    .header-title {
+      font-size: 22px;
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: 0.5px;
+      line-height: 1.2;
+      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    }
+
+    .header-title span {
+      color: #f47920;
+    }
+
+    .header-sub {
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.65);
+      margin-top: 4px;
+      letter-spacing: 0.3px;
+    }
+
     .header-stripe {
       height: 4px;
       background: linear-gradient(90deg, #0f1e4a 0%, #f47920 40%, #2d8c3e 75%, #f47920 100%);
       background-size: 200% 100%;
       animation: stripe-move 4s linear infinite;
     }
+
     @keyframes stripe-move {
-      0% { background-position: 0% 0%; }
-      100% { background-position: 200% 0%; }
+      0% {
+        background-position: 0% 0%;
+      }
+
+      100% {
+        background-position: 200% 0%;
+      }
     }
+
     .header-admin-link {
       flex-shrink: 0;
       display: flex;
@@ -117,27 +195,31 @@
       flex-wrap: wrap;
       justify-content: flex-end;
     }
+
     .header-admin-link a {
-      color: rgba(255,255,255,0.55);
+      color: rgba(255, 255, 255, 0.55);
       font-size: 11px;
       text-decoration: none;
       letter-spacing: 0.5px;
       padding: 5px 10px;
-      border: 1px solid rgba(255,255,255,0.2);
+      border: 1px solid rgba(255, 255, 255, 0.2);
       border-radius: 20px;
       transition: all 0.2s;
     }
+
     .header-admin-link a:hover {
       color: #fff;
-      border-color: rgba(255,255,255,0.5);
-      background: rgba(255,255,255,0.1);
+      border-color: rgba(255, 255, 255, 0.5);
+      background: rgba(255, 255, 255, 0.1);
     }
+
     .nav-actions {
       display: flex;
       align-items: center;
       gap: 10px;
       flex-wrap: wrap;
     }
+
     .nav-btn {
       display: inline-flex;
       align-items: center;
@@ -150,23 +232,27 @@
       transition: all 0.25s ease;
       white-space: nowrap;
     }
+
     /* Home — ghost/outline style */
     .nav-btn-home {
       color: #fff;
-      border: 1.5px solid rgba(255,255,255,0.45);
-      background: rgba(255,255,255,0.08);
+      border: 1.5px solid rgba(255, 255, 255, 0.45);
+      background: rgba(255, 255, 255, 0.08);
     }
+
     .nav-btn-home:hover {
-      background: rgba(255,255,255,0.2);
+      background: rgba(255, 255, 255, 0.2);
       border-color: #fff;
       color: #fff;
     }
+
     /* Registration — filled orange */
     .nav-btn-register {
       color: #fff;
       background: #f47920;
       border: 1.5px solid #f47920;
     }
+
     .nav-btn-register:hover {
       background: #d9640f;
       border-color: #d9640f;
@@ -176,23 +262,31 @@
     /* Dashboard — navy ghost style */
     .nav-btn-dashboard {
       color: #fff;
-      border: 1.5px solid rgba(255,255,255,0.45);
-      background: rgba(255,255,255,0.08);
+      border: 1.5px solid rgba(255, 255, 255, 0.45);
+      background: rgba(255, 255, 255, 0.08);
     }
+
     .nav-btn-dashboard:hover {
       background: #1a2d6b;
       border-color: #fff;
       color: #fff;
     }
-    .gallery-container { padding: 40px 20px; max-width: 1400px; margin: 0 auto; }
-    
+
+    .gallery-container {
+      padding: 40px 20px;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
     .page-title {
       text-align: center;
       color: #172d6b;
       font-weight: 800;
-      margin-bottom: 25px; /* Reduced to make room for buttons */
+      margin-bottom: 25px;
+      /* Reduced to make room for buttons */
       position: relative;
     }
+
     .page-title::after {
       content: '';
       display: block;
@@ -208,18 +302,31 @@
     ══════════════════════════════════════════ */
     .batch-filters {
       display: flex;
-      flex-wrap: nowrap;           /* ← single line, no wrapping */
-      overflow-x: auto;            /* ← scroll horizontally if needed */
+      flex-wrap: nowrap;
+      /* ← single line, no wrapping */
+      overflow-x: auto;
+      /* ← scroll horizontally if needed */
       gap: 8px;
       margin-bottom: 40px;
-      padding: 10px 10px 14px;     /* extra bottom padding for scrollbar */
+      padding: 10px 10px 14px;
+      /* extra bottom padding for scrollbar */
       /* hide scrollbar on modern browsers but keep it functional */
       scrollbar-width: thin;
       scrollbar-color: #cdd8ea transparent;
     }
-    .batch-filters::-webkit-scrollbar { height: 4px; }
-    .batch-filters::-webkit-scrollbar-track { background: transparent; }
-    .batch-filters::-webkit-scrollbar-thumb { background: #cdd8ea; border-radius: 4px; }
+
+    .batch-filters::-webkit-scrollbar {
+      height: 4px;
+    }
+
+    .batch-filters::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .batch-filters::-webkit-scrollbar-thumb {
+      background: #cdd8ea;
+      border-radius: 4px;
+    }
 
     .filter-btn {
       background: #fff;
@@ -231,14 +338,18 @@
       font-weight: 700;
       cursor: pointer;
       transition: all 0.2s ease;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.03);
-      white-space: nowrap;         /* ← prevent text wrapping inside button */
-      flex-shrink: 0;              /* ← prevent buttons from squishing */
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.03);
+      white-space: nowrap;
+      /* ← prevent text wrapping inside button */
+      flex-shrink: 0;
+      /* ← prevent buttons from squishing */
     }
+
     .filter-btn:hover {
       background: #eef3fb;
       border-color: #1a2d6b;
     }
+
     .filter-btn.active {
       background: #f47920;
       color: #fff;
@@ -256,12 +367,25 @@
       border-top: 4px solid #1a2d6b;
       transition: transform 0.3s ease;
       /* Animation for filtering */
-      animation: fadeIn 0.4s ease; 
+      animation: fadeIn 0.4s ease;
     }
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-    
-    .batch-section:hover { box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08); }
-    
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .batch-section:hover {
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+    }
+
     .batch-header {
       display: flex;
       align-items: center;
@@ -270,6 +394,7 @@
       padding-bottom: 15px;
       margin-bottom: 20px;
     }
+
     .batch-title {
       color: #172d6b;
       font-weight: 800;
@@ -279,6 +404,7 @@
       align-items: center;
       gap: 12px;
     }
+
     .batch-badge {
       background: #fff8f1;
       color: #e26d12;
@@ -305,14 +431,18 @@
       cursor: pointer;
       background: #eef3fb;
     }
+
     .img-wrapper img {
       width: 100%;
       height: 100%;
       object-fit: cover;
       transition: transform 0.5s ease;
     }
-    .img-wrapper:hover img { transform: scale(1.08); }
-    
+
+    .img-wrapper:hover img {
+      transform: scale(1.08);
+    }
+
     .img-overlay {
       position: absolute;
       inset: 0;
@@ -323,8 +453,11 @@
       align-items: flex-end;
       padding: 15px;
     }
-    .img-wrapper:hover .img-overlay { opacity: 1; }
-    
+
+    .img-wrapper:hover .img-overlay {
+      opacity: 1;
+    }
+
     .img-caption {
       color: #fff;
       font-size: 0.9rem;
@@ -333,17 +466,37 @@
       transform: translateY(10px);
       transition: transform 0.3s ease;
     }
-    .img-wrapper:hover .img-caption { transform: translateY(0); }
-    
+
+    .img-wrapper:hover .img-caption {
+      transform: translateY(0);
+    }
+
     /* MODAL STYLES (LIGHTBOX) */
-    .modal-content { background: transparent; border: none; }
-    .modal-header { border-bottom: none; padding-bottom: 0; }
-    .modal-title { color: #fff; font-weight: 600; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
-    .btn-close-white { filter: invert(1); opacity: 1; }
+    .modal-content {
+      background: transparent;
+      border: none;
+    }
+
+    .modal-header {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+
+    .modal-title {
+      color: #fff;
+      font-weight: 600;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    }
+
+    .btn-close-white {
+      filter: invert(1);
+      opacity: 1;
+    }
+
     .lightbox-img {
       width: 100%;
       border-radius: 8px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
       transition: opacity 0.2s ease;
     }
 
@@ -353,18 +506,20 @@
       display: block;
       width: 100%;
     }
+
     /* Make modal-dialog the positioning parent */
     #imageModal .modal-dialog {
       position: relative;
     }
+
     .lb-nav-btn {
       position: fixed;
       top: 50vh;
       transform: translateY(-50%);
       z-index: 1100;
-      background: rgba(10,18,42,0.82);
+      background: rgba(10, 18, 42, 0.82);
       color: #fff;
-      border: 2px solid rgba(255,255,255,0.35);
+      border: 2px solid rgba(255, 255, 255, 0.35);
       border-radius: 50%;
       width: 52px;
       height: 52px;
@@ -375,36 +530,56 @@
       cursor: pointer;
       transition: background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
       backdrop-filter: blur(8px);
-      box-shadow: 0 4px 18px rgba(0,0,0,0.55);
+      box-shadow: 0 4px 18px rgba(0, 0, 0, 0.55);
       padding: 0;
       line-height: 1;
     }
-    .lb-nav-btn.lb-prev { left: 16px; }
-    .lb-nav-btn.lb-next { right: 16px; }
+
+    .lb-nav-btn.lb-prev {
+      left: 16px;
+    }
+
+    .lb-nav-btn.lb-next {
+      right: 16px;
+    }
+
     .lb-nav-btn:hover:not(:disabled) {
       background: #f47920;
       border-color: #f47920;
-      box-shadow: 0 6px 22px rgba(244,121,32,0.55);
+      box-shadow: 0 6px 22px rgba(244, 121, 32, 0.55);
     }
+
     .lb-nav-btn:disabled {
       opacity: 0.2;
       cursor: not-allowed;
     }
+
     .lb-counter {
       display: inline-block;
       margin-top: 10px;
-      background: rgba(0,0,0,0.5);
-      color: rgba(255,255,255,0.85);
+      background: rgba(0, 0, 0, 0.5);
+      color: rgba(255, 255, 255, 0.85);
       font-size: 12px;
       font-weight: 700;
       padding: 4px 16px;
       border-radius: 20px;
       letter-spacing: 0.8px;
     }
+
     @media (max-width: 576px) {
-      .lb-nav-btn { width: 40px; height: 40px; font-size: 18px; }
-      .lb-nav-btn.lb-prev { left: 6px; }
-      .lb-nav-btn.lb-next { right: 6px; }
+      .lb-nav-btn {
+        width: 40px;
+        height: 40px;
+        font-size: 18px;
+      }
+
+      .lb-nav-btn.lb-prev {
+        left: 6px;
+      }
+
+      .lb-nav-btn.lb-next {
+        right: 6px;
+      }
     }
 
     /* DOWNLOAD BUTTON on thumbnail */
@@ -413,7 +588,7 @@
       top: 10px;
       right: 10px;
       z-index: 10;
-      background: rgba(26,45,107,0.85);
+      background: rgba(26, 45, 107, 0.85);
       color: #fff;
       border: none;
       border-radius: 8px;
@@ -425,13 +600,17 @@
       transform: translateY(-6px);
       transition: opacity 0.25s ease, transform 0.25s ease, background 0.2s ease;
       backdrop-filter: blur(4px);
-      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
     }
+
     .img-wrapper:hover .img-download-btn {
       opacity: 1;
       transform: translateY(0);
     }
-    .img-download-btn:hover { background: #f47920; }
+
+    .img-download-btn:hover {
+      background: #f47920;
+    }
 
     /* LIGHTBOX DOWNLOAD BUTTON */
     .lightbox-download-btn {
@@ -448,8 +627,9 @@
       font-weight: 700;
       cursor: pointer;
       transition: background 0.2s ease, transform 0.15s ease;
-      box-shadow: 0 4px 12px rgba(244,121,32,0.4);
+      box-shadow: 0 4px 12px rgba(244, 121, 32, 0.4);
     }
+
     .lightbox-download-btn:hover {
       background: #d9640f;
       transform: translateY(-2px);
@@ -465,9 +645,19 @@
         padding: 12px 18px;
         gap: 14px;
       }
-      .header-logos img { height: 42px; }
-      .header-title { font-size: 19px; }
-      .gallery-container { padding: 30px 16px; }
+
+      .header-logos img {
+        height: 42px;
+      }
+
+      .header-title {
+        font-size: 19px;
+      }
+
+      .gallery-container {
+        padding: 30px 16px;
+      }
+
       .image-grid {
         grid-template-columns: repeat(3, 1fr);
       }
@@ -475,6 +665,7 @@
 
     /* ── Tablet Portrait (≤768px) ── */
     @media (max-width: 768px) {
+
       /* Header: stack logo group + text + back button vertically */
       .header-inner {
         flex-direction: column;
@@ -483,13 +674,40 @@
         padding: 12px 16px;
         gap: 10px;
       }
-      .header-logos { gap: 10px; justify-content: center; width: 100%; }
-      .header-logos img { height: 36px; }
-      .header-divider { height: 32px; }
-      .header-text { min-width: unset; width: 100%; text-align: center; }
-      .header-title { font-size: 17px; }
-      .header-sub { font-size: 11px; }
-      .nav-actions { width: 100%; justify-content: center; }
+
+      .header-logos {
+        gap: 10px;
+        justify-content: center;
+        width: 100%;
+      }
+
+      .header-logos img {
+        height: 36px;
+      }
+
+      .header-divider {
+        height: 32px;
+      }
+
+      .header-text {
+        min-width: unset;
+        width: 100%;
+        text-align: center;
+      }
+
+      .header-title {
+        font-size: 17px;
+      }
+
+      .header-sub {
+        font-size: 11px;
+      }
+
+      .nav-actions {
+        width: 100%;
+        justify-content: center;
+      }
+
       .nav-actions a {
         display: inline-block;
         font-size: 13px;
@@ -497,16 +715,37 @@
       }
 
       /* Gallery */
-      .gallery-container { padding: 24px 12px; }
-      .page-title { font-size: 1.4rem; margin-bottom: 18px; }
+      .gallery-container {
+        padding: 24px 12px;
+      }
+
+      .page-title {
+        font-size: 1.4rem;
+        margin-bottom: 18px;
+      }
 
       /* Batch card */
-      .batch-section { padding: 18px 14px; margin-bottom: 24px; }
-      .batch-title { font-size: 1.1rem; gap: 8px; flex-wrap: wrap; }
-      .batch-badge { font-size: 0.78rem; padding: 3px 10px; }
+      .batch-section {
+        padding: 18px 14px;
+        margin-bottom: 24px;
+      }
+
+      .batch-title {
+        font-size: 1.1rem;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+
+      .batch-badge {
+        font-size: 0.78rem;
+        padding: 3px 10px;
+      }
 
       /* Filter buttons: slightly smaller */
-      .filter-btn { font-size: 11.5px; padding: 5px 11px; }
+      .filter-btn {
+        font-size: 11.5px;
+        padding: 5px 11px;
+      }
 
       /* Image grid: 2 columns */
       .image-grid {
@@ -515,51 +754,121 @@
       }
 
       /* Lightbox */
-      .modal-dialog { margin: 10px; }
+      .modal-dialog {
+        margin: 10px;
+      }
     }
 
     /* ── Mobile (≤576px) ── */
     @media (max-width: 576px) {
+
       /* Header: compact */
-      .header-inner { padding: 10px 12px; gap: 8px; }
-      .header-logos img { height: 30px; }
-      .header-divider { height: 26px; }
-      .header-title { font-size: 15px; }
-      .header-badge { font-size: 10px; padding: 2px 8px; }
-      .header-sub { font-size: 10.5px; }
-      .nav-actions a { font-size: 12px; padding: 6px 12px; }
+      .header-inner {
+        padding: 10px 12px;
+        gap: 8px;
+      }
+
+      .header-logos img {
+        height: 30px;
+      }
+
+      .header-divider {
+        height: 26px;
+      }
+
+      .header-title {
+        font-size: 15px;
+      }
+
+      .header-badge {
+        font-size: 10px;
+        padding: 2px 8px;
+      }
+
+      .header-sub {
+        font-size: 10.5px;
+      }
+
+      .nav-actions a {
+        font-size: 12px;
+        padding: 6px 12px;
+      }
 
       /* Gallery */
-      .gallery-container { padding: 16px 10px; }
-      .page-title { font-size: 1.2rem; margin-bottom: 14px; }
-      .page-title::after { width: 50px; margin-top: 10px; }
+      .gallery-container {
+        padding: 16px 10px;
+      }
+
+      .page-title {
+        font-size: 1.2rem;
+        margin-bottom: 14px;
+      }
+
+      .page-title::after {
+        width: 50px;
+        margin-top: 10px;
+      }
 
       /* Batch card */
-      .batch-section { padding: 14px 10px; margin-bottom: 18px; border-radius: 8px; }
-      .batch-header { padding-bottom: 10px; margin-bottom: 14px; }
-      .batch-title { font-size: 1rem; }
-      .batch-badge { font-size: 0.72rem; padding: 2px 8px; }
+      .batch-section {
+        padding: 14px 10px;
+        margin-bottom: 18px;
+        border-radius: 8px;
+      }
+
+      .batch-header {
+        padding-bottom: 10px;
+        margin-bottom: 14px;
+      }
+
+      .batch-title {
+        font-size: 1rem;
+      }
+
+      .batch-badge {
+        font-size: 0.72rem;
+        padding: 2px 8px;
+      }
 
       /* Filter strip: even more compact */
-      .batch-filters { gap: 6px; padding: 8px 8px 12px; margin-bottom: 24px; }
-      .filter-btn { font-size: 11px; padding: 5px 10px; }
+      .batch-filters {
+        gap: 6px;
+        padding: 8px 8px 12px;
+        margin-bottom: 24px;
+      }
+
+      .filter-btn {
+        font-size: 11px;
+        padding: 5px 10px;
+      }
 
       /* Image grid: 1 column on very small phones, 2 on normal phones */
       .image-grid {
         grid-template-columns: repeat(2, 1fr);
         gap: 8px;
       }
+
       /* Single column only on very narrow screens */
       @media (max-width: 380px) {
-        .image-grid { grid-template-columns: 1fr; }
+        .image-grid {
+          grid-template-columns: 1fr;
+        }
       }
 
       /* Caption font smaller */
-      .img-caption { font-size: 0.78rem; }
+      .img-caption {
+        font-size: 0.78rem;
+      }
 
       /* Lightbox: full screen on mobile */
-      .modal-dialog { margin: 6px; max-width: calc(100vw - 12px); }
-      .lightbox-img { border-radius: 6px; }
+      .modal-dialog {
+        margin: 6px;
+        max-width: calc(100vw - 12px);
+      }
+
+      .lightbox-img {
+        border-radius: 6px;
+      }
     }
   </style>
 </head>
@@ -613,10 +922,10 @@
   ══════════════════════════════════════════ -->
   <main class="gallery-container">
     <h1 class="page-title">Training Programme Gallery</h1>
-    
+
     <!-- Filter Buttons will be injected here -->
     <div class="batch-filters" id="batchFilters"></div>
-    
+
     <!-- Gallery Batches will be injected here -->
     <div id="galleryRoot"></div>
   </main>
@@ -671,116 +980,116 @@
       // Just create the folder All-IMG/Batch-X/ and add the images.
       const batchImages = {
         1: [
-          { src: "All-IMG/Batch-1/Batch-11.jpeg",           caption: "Batch 1 — Training Moment 1" },
-          { src: "All-IMG/Batch-1/Batch-13.jpeg",           caption: "Batch 1 — Training Moment 2" },
-          { src: "All-IMG/Batch-1/Batch-14.png",            caption: "Batch 1 — Training Moment 3" },
-          { src: "All-IMG/Batch-1/Batch-15.png",            caption: "Batch 1 — Training Moment 4" },
-          { src: "All-IMG/Batch-1/Batch-1GroupPhoto.webp",  caption: "Batch 1 — Group Photo"       },
+          { src: "All-IMG/Batch-1/Batch-11.jpeg", caption: "Batch 1 — Training Moment 1" },
+          { src: "All-IMG/Batch-1/Batch-13.jpeg", caption: "Batch 1 — Training Moment 2" },
+          { src: "All-IMG/Batch-1/Batch-14.png", caption: "Batch 1 — Training Moment 3" },
+          { src: "All-IMG/Batch-1/Batch-15.png", caption: "Batch 1 — Training Moment 4" },
+          { src: "All-IMG/Batch-1/Batch-1GroupPhoto.webp", caption: "Batch 1 — Group Photo" },
         ],
         2: [
-          { src: "All-IMG/Batch-2/Batch-21.jpeg",           caption: "Batch 2 — Training Moment 1" },
-          { src: "All-IMG/Batch-2/Batch-22.jpeg",           caption: "Batch 2 — Training Moment 2" },
-          { src: "All-IMG/Batch-2/Batch-23.jpeg",           caption: "Batch 2 — Training Moment 3" },
-          { src: "All-IMG/Batch-2/Batch-24.jpeg",           caption: "Batch 2 — Training Moment 4" },
-          { src: "All-IMG/Batch-2/Batch-2GroupPhoto.webp",  caption: "Batch 2 — Group Photo"       },
+          { src: "All-IMG/Batch-2/Batch-21.jpeg", caption: "Batch 2 — Training Moment 1" },
+          { src: "All-IMG/Batch-2/Batch-22.jpeg", caption: "Batch 2 — Training Moment 2" },
+          { src: "All-IMG/Batch-2/Batch-23.jpeg", caption: "Batch 2 — Training Moment 3" },
+          { src: "All-IMG/Batch-2/Batch-24.jpeg", caption: "Batch 2 — Training Moment 4" },
+          { src: "All-IMG/Batch-2/Batch-2GroupPhoto.webp", caption: "Batch 2 — Group Photo" },
         ],
         3: [
-          { src: "All-IMG/Batch-3/Batch-31.jpeg",           caption: "Batch 3 — Training Moment 1" },
-          { src: "All-IMG/Batch-3/Batch-32.jpeg",           caption: "Batch 3 — Training Moment 2" },
-          { src: "All-IMG/Batch-3/Batch-33.jpeg",           caption: "Batch 3 — Training Moment 3" },
-          { src: "All-IMG/Batch-3/Batch-34.jpeg",           caption: "Batch 3 — Training Moment 4" },
-          { src: "All-IMG/Batch-3/Batch-3GroupPhoto.jpeg",  caption: "Batch 3 — Group Photo"       },
+          { src: "All-IMG/Batch-3/Batch-31.jpeg", caption: "Batch 3 — Training Moment 1" },
+          { src: "All-IMG/Batch-3/Batch-32.jpeg", caption: "Batch 3 — Training Moment 2" },
+          { src: "All-IMG/Batch-3/Batch-33.jpeg", caption: "Batch 3 — Training Moment 3" },
+          { src: "All-IMG/Batch-3/Batch-34.jpeg", caption: "Batch 3 — Training Moment 4" },
+          { src: "All-IMG/Batch-3/Batch-3GroupPhoto.webp", caption: "Batch 3 — Group Photo" },
         ],
         4: [
-          { src: "All-IMG/Batch-4/Batch-41.jpeg",           caption: "Batch 4 — Training Moment 1" },
-          { src: "All-IMG/Batch-4/Batch-42.jpeg",           caption: "Batch 4 — Training Moment 2" },
-          { src: "All-IMG/Batch-4/Batch-43.jpeg",           caption: "Batch 4 — Training Moment 3" },
-          { src: "All-IMG/Batch-4/Batch-44.jpeg",           caption: "Batch 4 — Training Moment 4" },
-          { src: "All-IMG/Batch-4/Batch-4GroupPhoto.webp",  caption: "Batch 4 — Group Photo"       },
+          { src: "All-IMG/Batch-4/Batch-41.jpeg", caption: "Batch 4 — Training Moment 1" },
+          { src: "All-IMG/Batch-4/Batch-42.jpeg", caption: "Batch 4 — Training Moment 2" },
+          { src: "All-IMG/Batch-4/Batch-43.jpeg", caption: "Batch 4 — Training Moment 3" },
+          { src: "All-IMG/Batch-4/Batch-44.jpeg", caption: "Batch 4 — Training Moment 4" },
+          { src: "All-IMG/Batch-4/Batch-4GroupPhoto.webp", caption: "Batch 4 — Group Photo" },
         ],
         5: [
-          { src: "All-IMG/Batch-5/Batch-51.jpeg",           caption: "Batch 5 — Training Moment 1" },
-          { src: "All-IMG/Batch-5/Batch-52.jpeg",           caption: "Batch 5 — Training Moment 2" },
-          { src: "All-IMG/Batch-5/Batch-53.jpeg",           caption: "Batch 5 — Training Moment 3" },
-          { src: "All-IMG/Batch-5/Batch-54.jpeg",           caption: "Batch 5 — Training Moment 4" },
-          { src: "All-IMG/Batch-5/Batch-5GroupPhoto.webp",  caption: "Batch 5 — Group Photo"       },
+          { src: "All-IMG/Batch-5/Batch-51.jpeg", caption: "Batch 5 — Training Moment 1" },
+          { src: "All-IMG/Batch-5/Batch-52.jpeg", caption: "Batch 5 — Training Moment 2" },
+          { src: "All-IMG/Batch-5/Batch-53.jpeg", caption: "Batch 5 — Training Moment 3" },
+          { src: "All-IMG/Batch-5/Batch-54.jpeg", caption: "Batch 5 — Training Moment 4" },
+          { src: "All-IMG/Batch-5/Batch-5GroupPhoto.webp", caption: "Batch 5 — Group Photo" },
         ],
         6: [
-          { src: "All-IMG/Batch-6/Batch-61.jpeg",           caption: "Batch 6 — Training Moment 1" },
-          { src: "All-IMG/Batch-6/Batch-62.jpeg",           caption: "Batch 6 — Training Moment 2" },
-          { src: "All-IMG/Batch-6/Batch-63.jpeg",           caption: "Batch 6 — Training Moment 3" },
-          { src: "All-IMG/Batch-6/Batch-64.jpeg",           caption: "Batch 6 — Training Moment 4" },
-          { src: "All-IMG/Batch-6/Batch-6GroupPhoto.webp",  caption: "Batch 6 — Group Photo"       },
+          { src: "All-IMG/Batch-6/Batch-61.jpeg", caption: "Batch 6 — Training Moment 1" },
+          { src: "All-IMG/Batch-6/Batch-62.jpeg", caption: "Batch 6 — Training Moment 2" },
+          { src: "All-IMG/Batch-6/Batch-63.jpeg", caption: "Batch 6 — Training Moment 3" },
+          { src: "All-IMG/Batch-6/Batch-64.jpeg", caption: "Batch 6 — Training Moment 4" },
+          { src: "All-IMG/Batch-6/Batch-6GroupPhoto.webp", caption: "Batch 6 — Group Photo" },
         ],
         7: [
-          { src: "All-IMG/Batch-7/Batch-71.jpeg",           caption: "Batch 7 — Training Moment 1" },
-          { src: "All-IMG/Batch-7/Batch-72.jpeg",           caption: "Batch 7 — Training Moment 2" },
-          { src: "All-IMG/Batch-7/Batch-73.jpeg",           caption: "Batch 7 — Training Moment 3" },
-          { src: "All-IMG/Batch-7/Batch-74.jpeg",           caption: "Batch 7 — Training Moment 4" },
-          { src: "All-IMG/Batch-7/Batch-7GroupPhoto.webp",  caption: "Batch 7 — Group Photo"       },
+          { src: "All-IMG/Batch-7/Batch-71.jpeg", caption: "Batch 7 — Training Moment 1" },
+          { src: "All-IMG/Batch-7/Batch-72.jpeg", caption: "Batch 7 — Training Moment 2" },
+          { src: "All-IMG/Batch-7/Batch-73.jpeg", caption: "Batch 7 — Training Moment 3" },
+          { src: "All-IMG/Batch-7/Batch-74.jpeg", caption: "Batch 7 — Training Moment 4" },
+          { src: "All-IMG/Batch-7/Batch-7GroupPhoto.webp", caption: "Batch 7 — Group Photo" },
         ],
         8: [
-          { src: "All-IMG/Batch-8/Batch-81.jpeg",           caption: "Batch 8 — Training Moment 1" },
-          { src: "All-IMG/Batch-8/Batch-82.jpeg",           caption: "Batch 8 — Training Moment 2" },
-          { src: "All-IMG/Batch-8/Batch-83.jpeg",           caption: "Batch 8 — Training Moment 3" },
-          { src: "All-IMG/Batch-8/Batch-84.jpeg",           caption: "Batch 8 — Training Moment 4" },
-          { src: "All-IMG/Batch-8/Batch-8GroupPhoto.webp",  caption: "Batch 8 — Group Photo"       },
+          { src: "All-IMG/Batch-8/Batch-81.jpeg", caption: "Batch 8 — Training Moment 1" },
+          { src: "All-IMG/Batch-8/Batch-82.jpeg", caption: "Batch 8 — Training Moment 2" },
+          { src: "All-IMG/Batch-8/Batch-83.jpeg", caption: "Batch 8 — Training Moment 3" },
+          { src: "All-IMG/Batch-8/Batch-84.jpeg", caption: "Batch 8 — Training Moment 4" },
+          { src: "All-IMG/Batch-8/Batch-8GroupPhoto.webp", caption: "Batch 8 — Group Photo" },
         ],
         9: [
-          { src: "All-IMG/Batch-9/Batch-91.jpeg",           caption: "Batch 9 — Training Moment 1" },
-          { src: "All-IMG/Batch-9/Batch-92.jpeg",           caption: "Batch 9 — Training Moment 2" },
-          { src: "All-IMG/Batch-9/Batch-93.jpeg",           caption: "Batch 9 — Training Moment 3" },
-          { src: "All-IMG/Batch-9/Batch-94.jpeg",           caption: "Batch 9 — Training Moment 4" },
-          { src: "All-IMG/Batch-9/Batch-9GroupPhoto.webp",  caption: "Batch 9 — Group Photo"       },
+          { src: "All-IMG/Batch-9/Batch-91.jpeg", caption: "Batch 9 — Training Moment 1" },
+          { src: "All-IMG/Batch-9/Batch-92.jpeg", caption: "Batch 9 — Training Moment 2" },
+          { src: "All-IMG/Batch-9/Batch-93.jpeg", caption: "Batch 9 — Training Moment 3" },
+          { src: "All-IMG/Batch-9/Batch-94.jpeg", caption: "Batch 9 — Training Moment 4" },
+          { src: "All-IMG/Batch-9/Batch-9GroupPhoto.webp", caption: "Batch 9 — Group Photo" },
         ],
         10: [
-          { src: "All-IMG/Batch-10/Batch-101.jpeg",          caption: "Batch 10 — Training Moment 1" },
-          { src: "All-IMG/Batch-10/Batch-102.jpeg",          caption: "Batch 10 — Training Moment 2" },
-          { src: "All-IMG/Batch-10/Batch-103.jpeg",          caption: "Batch 10 — Training Moment 3" },
-          { src: "All-IMG/Batch-10/Batch-104.jpeg",          caption: "Batch 10 — Training Moment 4" },
-          { src: "All-IMG/Batch-10/Batch-10GroupPhoto.webp", caption: "Batch 10 — Group Photo"       },
+          { src: "All-IMG/Batch-10/Batch-101.jpeg", caption: "Batch 10 — Training Moment 1" },
+          { src: "All-IMG/Batch-10/Batch-102.jpeg", caption: "Batch 10 — Training Moment 2" },
+          { src: "All-IMG/Batch-10/Batch-103.jpeg", caption: "Batch 10 — Training Moment 3" },
+          { src: "All-IMG/Batch-10/Batch-104.jpeg", caption: "Batch 10 — Training Moment 4" },
+          { src: "All-IMG/Batch-10/Batch-10GroupPhoto.webp", caption: "Batch 10 — Group Photo" },
         ],
         11: [
-          { src: "All-IMG/Batch-11/Batch-111.jpeg",          caption: "Batch 11 — Training Moment 1" },
-          { src: "All-IMG/Batch-11/Batch-112.jpeg",          caption: "Batch 11 — Training Moment 2" },
-          { src: "All-IMG/Batch-11/Batch-113.jpeg",          caption: "Batch 11 — Training Moment 3" },
-          { src: "All-IMG/Batch-11/Batch-114.jpeg",          caption: "Batch 11 — Training Moment 4" },
-          { src: "All-IMG/Batch-11/Batch-11GroupPhoto.webp", caption: "Batch 11 — Group Photo"       },
+          { src: "All-IMG/Batch-11/Batch-111.jpeg", caption: "Batch 11 — Training Moment 1" },
+          { src: "All-IMG/Batch-11/Batch-112.jpeg", caption: "Batch 11 — Training Moment 2" },
+          { src: "All-IMG/Batch-11/Batch-113.jpeg", caption: "Batch 11 — Training Moment 3" },
+          { src: "All-IMG/Batch-11/Batch-114.jpeg", caption: "Batch 11 — Training Moment 4" },
+          { src: "All-IMG/Batch-11/Batch-11GroupPhoto.webp", caption: "Batch 11 — Group Photo" },
         ],
         12: [
-          { src: "All-IMG/Batch-12/Batch-121.jpeg",          caption: "Batch 12 — Training Moment 1" },
-          { src: "All-IMG/Batch-12/Batch-122.jpeg",          caption: "Batch 12 — Training Moment 2" },
-          { src: "All-IMG/Batch-12/Batch-123.jpeg",          caption: "Batch 12 — Training Moment 3" },
-          { src: "All-IMG/Batch-12/Batch-124.jpeg",          caption: "Batch 12 — Training Moment 4" },
-          { src: "All-IMG/Batch-12/Batch-12GroupPhoto.webp", caption: "Batch 12 — Group Photo"       },
+          { src: "All-IMG/Batch-12/Batch-121.jpeg", caption: "Batch 12 — Training Moment 1" },
+          { src: "All-IMG/Batch-12/Batch-122.jpeg", caption: "Batch 12 — Training Moment 2" },
+          { src: "All-IMG/Batch-12/Batch-123.jpeg", caption: "Batch 12 — Training Moment 3" },
+          { src: "All-IMG/Batch-12/Batch-124.jpeg", caption: "Batch 12 — Training Moment 4" },
+          { src: "All-IMG/Batch-12/Batch-12GroupPhoto.webp", caption: "Batch 12 — Group Photo" },
         ],
         13: [
-          { src: "All-IMG/Batch-13/Batch-131.jpeg",          caption: "Batch 13 — Training Moment 1" },
-          { src: "All-IMG/Batch-13/Batch-132.jpeg",          caption: "Batch 13 — Training Moment 2" },
-          { src: "All-IMG/Batch-13/Batch-133.jpeg",          caption: "Batch 13 — Training Moment 3" },
-          { src: "All-IMG/Batch-13/Batch-134.jpeg",          caption: "Batch 13 — Training Moment 4" },
-          { src: "All-IMG/Batch-13/Batch-13GroupPhoto.webp", caption: "Batch 13 — Group Photo"       },
+          { src: "All-IMG/Batch-13/Batch-131.jpeg", caption: "Batch 13 — Training Moment 1" },
+          { src: "All-IMG/Batch-13/Batch-132.jpeg", caption: "Batch 13 — Training Moment 2" },
+          { src: "All-IMG/Batch-13/Batch-133.jpeg", caption: "Batch 13 — Training Moment 3" },
+          { src: "All-IMG/Batch-13/Batch-134.jpeg", caption: "Batch 13 — Training Moment 4" },
+          { src: "All-IMG/Batch-13/Batch-13GroupPhoto.webp", caption: "Batch 13 — Group Photo" },
         ],
         14: [
-          { src: "All-IMG/Batch-14/Batch-141.jpeg",          caption: "Batch 14 — Training Moment 1" },
-          { src: "All-IMG/Batch-14/Batch-142.jpeg",          caption: "Batch 14 — Training Moment 2" },
-          { src: "All-IMG/Batch-14/Batch-143.jpeg",          caption: "Batch 14 — Training Moment 3" },
-          { src: "All-IMG/Batch-14/Batch-144.jpeg",          caption: "Batch 14 — Training Moment 4" },
-          { src: "All-IMG/Batch-14/Batch-14GroupPhoto.webp", caption: "Batch 14 — Group Photo"       },
+          { src: "All-IMG/Batch-14/Batch-141.jpeg", caption: "Batch 14 — Training Moment 1" },
+          { src: "All-IMG/Batch-14/Batch-142.jpeg", caption: "Batch 14 — Training Moment 2" },
+          { src: "All-IMG/Batch-14/Batch-143.jpeg", caption: "Batch 14 — Training Moment 3" },
+          { src: "All-IMG/Batch-14/Batch-144.jpeg", caption: "Batch 14 — Training Moment 4" },
+          { src: "All-IMG/Batch-14/Batch-14GroupPhoto.webp", caption: "Batch 14 — Group Photo" },
         ],
         15: [
-          { src: "All-IMG/Batch-15/Batch-151.jpeg",          caption: "Batch 15 — Training Moment 1" },
-          { src: "All-IMG/Batch-15/Batch-152.jpeg",          caption: "Batch 15 — Training Moment 2" },
-          { src: "All-IMG/Batch-15/Batch-153.jpeg",          caption: "Batch 15 — Training Moment 3" },
-          { src: "All-IMG/Batch-15/Batch-154.jpeg",          caption: "Batch 15 — Training Moment 4" },
-          { src: "All-IMG/Batch-15/Batch-15GroupPhoto.webp", caption: "Batch 15 — Group Photo"       },
+          { src: "All-IMG/Batch-15/Batch-151.jpeg", caption: "Batch 15 — Training Moment 1" },
+          { src: "All-IMG/Batch-15/Batch-152.jpeg", caption: "Batch 15 — Training Moment 2" },
+          { src: "All-IMG/Batch-15/Batch-153.jpeg", caption: "Batch 15 — Training Moment 3" },
+          { src: "All-IMG/Batch-15/Batch-154.jpeg", caption: "Batch 15 — Training Moment 4" },
+          { src: "All-IMG/Batch-15/Batch-15GroupPhoto.webp", caption: "Batch 15 — Group Photo" },
         ],
         16: [
-          { src: "All-IMG/Batch-16/Batch-161.jpeg",          caption: "Batch 16 — Training Moment 1" },
-          { src: "All-IMG/Batch-16/Batch-162.jpeg",          caption: "Batch 16 — Training Moment 2" },
-          { src: "All-IMG/Batch-16/Batch-163.jpeg",          caption: "Batch 16 — Training Moment 3" },
-          { src: "All-IMG/Batch-16/Batch-164.jpeg",          caption: "Batch 16 — Training Moment 4" },
-          { src: "All-IMG/Batch-16/Batch-16GroupPhoto.webp", caption: "Batch 16 — Group Photo"       },
+          { src: "All-IMG/Batch-16/Batch-161.jpeg", caption: "Batch 16 — Training Moment 1" },
+          { src: "All-IMG/Batch-16/Batch-162.jpeg", caption: "Batch 16 — Training Moment 2" },
+          { src: "All-IMG/Batch-16/Batch-163.jpeg", caption: "Batch 16 — Training Moment 3" },
+          { src: "All-IMG/Batch-16/Batch-164.jpeg", caption: "Batch 16 — Training Moment 4" },
+          { src: "All-IMG/Batch-16/Batch-16GroupPhoto.webp", caption: "Batch 16 — Group Photo" },
         ],
       };
 
@@ -812,7 +1121,7 @@
         `;
 
         imgs.forEach((img, idx) => {
-          const escapedSrc     = img.src.replace(/'/g, "\\'");
+          const escapedSrc = img.src.replace(/'/g, "\\'");
           const escapedCaption = img.caption.replace(/'/g, "\\'");
           // derive a clean filename from the src path
           const filename = img.src.split('/').pop();
@@ -844,7 +1153,7 @@
     });
 
     // 3. Filtering Function (Triggered by the small buttons)
-    window.filterGallery = function(batchNum, clickedBtn) {
+    window.filterGallery = function (batchNum, clickedBtn) {
       // Remove 'active' class from all buttons, then add to the clicked one
       const allBtns = document.querySelectorAll('.filter-btn');
       allBtns.forEach(btn => btn.classList.remove('active'));
@@ -852,7 +1161,7 @@
 
       // Get all batch sections
       const allBatches = document.querySelectorAll('.batch-section');
-      
+
       allBatches.forEach(batch => {
         if (batchNum === 'all') {
           // Show all
@@ -869,8 +1178,8 @@
     };
 
     // 4. Lightbox — with Prev/Next navigation
-    let _lbImages  = [];   // flat list of { src, caption } currently visible
-    let _lbIndex   = 0;    // current position
+    let _lbImages = [];   // flat list of { src, caption } currently visible
+    let _lbIndex = 0;    // current position
 
     function buildImageList() {
       // Collect all img-wrapper images that are currently visible
@@ -879,7 +1188,7 @@
         if (section.style.display === 'none') return;
         section.querySelectorAll('.img-wrapper img').forEach(img => {
           _lbImages.push({
-            src:     img.getAttribute('src'),
+            src: img.getAttribute('src'),
             caption: img.getAttribute('alt') || ''
           });
         });
@@ -890,7 +1199,7 @@
       if (!_lbImages.length) return;
       _lbIndex = Math.max(0, Math.min(index, _lbImages.length - 1));
       const item = _lbImages[_lbIndex];
-      const imgEl   = document.getElementById('lightboxImg');
+      const imgEl = document.getElementById('lightboxImg');
       imgEl.style.opacity = '0';
       setTimeout(() => {
         imgEl.src = item.src;
@@ -904,11 +1213,11 @@
       document.getElementById('lbNextBtn').disabled = _lbIndex === _lbImages.length - 1;
     }
 
-    window.lbNavigate = function(dir) {
+    window.lbNavigate = function (dir) {
       lbShow(_lbIndex + dir);
     };
 
-    window.openLightbox = function(src, title) {
+    window.openLightbox = function (src, title) {
       buildImageList();
       // Find this image in the flat list
       const idx = _lbImages.findIndex(i => i.src === src);
@@ -916,19 +1225,19 @@
     };
 
     // Keyboard arrow navigation
-    document.getElementById('imageModal').addEventListener('keydown', function(e) {
-      if (e.key === 'ArrowLeft')  lbNavigate(-1);
+    document.getElementById('imageModal').addEventListener('keydown', function (e) {
+      if (e.key === 'ArrowLeft') lbNavigate(-1);
       if (e.key === 'ArrowRight') lbNavigate(1);
     });
 
     // 5. Download helper — fetch+blob forces Save As instead of opening in browser
-    window.downloadImage = async function(src, filename) {
+    window.downloadImage = async function (src, filename) {
       try {
-        const res  = await fetch(src);
+        const res = await fetch(src);
         const blob = await res.blob();
-        const url  = URL.createObjectURL(blob);
-        const a    = document.createElement('a');
-        a.href     = url;
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
         a.download = filename || 'raftaar-photo.jpg';
         document.body.appendChild(a);
         a.click();
@@ -941,11 +1250,15 @@
     };
   </script>
   <!-- Developer Footer -->
-  <footer style="text-align: center; padding: 20px; font-size: 14px; color: #555; background: #f8f9fa; border-top: 1px solid #e9ecef; margin-top: auto; width: 100%; position: relative; z-index: 10;">
-    Developed by <strong>Ravikant Mahi</strong> | 
-    <a href="https://github.com/Ravikantmahi" target="_blank" style="color: #1a2d6b; text-decoration: none; margin: 0 5px;">GitHub</a> | 
-    <a href="https://www.linkedin.com/in/ravikantmahi/" target="_blank" style="color: #1a2d6b; text-decoration: none; margin: 0 5px;">LinkedIn</a>
+  <footer
+    style="text-align: center; padding: 20px; font-size: 14px; color: #555; background: #f8f9fa; border-top: 1px solid #e9ecef; margin-top: auto; width: 100%; position: relative; z-index: 10;">
+    Developed by <strong>Ravikant Mahi</strong> |
+    <a href="https://github.com/Ravikantmahi" target="_blank"
+      style="color: #1a2d6b; text-decoration: none; margin: 0 5px;">GitHub</a> |
+    <a href="https://www.linkedin.com/in/ravikantmahi/" target="_blank"
+      style="color: #1a2d6b; text-decoration: none; margin: 0 5px;">LinkedIn</a>
   </footer>
 
 </body>
+
 </html>
