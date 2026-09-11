@@ -10,7 +10,7 @@ const ADMIN_API_URL = 'https://raftaar-backend-t93i.onrender.com/api/submissions
   fetch('https://raftaar-backend-t93i.onrender.com/api/submissions', {
     method: 'HEAD',
     cache: 'no-store'
-  }).catch(() => {}); // intentionally silent
+  }).catch(() => { }); // intentionally silent
 })();
 
 // ── CACHE HELPERS (sessionStorage, 5-min TTL) ───────────────────
@@ -28,7 +28,7 @@ function getCached() {
 }
 
 function setCache(data) {
-  try { sessionStorage.setItem(CACHE_KEY, JSON.stringify({ ts: Date.now(), data })); } catch {}
+  try { sessionStorage.setItem(CACHE_KEY, JSON.stringify({ ts: Date.now(), data })); } catch { }
 }
 
 // Pre-computed batch→district index for instant map filtering
@@ -460,140 +460,139 @@ const rawSchools = [
   [423, "TARN TARAN", "3190707302", "GSSS PANDORI SIDHWAN", "Non-PM Shri"],
   [424, "TARN TARAN", "3190303802", "GSSS SOHAL", "Non-PM Shri"],
   [425, "BATHINDA", "03140402202", "GSSS KALYAN SUKHA", "PM Shri"],
-  [425, "TARN TARAN", "3190405502", "GSSS MIANWIND", "NoN-PM Shri"],
-  [426, "BATHINDA", "03140301601", "GSSS KOT BHARA", "PM Shri"]
+  [426, "TARN TARAN", "3190405502", "GSSS MIANWIND", "Non-PM Shri"]
 ];
 
 // UDISE → Batch mapping (all 425 schools)
 const udiseToBatch = {
   // BATCH-1
-  "3020207902":"BATCH-1","3020303102":"BATCH-1","3140601601":"BATCH-1","3140300301":"BATCH-1",
-  "3210105702":"BATCH-1","3210100702":"BATCH-1","3110611702":"BATCH-1","3110600102":"BATCH-1",
-  "3010713802":"BATCH-1","3010203803":"BATCH-1","3050510402":"BATCH-1","3050410802":"BATCH-1",
-  "3040605004":"BATCH-1","3040408902":"BATCH-1","3090407502":"BATCH-1","3090711203":"BATCH-1",
-  "3150210001":"BATCH-1","3150202409":"BATCH-1","3150403301":"BATCH-1","3100403402":"BATCH-1",
-  "3100205202":"BATCH-1","3100500105":"BATCH-1","3221001802":"BATCH-1","3221003304":"BATCH-1",
-  "3221503102":"BATCH-1","3170418002":"BATCH-1","03140301601":"BATCH-1","03140402202":"BATCH-1","3170710702":"BATCH-1",
+  "3020207902": "BATCH-1", "3020303102": "BATCH-1", "3140601601": "BATCH-1", "3140300301": "BATCH-1",
+  "3210105702": "BATCH-1", "3210100702": "BATCH-1", "3110611702": "BATCH-1", "3110600102": "BATCH-1",
+  "3010713802": "BATCH-1", "3010203803": "BATCH-1", "3050510402": "BATCH-1", "3050410802": "BATCH-1",
+  "3040605004": "BATCH-1", "3040408902": "BATCH-1", "3090407502": "BATCH-1", "3090711203": "BATCH-1",
+  "3150210001": "BATCH-1", "3150202409": "BATCH-1", "3150403301": "BATCH-1", "3100403402": "BATCH-1",
+  "3100205202": "BATCH-1", "3100500105": "BATCH-1", "3221001802": "BATCH-1", "3221003304": "BATCH-1",
+  "3221503102": "BATCH-1", "3170418002": "BATCH-1", "03140402202": "BATCH-1", "3170710702": "BATCH-1",
   // BATCH-2
-  "3020508003":"BATCH-2","3020606702":"BATCH-2","3140101602":"BATCH-2","3140801702":"BATCH-2",
-  "3140804302":"BATCH-2","3111015104":"BATCH-2","3110709702":"BATCH-2","3011603301":"BATCH-2",
-  "3010710402":"BATCH-2","3050902203":"BATCH-2","3050117602":"BATCH-2","3040708002":"BATCH-2",
-  "3040800101":"BATCH-2","3090905201":"BATCH-2","3090308401":"BATCH-2","3150402601":"BATCH-2",
-  "3150504001":"BATCH-2","3170104002":"BATCH-2","3170305902":"BATCH-2","3180108802":"BATCH-2",
-  "3180111502":"BATCH-2","3161202901":"BATCH-2","3160200802":"BATCH-2","3120113701":"BATCH-2",
-  "3120204703":"BATCH-2","3190302802":"BATCH-2","3190304504":"BATCH-2",
+  "3020508003": "BATCH-2", "3020606702": "BATCH-2", "3140101602": "BATCH-2", "3140801702": "BATCH-2",
+  "3140804302": "BATCH-2", "3111015104": "BATCH-2", "3110709702": "BATCH-2", "3011603301": "BATCH-2",
+  "3010710402": "BATCH-2", "3050902203": "BATCH-2", "3050117602": "BATCH-2", "3040708002": "BATCH-2",
+  "3040800101": "BATCH-2", "3090905201": "BATCH-2", "3090308401": "BATCH-2", "3150402601": "BATCH-2",
+  "3150504001": "BATCH-2", "3170104002": "BATCH-2", "3170305902": "BATCH-2", "3180108802": "BATCH-2",
+  "3180111502": "BATCH-2", "3161202901": "BATCH-2", "3160200802": "BATCH-2", "3120113701": "BATCH-2",
+  "3120204703": "BATCH-2", "3190302802": "BATCH-2", "3190304504": "BATCH-2",
   // BATCH-3
-  "3020302604":"BATCH-3","3020702402":"BATCH-3","3140402912":"BATCH-3","3140703604":"BATCH-3",
-  "3210202709":"BATCH-3","3210109902":"BATCH-3","3210109502":"BATCH-3","3111000103":"BATCH-3",
-  "3110811701":"BATCH-3","3110800703":"BATCH-3","3011308901":"BATCH-3","3011303502":"BATCH-3",
-  "3011301302":"BATCH-3","3050900603":"BATCH-3","3050810702":"BATCH-3","3040403603":"BATCH-3",
-  "3040908103":"BATCH-3","3090504302":"BATCH-3","3090509302":"BATCH-3","3170404402":"BATCH-3",
-  "3170311302":"BATCH-3","3180112002":"BATCH-3","3180214702":"BATCH-3","3160908502":"BATCH-3",
-  "3160200902":"BATCH-3","3190201702":"BATCH-3","3190204602":"BATCH-3",
+  "3020302604": "BATCH-3", "3020702402": "BATCH-3", "3140402912": "BATCH-3", "3140703604": "BATCH-3",
+  "3210202709": "BATCH-3", "3210109902": "BATCH-3", "3210109502": "BATCH-3", "3111000103": "BATCH-3",
+  "3110811701": "BATCH-3", "3110800703": "BATCH-3", "3011308901": "BATCH-3", "3011303502": "BATCH-3",
+  "3011301302": "BATCH-3", "3050900603": "BATCH-3", "3050810702": "BATCH-3", "3040403603": "BATCH-3",
+  "3040908103": "BATCH-3", "3090504302": "BATCH-3", "3090509302": "BATCH-3", "3170404402": "BATCH-3",
+  "3170311302": "BATCH-3", "3180112002": "BATCH-3", "3180214702": "BATCH-3", "3160908502": "BATCH-3",
+  "3160200902": "BATCH-3", "3190201702": "BATCH-3", "3190204602": "BATCH-3",
   // BATCH-4
-  "3020405602":"BATCH-4","3020111602":"BATCH-4","3020800104":"BATCH-4","3140304603":"BATCH-4",
-  "3140305501":"BATCH-4","3080200802":"BATCH-4","3080104002":"BATCH-4","3011208602":"BATCH-4",
-  "3010508102":"BATCH-4","3050806002":"BATCH-4","3050418002":"BATCH-4","3041004904":"BATCH-4",
-  "3040610804":"BATCH-4","3040309001":"BATCH-4","3091102902":"BATCH-4","3091005402":"BATCH-4",
-  "3090613002":"BATCH-4","3170418503":"BATCH-4","3170210002":"BATCH-4","3170202002":"BATCH-4",
-  "3180207502":"BATCH-4","3180118902":"BATCH-4","3160404202":"BATCH-4","3161102202":"BATCH-4",
-  "3160603102":"BATCH-4","3190700902":"BATCH-4","3190602402":"BATCH-4",
+  "3020405602": "BATCH-4", "3020111602": "BATCH-4", "3020800104": "BATCH-4", "3140304603": "BATCH-4",
+  "3140305501": "BATCH-4", "3080200802": "BATCH-4", "3080104002": "BATCH-4", "3011208602": "BATCH-4",
+  "3010508102": "BATCH-4", "3050806002": "BATCH-4", "3050418002": "BATCH-4", "3041004904": "BATCH-4",
+  "3040610804": "BATCH-4", "3040309001": "BATCH-4", "3091102902": "BATCH-4", "3091005402": "BATCH-4",
+  "3090613002": "BATCH-4", "3170418503": "BATCH-4", "3170210002": "BATCH-4", "3170202002": "BATCH-4",
+  "3180207502": "BATCH-4", "3180118902": "BATCH-4", "3160404202": "BATCH-4", "3161102202": "BATCH-4",
+  "3160603102": "BATCH-4", "3190700902": "BATCH-4", "3190602402": "BATCH-4",
   // BATCH-5
-  "3020500502":"BATCH-5","3020600803":"BATCH-5","3200104402":"BATCH-5","3200300902":"BATCH-5",
-  "3140401602":"BATCH-5","3140106701":"BATCH-5","3130209402":"BATCH-5","3130202302":"BATCH-5",
-  "3210203102":"BATCH-5","3210307202":"BATCH-5","3010800104":"BATCH-5","3010513002":"BATCH-5",
-  "3050704701":"BATCH-5","3051005402":"BATCH-5","3040212502":"BATCH-5","3040112632":"BATCH-5",
-  "3160108402":"BATCH-5","3160703902":"BATCH-5","3150300101":"BATCH-5","3150200301":"BATCH-5",
-  "3100501502":"BATCH-5","3100305901":"BATCH-5","3221100102":"BATCH-5","3220913202":"BATCH-5",
-  "3170608002":"BATCH-5","3170805702":"BATCH-5","3161205803":"BATCH-5",
+  "3020500502": "BATCH-5", "3020600803": "BATCH-5", "3200104402": "BATCH-5", "3200300902": "BATCH-5",
+  "3140401602": "BATCH-5", "3140106701": "BATCH-5", "3130209402": "BATCH-5", "3130202302": "BATCH-5",
+  "3210203102": "BATCH-5", "3210307202": "BATCH-5", "3010800104": "BATCH-5", "3010513002": "BATCH-5",
+  "3050704701": "BATCH-5", "3051005402": "BATCH-5", "3040212502": "BATCH-5", "3040112632": "BATCH-5",
+  "3160108402": "BATCH-5", "3160703902": "BATCH-5", "3150300101": "BATCH-5", "3150200301": "BATCH-5",
+  "3100501502": "BATCH-5", "3100305901": "BATCH-5", "3221100102": "BATCH-5", "3220913202": "BATCH-5",
+  "3170608002": "BATCH-5", "3170805702": "BATCH-5", "3161205803": "BATCH-5",
   // BATCH-6
-  "3020605704":"BATCH-6","3020108202":"BATCH-6","3140704002":"BATCH-6","3140110201":"BATCH-6",
-  "3110515002":"BATCH-6","3110717002":"BATCH-6","3050506702":"BATCH-6","3050908302":"BATCH-6",
-  "3040104003":"BATCH-6","3090608502":"BATCH-6","3090408802":"BATCH-6","3090709802":"BATCH-6",
-  "3170311002":"BATCH-6","3170210902":"BATCH-6","3070607603":"BATCH-6","3070108702":"BATCH-6",
-  "3180110103":"BATCH-6","3180221802":"BATCH-6","3180120202":"BATCH-6","3161302302":"BATCH-6",
-  "3160500402":"BATCH-6","3060102703":"BATCH-6","3060105502":"BATCH-6","3120306204":"BATCH-6",
-  "3120204702":"BATCH-6","3190105804":"BATCH-6","3190407804":"BATCH-6",
+  "3020605704": "BATCH-6", "3020108202": "BATCH-6", "3140704002": "BATCH-6", "3140110201": "BATCH-6",
+  "3110515002": "BATCH-6", "3110717002": "BATCH-6", "3050506702": "BATCH-6", "3050908302": "BATCH-6",
+  "3040104003": "BATCH-6", "3090608502": "BATCH-6", "3090408802": "BATCH-6", "3090709802": "BATCH-6",
+  "3170311002": "BATCH-6", "3170210902": "BATCH-6", "3070607603": "BATCH-6", "3070108702": "BATCH-6",
+  "3180110103": "BATCH-6", "3180221802": "BATCH-6", "3180120202": "BATCH-6", "3161302302": "BATCH-6",
+  "3160500402": "BATCH-6", "3060102703": "BATCH-6", "3060105502": "BATCH-6", "3120306204": "BATCH-6",
+  "3120204702": "BATCH-6", "3190105804": "BATCH-6", "3190407804": "BATCH-6",
   // BATCH-7
-  "3020601503":"BATCH-7","3200200802":"BATCH-7","3200305403":"BATCH-7","3140404102":"BATCH-7",
-  "3140404501":"BATCH-7","3130200704":"BATCH-7","3130103802":"BATCH-7","3080111001":"BATCH-7",
-  "3080207702":"BATCH-7","3110811702":"BATCH-7","3110715002":"BATCH-7","3011505902":"BATCH-7",
-  "3010304606":"BATCH-7","3050216002":"BATCH-7","3050908402":"BATCH-7","3040516001":"BATCH-7",
-  "3040306502":"BATCH-7","3030411610":"BATCH-7","3030402002":"BATCH-7","3090900602":"BATCH-7",
-  "3090509404":"BATCH-7","3160104902":"BATCH-7","3160702604":"BATCH-7","3150208701":"BATCH-7",
-  "3150201802":"BATCH-7","3170102102":"BATCH-7","3170703602":"BATCH-7",
+  "3020601503": "BATCH-7", "3200200802": "BATCH-7", "3200305403": "BATCH-7", "3140404102": "BATCH-7",
+  "3140404501": "BATCH-7", "3130200704": "BATCH-7", "3130103802": "BATCH-7", "3080111001": "BATCH-7",
+  "3080207702": "BATCH-7", "3110811702": "BATCH-7", "3110715002": "BATCH-7", "3011505902": "BATCH-7",
+  "3010304606": "BATCH-7", "3050216002": "BATCH-7", "3050908402": "BATCH-7", "3040516001": "BATCH-7",
+  "3040306502": "BATCH-7", "3030411610": "BATCH-7", "3030402002": "BATCH-7", "3090900602": "BATCH-7",
+  "3090509404": "BATCH-7", "3160104902": "BATCH-7", "3160702604": "BATCH-7", "3150208701": "BATCH-7",
+  "3150201802": "BATCH-7", "3170102102": "BATCH-7", "3170703602": "BATCH-7",
   // BATCH-8
-  "3020402402":"BATCH-8","3020812802":"BATCH-8","3200303402":"BATCH-8","3200306905":"BATCH-8",
-  "3140202003":"BATCH-8","3140403402":"BATCH-8","3130212003":"BATCH-8","3130203603":"BATCH-8",
-  "3080205702":"BATCH-8","3080211601":"BATCH-8","3100211802":"BATCH-8","3100102102":"BATCH-8",
-  "3220400802":"BATCH-8","3221003305":"BATCH-8","3170514702":"BATCH-8","3170717803":"BATCH-8",
-  "3070106902":"BATCH-8","3070113702":"BATCH-8","3180212602":"BATCH-8","3180103502":"BATCH-8",
-  "3160205602":"BATCH-8","3160404001":"BATCH-8","3060411501":"BATCH-8","3120404802":"BATCH-8",
-  "3120304002":"BATCH-8","3190103603":"BATCH-8","3190303602":"BATCH-8",
+  "3020402402": "BATCH-8", "3020812802": "BATCH-8", "3200303402": "BATCH-8", "3200306905": "BATCH-8",
+  "3140202003": "BATCH-8", "3140403402": "BATCH-8", "3130212003": "BATCH-8", "3130203603": "BATCH-8",
+  "3080205702": "BATCH-8", "3080211601": "BATCH-8", "3100211802": "BATCH-8", "3100102102": "BATCH-8",
+  "3220400802": "BATCH-8", "3221003305": "BATCH-8", "3170514702": "BATCH-8", "3170717803": "BATCH-8",
+  "3070106902": "BATCH-8", "3070113702": "BATCH-8", "3180212602": "BATCH-8", "3180103502": "BATCH-8",
+  "3160205602": "BATCH-8", "3160404001": "BATCH-8", "3060411501": "BATCH-8", "3120404802": "BATCH-8",
+  "3120304002": "BATCH-8", "3190103603": "BATCH-8", "3190303602": "BATCH-8",
   // BATCH-9
-  "3020806102":"BATCH-9","3020100104":"BATCH-9","3200108601":"BATCH-9","3200110604":"BATCH-9",
-  "3140103602":"BATCH-9","3140502201":"BATCH-9","3130202503":"BATCH-9","3130111402":"BATCH-9",
-  "3210312803":"BATCH-9","3210414802":"BATCH-9","3110909002":"BATCH-9","3111015605":"BATCH-9",
-  "3010305702":"BATCH-9","3010501412":"BATCH-9","3051009302":"BATCH-9","3050423602":"BATCH-9",
-  "3040108602":"BATCH-9","3040112401":"BATCH-9","3030410402":"BATCH-9","3030520702":"BATCH-9",
-  "3090200502":"BATCH-9","3091007203":"BATCH-9","3160702902":"BATCH-9","3160104402":"BATCH-9",
-  "3160108202":"BATCH-9","3150103901":"BATCH-9","3150502401":"BATCH-9",
+  "3020806102": "BATCH-9", "3020100104": "BATCH-9", "3200108601": "BATCH-9", "3200110604": "BATCH-9",
+  "3140103602": "BATCH-9", "3140502201": "BATCH-9", "3130202503": "BATCH-9", "3130111402": "BATCH-9",
+  "3210312803": "BATCH-9", "3210414802": "BATCH-9", "3110909002": "BATCH-9", "3111015605": "BATCH-9",
+  "3010305702": "BATCH-9", "3010501412": "BATCH-9", "3051009302": "BATCH-9", "3050423602": "BATCH-9",
+  "3040108602": "BATCH-9", "3040112401": "BATCH-9", "3030410402": "BATCH-9", "3030520702": "BATCH-9",
+  "3090200502": "BATCH-9", "3091007203": "BATCH-9", "3160702902": "BATCH-9", "3160104402": "BATCH-9",
+  "3160108202": "BATCH-9", "3150103901": "BATCH-9", "3150502401": "BATCH-9",
   // BATCH-10
-  "3020107302":"BATCH-10","3020404002":"BATCH-10","3200110002":"BATCH-10","3200105707":"BATCH-10",
-  "3140402602":"BATCH-10","3140106902":"BATCH-10","3210500302":"BATCH-10","3210420302":"BATCH-10",
-  "3110903602":"BATCH-10","3110811302":"BATCH-10","3170810002":"BATCH-10","3170707802":"BATCH-10",
-  "3070715802":"BATCH-10","3070704303":"BATCH-10","3070607704":"BATCH-10","3180204002":"BATCH-10",
-  "3180214202":"BATCH-10","3161204702":"BATCH-10","3160908703":"BATCH-10","3060305202":"BATCH-10",
-  "3060405403":"BATCH-10","3060210302":"BATCH-10","3120111407":"BATCH-10","3120108103":"BATCH-10",
-  "3190807002":"BATCH-10","3190607802":"BATCH-10",
+  "3020107302": "BATCH-10", "3020404002": "BATCH-10", "3200110002": "BATCH-10", "3200105707": "BATCH-10",
+  "3140402602": "BATCH-10", "3140106902": "BATCH-10", "3210500302": "BATCH-10", "3210420302": "BATCH-10",
+  "3110903602": "BATCH-10", "3110811302": "BATCH-10", "3170810002": "BATCH-10", "3170707802": "BATCH-10",
+  "3070715802": "BATCH-10", "3070704303": "BATCH-10", "3070607704": "BATCH-10", "3180204002": "BATCH-10",
+  "3180214202": "BATCH-10", "3161204702": "BATCH-10", "3160908703": "BATCH-10", "3060305202": "BATCH-10",
+  "3060405403": "BATCH-10", "3060210302": "BATCH-10", "3120111407": "BATCH-10", "3120108103": "BATCH-10",
+  "3190807002": "BATCH-10", "3190607802": "BATCH-10",
   // BATCH-11
-  "3020404402":"BATCH-11","3020504903":"BATCH-11","3130105903":"BATCH-11","3010605406":"BATCH-11",
-  "3010209705":"BATCH-11","3010108102":"BATCH-11","3011509401":"BATCH-11","3050309702":"BATCH-11",
-  "3050600504":"BATCH-11","3041106501":"BATCH-11","3041002702":"BATCH-11","3030200403":"BATCH-11",
-  "3030502802":"BATCH-11","3030209008":"BATCH-11","3150300301":"BATCH-11","3150104401":"BATCH-11",
-  "3100215902":"BATCH-11","3100105806":"BATCH-11","3220901502":"BATCH-11","3221100203":"BATCH-11",
-  "3161302602":"BATCH-11","3160901901":"BATCH-11","3120203203":"BATCH-11","3120108104":"BATCH-11",
-  "3190505705":"BATCH-11","3190804502":"BATCH-11",
+  "3020404402": "BATCH-11", "3020504903": "BATCH-11", "3130105903": "BATCH-11", "3010605406": "BATCH-11",
+  "3010209705": "BATCH-11", "3010108102": "BATCH-11", "3011509401": "BATCH-11", "3050309702": "BATCH-11",
+  "3050600504": "BATCH-11", "3041106501": "BATCH-11", "3041002702": "BATCH-11", "3030200403": "BATCH-11",
+  "3030502802": "BATCH-11", "3030209008": "BATCH-11", "3150300301": "BATCH-11", "3150104401": "BATCH-11",
+  "3100215902": "BATCH-11", "3100105806": "BATCH-11", "3220901502": "BATCH-11", "3221100203": "BATCH-11",
+  "3161302602": "BATCH-11", "3160901901": "BATCH-11", "3120203203": "BATCH-11", "3120108104": "BATCH-11",
+  "3190505705": "BATCH-11", "3190804502": "BATCH-11",
   // BATCH-12
-  "3020900110":"BATCH-12","3020807002":"BATCH-12","3200104802":"BATCH-12","3140502101":"BATCH-12",
-  "3140600501":"BATCH-12","3210409302":"BATCH-12","3210503002":"BATCH-12","3111009402":"BATCH-12",
-  "3110513902":"BATCH-12","3011202802":"BATCH-12","3010101002":"BATCH-12","3010700402":"BATCH-12",
-  "3050807902":"BATCH-12","3050704501":"BATCH-12","3040205202":"BATCH-12","3041100101":"BATCH-12",
-  "3090101402":"BATCH-12","3090904902":"BATCH-12","3091108102":"BATCH-12","3150100701":"BATCH-12",
-  "3150505404":"BATCH-12","3100303107":"BATCH-12","3100212003":"BATCH-12","3190805703":"BATCH-12",
-  "3190408002":"BATCH-12","3190806102":"BATCH-12",
+  "3020900110": "BATCH-12", "3020807002": "BATCH-12", "3200104802": "BATCH-12", "3140502101": "BATCH-12",
+  "3140600501": "BATCH-12", "3210409302": "BATCH-12", "3210503002": "BATCH-12", "3111009402": "BATCH-12",
+  "3110513902": "BATCH-12", "3011202802": "BATCH-12", "3010101002": "BATCH-12", "3010700402": "BATCH-12",
+  "3050807902": "BATCH-12", "3050704501": "BATCH-12", "3040205202": "BATCH-12", "3041100101": "BATCH-12",
+  "3090101402": "BATCH-12", "3090904902": "BATCH-12", "3091108102": "BATCH-12", "3150100701": "BATCH-12",
+  "3150505404": "BATCH-12", "3100303107": "BATCH-12", "3100212003": "BATCH-12", "3190805703": "BATCH-12",
+  "3190408002": "BATCH-12", "3190806102": "BATCH-12",
   // BATCH-13
-  "3140111303":"BATCH-13","3140111201":"BATCH-13","3140504001":"BATCH-13","3011603003":"BATCH-13",
-  "3010108702":"BATCH-13","3010601302":"BATCH-13","3010706902":"BATCH-13","3090501702":"BATCH-13",
-  "3090600202":"BATCH-13","3090107102":"BATCH-13","3090509802":"BATCH-13","3090102702":"BATCH-13",
-  "3100301007":"BATCH-13","3100305904":"BATCH-13","3221502401":"BATCH-13","3220917001":"BATCH-13",
-  "3170715702":"BATCH-13","3170510902":"BATCH-13","3170109202":"BATCH-13","3170606302":"BATCH-13",
-  "3170708804":"BATCH-13","3180110104":"BATCH-13","3180104102":"BATCH-13","3160204802":"BATCH-13",
-  "3160206103":"BATCH-13","3160601102":"BATCH-13",
+  "3140111303": "BATCH-13", "3140111201": "BATCH-13", "3140504001": "BATCH-13", "3011603003": "BATCH-13",
+  "3010108702": "BATCH-13", "3010601302": "BATCH-13", "3010706902": "BATCH-13", "3090501702": "BATCH-13",
+  "3090600202": "BATCH-13", "3090107102": "BATCH-13", "3090509802": "BATCH-13", "3090102702": "BATCH-13",
+  "3100301007": "BATCH-13", "3100305904": "BATCH-13", "3221502401": "BATCH-13", "3220917001": "BATCH-13",
+  "3170715702": "BATCH-13", "3170510902": "BATCH-13", "3170109202": "BATCH-13", "3170606302": "BATCH-13",
+  "3170708804": "BATCH-13", "3180110104": "BATCH-13", "3180104102": "BATCH-13", "3160204802": "BATCH-13",
+  "3160206103": "BATCH-13", "3160601102": "BATCH-13",
   // BATCH-14
-  "3020608202":"BATCH-14","3020505402":"BATCH-14","3020503002":"BATCH-14","3200104002":"BATCH-14",
-  "3200304517":"BATCH-14","3200105211":"BATCH-14","3140104901":"BATCH-14","3140108101":"BATCH-14",
-  "3140102202":"BATCH-14","3130201802":"BATCH-14","3130203402":"BATCH-14","3130205202":"BATCH-14",
-  "3080300202":"BATCH-14","3080209102":"BATCH-14","3080102802":"BATCH-14","3221400102":"BATCH-14",
-  "3221006002":"BATCH-14","3170802302":"BATCH-14","3170604003":"BATCH-14","3170508902":"BATCH-14",
-  "3170504802":"BATCH-14","3170507102":"BATCH-14","3180211302":"BATCH-14","3180305702":"BATCH-14",
-  "3060201502":"BATCH-14","3060207702":"BATCH-14",
+  "3020608202": "BATCH-14", "3020505402": "BATCH-14", "3020503002": "BATCH-14", "3200104002": "BATCH-14",
+  "3200304517": "BATCH-14", "3200105211": "BATCH-14", "3140104901": "BATCH-14", "3140108101": "BATCH-14",
+  "3140102202": "BATCH-14", "3130201802": "BATCH-14", "3130203402": "BATCH-14", "3130205202": "BATCH-14",
+  "3080300202": "BATCH-14", "3080209102": "BATCH-14", "3080102802": "BATCH-14", "3221400102": "BATCH-14",
+  "3221006002": "BATCH-14", "3170802302": "BATCH-14", "3170604003": "BATCH-14", "3170508902": "BATCH-14",
+  "3170504802": "BATCH-14", "3170507102": "BATCH-14", "3180211302": "BATCH-14", "3180305702": "BATCH-14",
+  "3060201502": "BATCH-14", "3060207702": "BATCH-14",
   // BATCH-15
-  "3210415810":"BATCH-15","3210201402":"BATCH-15","3210107101":"BATCH-15","3110806502":"BATCH-15",
-  "3110800302":"BATCH-15","3110807802":"BATCH-15","3010304603":"BATCH-15","3010605407":"BATCH-15",
-  "3011301906":"BATCH-15","3050501202":"BATCH-15","3050905006":"BATCH-15","3050706602":"BATCH-15",
-  "3040214102":"BATCH-15","3040109103":"BATCH-15","3040219502":"BATCH-15","3030108902":"BATCH-15",
-  "3030217602":"BATCH-15","3030216502":"BATCH-15","3090509103":"BATCH-15","3090501503":"BATCH-15",
-  "3090503802":"BATCH-15","3160708802":"BATCH-15","3160712402":"BATCH-15","3160703903":"BATCH-15",
-  "3070113302":"BATCH-15","3180216002":"BATCH-15",
+  "3210415810": "BATCH-15", "3210201402": "BATCH-15", "3210107101": "BATCH-15", "3110806502": "BATCH-15",
+  "3110800302": "BATCH-15", "3110807802": "BATCH-15", "3010304603": "BATCH-15", "3010605407": "BATCH-15",
+  "3011301906": "BATCH-15", "3050501202": "BATCH-15", "3050905006": "BATCH-15", "3050706602": "BATCH-15",
+  "3040214102": "BATCH-15", "3040109103": "BATCH-15", "3040219502": "BATCH-15", "3030108902": "BATCH-15",
+  "3030217602": "BATCH-15", "3030216502": "BATCH-15", "3090509103": "BATCH-15", "3090501503": "BATCH-15",
+  "3090503802": "BATCH-15", "3160708802": "BATCH-15", "3160712402": "BATCH-15", "3160703903": "BATCH-15",
+  "3070113302": "BATCH-15", "3180216002": "BATCH-15",
   // BATCH-16
-  "3150101101":"BATCH-16","3150400906":"BATCH-16","3150205001":"BATCH-16","3100302505":"BATCH-16",
-  "3100103003":"BATCH-16","3100304602":"BATCH-16","3221505502":"BATCH-16","3221502002":"BATCH-16",
-  "3221101702":"BATCH-16","3170304502":"BATCH-16","3170202302":"BATCH-16","3070101402":"BATCH-16",
-  "3070712202":"BATCH-16","3180310002":"BATCH-16","3180310202":"BATCH-16","3161102402":"BATCH-16",
-  "3160902102":"BATCH-16","3160906602":"BATCH-16","3060302902":"BATCH-16","3120302006":"BATCH-16",
-  "3120300405":"BATCH-16","3120100903":"BATCH-16","3190707302":"BATCH-16","3190303802":"BATCH-16",
-  "3190405502":"BATCH-16"
+  "3150101101": "BATCH-16", "3150400906": "BATCH-16", "3150205001": "BATCH-16", "3100302505": "BATCH-16",
+  "3100103003": "BATCH-16", "3100304602": "BATCH-16", "3221505502": "BATCH-16", "3221502002": "BATCH-16",
+  "3221101702": "BATCH-16", "3170304502": "BATCH-16", "3170202302": "BATCH-16", "3070101402": "BATCH-16",
+  "3070712202": "BATCH-16", "3180310002": "BATCH-16", "3180310202": "BATCH-16", "3161102402": "BATCH-16",
+  "3160902102": "BATCH-16", "3160906602": "BATCH-16", "3060302902": "BATCH-16", "3120302006": "BATCH-16",
+  "3120300405": "BATCH-16", "3120100903": "BATCH-16", "3190707302": "BATCH-16", "3190303802": "BATCH-16",
+  "3190405502": "BATCH-16"
 };
 
 const schoolMasterData = rawSchools.map(s => ({
@@ -879,19 +878,19 @@ function validateForm() {
 // ── REAL-TIME VALIDATION (on blur) ──
 function attachLiveValidation() {
   const rules = [
-    { id: 'batchId',        err: 'err-batch',    test: v => !!v },
+    { id: 'batchId', err: 'err-batch', test: v => !!v },
     { id: 'districtSelect', err: 'err-district', test: v => !!v },
-    { id: 'udiseSelect',    err: 'err-udise',    test: v => !!v },
-    { id: 'candidateName',  err: 'err-name',     test: v => v.trim().length >= 3 && /^[a-zA-Z\s.'-]+$/.test(v.trim()) },
-    { id: 'fatherName',     err: 'err-father',   test: v => v.trim().length >= 3 && /^[a-zA-Z\s.'-]+$/.test(v.trim()) },
-    { id: 'gender',         err: 'err-gender',   test: v => !!v },
-    { id: 'designation',    err: 'err-designation', test: v => v.trim().length >= 2 },
-    { id: 'subject',        err: 'err-subject',  test: v => v.trim().length >= 2 },
-    { id: 'qualification',  err: 'err-qualification', test: v => v.trim().length >= 2 },
-    { id: 'aadhaar',        err: 'err-aadhaar',  test: v => /^[0-9]{12}$/.test(v.trim()) },
-    { id: 'mobile',         err: 'err-mobile',   test: v => /^[6-9][0-9]{9}$/.test(v.trim()) },
-    { id: 'email',          err: 'err-email',    test: v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim()) },
-    { id: 'address',        err: 'err-address',  test: v => v.trim().length >= 10 },
+    { id: 'udiseSelect', err: 'err-udise', test: v => !!v },
+    { id: 'candidateName', err: 'err-name', test: v => v.trim().length >= 3 && /^[a-zA-Z\s.'-]+$/.test(v.trim()) },
+    { id: 'fatherName', err: 'err-father', test: v => v.trim().length >= 3 && /^[a-zA-Z\s.'-]+$/.test(v.trim()) },
+    { id: 'gender', err: 'err-gender', test: v => !!v },
+    { id: 'designation', err: 'err-designation', test: v => v.trim().length >= 2 },
+    { id: 'subject', err: 'err-subject', test: v => v.trim().length >= 2 },
+    { id: 'qualification', err: 'err-qualification', test: v => v.trim().length >= 2 },
+    { id: 'aadhaar', err: 'err-aadhaar', test: v => /^[0-9]{12}$/.test(v.trim()) },
+    { id: 'mobile', err: 'err-mobile', test: v => /^[6-9][0-9]{9}$/.test(v.trim()) },
+    { id: 'email', err: 'err-email', test: v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim()) },
+    { id: 'address', err: 'err-address', test: v => v.trim().length >= 10 },
   ];
 
   rules.forEach(({ id, err, test }) => {
@@ -910,7 +909,7 @@ function attachLiveValidation() {
   // DOB special — check on change
   const dobEl = document.getElementById('dob');
   if (dobEl) dobEl.addEventListener('change', () => {
-    const today = new Date(); today.setHours(0,0,0,0);
+    const today = new Date(); today.setHours(0, 0, 0, 0);
     const dob = new Date(dobEl.value);
     const ok = dobEl.value && dob < today && dob >= new Date('1950-01-01');
     setFieldState('dob', 'err-dob', ok);
@@ -929,7 +928,7 @@ function attachLiveValidation() {
   if (emEl) emEl.addEventListener('input', () => { emEl.value = emEl.value.toLowerCase(); });
 
   // Photo live check
-  document.getElementById('photoInput').addEventListener('change', function() {
+  document.getElementById('photoInput').addEventListener('change', function () {
     const f = this.files[0];
     const zone = document.getElementById('photoZone');
     const err = document.getElementById('err-photo');
@@ -1031,7 +1030,7 @@ function launchConfetti() {
   const container = document.getElementById('confettiContainer');
   if (!container) return;
   container.innerHTML = '';
-  const colors = ['#f47920','#1a2d6b','#2d8c3e','#fff','#ffd700','#ff6b6b','#4ecdc4'];
+  const colors = ['#f47920', '#1a2d6b', '#2d8c3e', '#fff', '#ffd700', '#ff6b6b', '#4ecdc4'];
   for (let i = 0; i < 80; i++) {
     const piece = document.createElement('div');
     piece.className = 'confetti-piece';
@@ -1061,7 +1060,7 @@ function resetAndRegisterAgain() {
 async function loadSubmissions() {
   const tbody = document.getElementById('adminTableBody');
   tbody.innerHTML = '<tr><td colspan="7" class="text-center">Loading...</td></tr>';
-  
+
   try {
     const res = await fetch(ADMIN_API_URL);
     submissionsData = await res.json();
@@ -1078,8 +1077,8 @@ async function loadSubmissions() {
         filter.innerHTML += `<option value="${b}">${b}</option>`;
       });
     filterSubmissions();
-  } catch(err) {
-      tbody.innerHTML = '<tr><td colspan="7" class="text-center text-danger">Error Loading Data</td></tr>';
+  } catch (err) {
+    tbody.innerHTML = '<tr><td colspan="7" class="text-center text-danger">Error Loading Data</td></tr>';
   }
 }
 
@@ -1153,23 +1152,23 @@ function exportExcel() {
 function formatExcelDate(dateStr, isDob = false) {
   if (!dateStr) return '';
   const str = String(dateStr).trim();
-  
+
   // 1. If it's a long JS Date string from Google Apps Script (e.g., "Thu Apr 06 2023...")
   const d = new Date(str);
   if (!isNaN(d.getTime()) && str.length > 20) {
     const dd = String(d.getDate()).padStart(2, '0');
     const mm = String(d.getMonth() + 1).padStart(2, '0');
     const yyyy = d.getFullYear();
-    
+
     if (isDob) return `${dd}/${mm}/${yyyy}`;
-    
+
     // Timestamp keeps the time
     const hh = String(d.getHours()).padStart(2, '0');
     const min = String(d.getMinutes()).padStart(2, '0');
     const ss = String(d.getSeconds()).padStart(2, '0');
     return `${dd}/${mm}/${yyyy} ${hh}:${min}:${ss}`;
   }
-  
+
   // 2. If it's YYYY-MM-DD
   if (str.includes('-') && str.split('T')[0].split('-').length === 3 && str.split('-')[0].length === 4) {
     const p = str.split('T')[0].split('-');
@@ -1183,12 +1182,12 @@ function formatExcelDate(dateStr, isDob = false) {
 function formatWorksheet(data) {
   const ws = XLSX.utils.aoa_to_sheet([
     ["ID", "Time", "Batch", "Name", "Father/Spouse", "DOB", "Gender", "State", "District", "UDISE",
-     "School Name", "School Type", "Designation", "Branch/Subject", "Qualification",
-     "Aadhaar", "Mobile", "Email", "Address", "Photo URL", "Signature URL"],
+      "School Name", "School Type", "Designation", "Branch/Subject", "Qualification",
+      "Aadhaar", "Mobile", "Email", "Address", "Photo URL", "Signature URL"],
     ...data.map(s => {
       const formattedDob = formatExcelDate(s.dob, true);
       const formattedTime = formatExcelDate(s.timestamp, false);
-      
+
       return [
         s.id, formattedTime, s.batchId, s.name, s.fatherName, formattedDob, s.gender, s.state,
         s.district, s.udise, s.schoolName, s.schoolType,
@@ -1198,10 +1197,10 @@ function formatWorksheet(data) {
     })
   ]);
   ws['!cols'] = [
-    {wch:15},{wch:20},{wch:10},{wch:25},{wch:25},{wch:12},{wch:8},
-    {wch:10},{wch:15},{wch:15},{wch:40},{wch:12},
-    {wch:18},{wch:18},{wch:18},
-    {wch:14},{wch:14},{wch:28},{wch:40},{wch:40},{wch:40}
+    { wch: 15 }, { wch: 20 }, { wch: 10 }, { wch: 25 }, { wch: 25 }, { wch: 12 }, { wch: 8 },
+    { wch: 10 }, { wch: 15 }, { wch: 15 }, { wch: 40 }, { wch: 12 },
+    { wch: 18 }, { wch: 18 }, { wch: 18 },
+    { wch: 14 }, { wch: 14 }, { wch: 28 }, { wch: 40 }, { wch: 40 }, { wch: 40 }
   ];
   return ws;
 }
@@ -1211,7 +1210,7 @@ function getDriveThumbnailUrl(url) {
   if (!url) return '';
   if (url.startsWith('data:')) return url;
   const match = url.match(/\/file\/d\/([a-zA-Z0-9_-]+)/) ||
-                url.match(/[?&]id=([a-zA-Z0-9_-]+)/);
+    url.match(/[?&]id=([a-zA-Z0-9_-]+)/);
   if (match && match[1]) {
     return `https://drive.google.com/thumbnail?id=${match[1]}&sz=w400`;
   }
@@ -1242,7 +1241,7 @@ async function downloadPDF(id) {
     }
     const d = new Date(s);
     if (!isNaN(d.getTime())) {
-      return `${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}/${d.getFullYear()}`;
+      return `${String(d.getDate()).padStart(2, '0')}/${String(d.getMonth() + 1).padStart(2, '0')}/${d.getFullYear()}`;
     }
     return s;
   }
@@ -1291,42 +1290,42 @@ async function downloadPDF(id) {
   }
 
   // ── Populate all text fields ──
-  setText('pdfId',    item.id,      '');
+  setText('pdfId', item.id, '');
   setText('pdfBatch', item.batchId, '');
-  setText('pdfName',  item.name,    '');
+  setText('pdfName', item.name, '');
   setText('pdfFather', item.fatherName, '');
-  setText('pdfDob',   formatDobDisplay(item.dob), '');
+  setText('pdfDob', formatDobDisplay(item.dob), '');
   setText('pdfGender', item.gender, '');
   setText('pdfDistrict', item.district, '');
-  setText('pdfUdise',    item.udise,    '');
+  setText('pdfUdise', item.udise, '');
   setText('pdfSchoolName', item.schoolName, '');
   setText('pdfSchoolType', item.schoolType, '');
-  setText('pdfDesignation',   item.designation,   '—');
-  setText('pdfSubject',       item.subject,        '—');
-  setText('pdfQualification', item.qualification,  '—');
+  setText('pdfDesignation', item.designation, '—');
+  setText('pdfSubject', item.subject, '—');
+  setText('pdfQualification', item.qualification, '—');
   setText('pdfMobile', item.mobile, '—');
-  setText('pdfEmail',  item.email,  '—');
+  setText('pdfEmail', item.email, '—');
   setText('pdfAddress', item.address, '—');
 
   // ── Show Full Aadhaar ──
   let aadhaar = item.aadhaar ? String(item.aadhaar).replace(/\D/g, '') : '';
   if (aadhaar.length === 12) {
-    aadhaar = aadhaar.slice(0,4) + ' ' + aadhaar.slice(4,8) + ' ' + aadhaar.slice(8);
+    aadhaar = aadhaar.slice(0, 4) + ' ' + aadhaar.slice(4, 8) + ' ' + aadhaar.slice(8);
   }
   setText('pdfAadhaar', aadhaar || '—', '—');
 
   // ── Image elements ──
-  const photoEl          = document.getElementById('pdfPhoto');
+  const photoEl = document.getElementById('pdfPhoto');
   const photoPlaceholder = document.getElementById('pdfPhotoPlaceholder');
-  const sigEl            = document.getElementById('pdfSig');
-  const sigPlaceholder   = document.getElementById('pdfSigPlaceholder');
+  const sigEl = document.getElementById('pdfSig');
+  const sigPlaceholder = document.getElementById('pdfSigPlaceholder');
 
   if (!photoEl || !sigEl) { alert('PDF template image elements are missing.'); return; }
 
   // Reset
   photoEl.style.display = 'none'; photoEl.removeAttribute('src');
   if (photoPlaceholder) photoPlaceholder.style.display = 'block';
-  sigEl.style.display = 'none';   sigEl.removeAttribute('src');
+  sigEl.style.display = 'none'; sigEl.removeAttribute('src');
   if (sigPlaceholder) sigPlaceholder.style.display = 'block';
 
   // ── Load photo + signature via backend proxy ──
@@ -1356,7 +1355,7 @@ async function downloadPDF(id) {
   [photoEl, sigEl].forEach(img => {
     if (img && img.style.display !== 'none' && img.src) {
       if (typeof img.decode === 'function') {
-        imagePromises.push(img.decode().catch(() => {}));
+        imagePromises.push(img.decode().catch(() => { }));
       } else {
         imagePromises.push(new Promise(resolve => {
           if (img.complete) { resolve(); return; }
@@ -1368,15 +1367,15 @@ async function downloadPDF(id) {
   await Promise.all(imagePromises);
 
   // ── Get template ──
-  const wrapper  = document.getElementById('pdfWrapper');
+  const wrapper = document.getElementById('pdfWrapper');
   const template = document.getElementById('pdfTemplate');
   if (!wrapper || !template) { alert('PDF template was not found.'); return; }
 
   // ── Show template for canvas capture ──
   wrapper.style.position = 'absolute';
   wrapper.style.left = '0';
-  wrapper.style.top  = '0';
-  wrapper.style.zIndex  = '99999';
+  wrapper.style.top = '0';
+  wrapper.style.zIndex = '99999';
   wrapper.style.opacity = '1';
 
   const savedScrollX = window.scrollX;
@@ -1388,17 +1387,17 @@ async function downloadPDF(id) {
   try {
     // ── Render exact A4 to canvas ──
     const canvas = await html2canvas(template, {
-      scale:        2.5,
-      width:        794,
-      height:       1122,
-      windowWidth:  794,
+      scale: 2.5,
+      width: 794,
+      height: 1122,
+      windowWidth: 794,
       windowHeight: 1122,
       x: 0, y: 0,
       scrollX: 0, scrollY: 0,
-      useCORS:         true,
-      allowTaint:      false,
+      useCORS: true,
+      allowTaint: false,
       backgroundColor: '#ffffff',
-      logging:         false
+      logging: false
     });
 
     // ── Create exactly one A4 page PDF ──
@@ -1415,9 +1414,9 @@ async function downloadPDF(id) {
 
   } finally {
     // ── Restore ──
-    wrapper.style.left    = '-10000px';
-    wrapper.style.top     = '0';
-    wrapper.style.zIndex  = '-1';
+    wrapper.style.left = '-10000px';
+    wrapper.style.top = '0';
+    wrapper.style.zIndex = '-1';
     wrapper.style.opacity = '1';
     window.scrollTo(savedScrollX, savedScrollY);
     if (btn) { btn.disabled = false; btn.textContent = '📄 PDF'; }
@@ -1428,7 +1427,7 @@ async function downloadPDF(id) {
 const ADMIN_ID = "admin";
 const ADMIN_PASS = "nielit123";
 
-document.getElementById('loginForm').addEventListener('submit', function(e) {
+document.getElementById('loginForm').addEventListener('submit', function (e) {
   e.preventDefault();
   const idInput = document.getElementById('adminId').value;
   const passInput = document.getElementById('adminPass').value;
@@ -1436,11 +1435,11 @@ document.getElementById('loginForm').addEventListener('submit', function(e) {
   if (idInput === ADMIN_ID && passInput === ADMIN_PASS) {
     const loginModalEl = document.getElementById('loginModal');
     const modalInstance = bootstrap.Modal.getInstance(loginModalEl) || new bootstrap.Modal(loginModalEl);
-    
+
     // Wait for Bootstrap to finish its closing animation before switching tabs
     loginModalEl.addEventListener('hidden.bs.modal', function onHidden() {
       loginModalEl.removeEventListener('hidden.bs.modal', onHidden);
-      
+
       // Extra safety cleanup for scrolling/clicking issues
       document.body.classList.remove('modal-open');
       document.body.style.overflow = 'auto';
@@ -1449,6 +1448,7 @@ document.getElementById('loginForm').addEventListener('submit', function(e) {
 
       document.getElementById('loginForm').reset();
       document.getElementById('adminTabContainer').classList.remove('d-none');
+      document.getElementById('schoolsTabContainer').classList.remove('d-none');
       const adminTab = new bootstrap.Tab(document.getElementById('admin-tab'));
       adminTab.show();
       loadSubmissions();
@@ -1462,10 +1462,365 @@ document.getElementById('loginForm').addEventListener('submit', function(e) {
 
 function logoutAdmin() {
   document.getElementById('adminTabContainer').classList.add('d-none');
+  document.getElementById('schoolsTabContainer').classList.add('d-none');
   const formTab = new bootstrap.Tab(document.getElementById('form-tab'));
   formTab.show();
   submissionsData = [];
+  _schoolsData = [];
   document.getElementById('adminTableBody').innerHTML = '<tr><td colspan="6" class="text-center">Loading...</td></tr>';
+  document.getElementById('schoolsTableBody').innerHTML = '<tr><td colspan="6"><div class="schools-loading"><div class="spinner"></div><p>Loading school data…</p></div></td></tr>';
+  document.getElementById('skpiAttended').textContent = '—';
+  document.getElementById('skpiNotAttended').textContent = '—';
+  document.getElementById('skpiAttendedPct').textContent = '';
+  document.getElementById('skpiNotAttendedPct').textContent = '';
+  const elTotalSubs = document.getElementById('skpiTotalSubs');
+  if (elTotalSubs) elTotalSubs.textContent = '—';
+}
+
+// ══════════════════════════════════════════════════════════════════════
+// SCHOOLS TRAINING STATUS DASHBOARD
+// ══════════════════════════════════════════════════════════════════════
+
+// Holds computed schools with status; populated by loadSchoolsDashboard()
+let _schoolsData = [];
+
+/**
+ * Loads submissions from the backend, cross-references them with rawSchools
+ * by UDISE code, and builds the full schools status table.
+ * Called every time the Schools Dashboard tab is activated.
+ */
+async function loadSchoolsDashboard() {
+  const tbody = document.getElementById('schoolsTableBody');
+  if (tbody) {
+    tbody.innerHTML = '<tr><td colspan="8"><div class="schools-loading"><div class="spinner"></div><p>Fetching attendance data…</p></div></td></tr>';
+  }
+
+  try {
+    // Reuse cached submissions if available, else fetch fresh
+    let subs = submissionsData;
+    if (!subs || subs.length === 0) {
+      const res = await fetch(ADMIN_API_URL);
+      subs = await res.json();
+      submissionsData = subs; // share with admin panel
+    }
+
+    // Map UDISE codes to teacher registration info: count, set of batches, and teacher names
+    const udiseSubMap = {};
+    subs.forEach(s => {
+      if (s.udise) {
+        const u = String(s.udise).trim();
+        const normU = u.replace(/^0+/, '');
+        if (!udiseSubMap[u]) udiseSubMap[u] = { count: 0, batches: new Set(), teachers: [] };
+        if (!udiseSubMap[normU]) udiseSubMap[normU] = udiseSubMap[u];
+
+        udiseSubMap[u].count++;
+        if (s.batchId || s.batch) {
+          const b = String(s.batchId || s.batch).trim().toUpperCase();
+          udiseSubMap[u].batches.add(b);
+        }
+        if (s.name) {
+          const tName = String(s.name).trim();
+          if (tName && !udiseSubMap[u].teachers.includes(tName)) {
+            udiseSubMap[u].teachers.push(tName);
+          }
+        }
+      }
+    });
+
+    // Build the enriched school list (fixed 425 unique master schools)
+    const seenUdise = new Set();
+    _schoolsData = [];
+    rawSchools.slice(0, 425).forEach((row) => {
+      const udise = String(row[2] || '').trim();
+      const normUdise = udise.replace(/^0+/, '');
+      const udiseKey = normUdise || String(row[3]).trim().toLowerCase();
+
+      // Skip duplicate school entries by UDISE key
+      if (seenUdise.has(udiseKey)) return;
+      seenUdise.add(udiseKey);
+
+      const subInfo = udiseSubMap[udise] || udiseSubMap[normUdise];
+      const attended = !!subInfo && subInfo.count > 0;
+      const batches = attended ? Array.from(subInfo.batches).sort((a, b) => {
+        return (parseInt(a.replace(/\D/g, '')) || 0) - (parseInt(b.replace(/\D/g, '')) || 0);
+      }) : [];
+      const teachers = attended ? (subInfo ? subInfo.teachers : []) : [];
+      const teacherCount = attended ? subInfo.count : 0;
+
+      _schoolsData.push({
+        srNo: _schoolsData.length + 1,
+        district: row[1],
+        udise,
+        schoolName: row[3],
+        schoolType: row[4],
+        attended,
+        batches,
+        teachers,
+        teacherCount
+      });
+    });
+
+    // Populate district filter (unique districts, sorted)
+    const distSel = document.getElementById('schoolsDistrictFilter');
+    if (distSel && distSel.options.length <= 1) {
+      const districts = [...new Set(
+        _schoolsData.map(s => s.district.trim().toUpperCase())
+      )].sort();
+      districts.forEach(d => {
+        const opt = document.createElement('option');
+        opt.value = d;
+        opt.textContent = d;
+        distSel.appendChild(opt);
+      });
+    }
+
+    // Compute and display KPIs
+    // Total Schools fixed at 425 unique participating schools
+    const total = 425;
+    // Attended Training counts every registration entry submitted
+    const attended = subs ? subs.length : 0;
+    const notAttended = Math.max(0, total - attended);
+
+    document.getElementById('skpiTotal').textContent = total;
+    document.getElementById('skpiAttended').textContent = attended;
+    document.getElementById('skpiNotAttended').textContent = notAttended;
+    document.getElementById('skpiAttendedPct').textContent =
+      total > 0 ? `${((attended / total) * 100).toFixed(1)}% of total` : '';
+    document.getElementById('skpiNotAttendedPct').textContent =
+      total > 0 ? `${((notAttended / total) * 100).toFixed(1)}% of total` : '';
+
+    const elTotalSubs = document.getElementById('skpiTotalSubs');
+    if (elTotalSubs) elTotalSubs.textContent = subs ? subs.length : 0;
+
+    // Render table (no active filters on first load)
+    renderSchoolsTable(_schoolsData);
+
+  } catch (err) {
+    console.error('Schools dashboard error:', err);
+    if (tbody) {
+      tbody.innerHTML = '<tr><td colspan="8"><div class="schools-empty-state"><div class="empty-icon">⚠️</div><p>Failed to load attendance data. Please try again.</p></div></td></tr>';
+    }
+  }
+}
+
+/**
+ * Renders a filtered/full list of school rows into the table.
+ * @param {Array} schools - array of school objects to display
+ */
+function renderSchoolsTable(schools) {
+  const tbody = document.getElementById('schoolsTableBody');
+  const resultCount = document.getElementById('schoolsResultCount');
+  if (!tbody) return;
+
+  if (resultCount) resultCount.textContent = schools.length;
+
+  if (schools.length === 0) {
+    tbody.innerHTML = `
+      <tr>
+        <td colspan="8">
+          <div class="schools-empty-state">
+            <div class="empty-icon">🔍</div>
+            <p>No schools match your search / filter criteria.</p>
+          </div>
+        </td>
+      </tr>`;
+    return;
+  }
+
+  const isPmShri = type => /pm\s*shri/i.test(type || '');
+
+  tbody.innerHTML = schools.map((s, idx) => {
+    const typeCls = isPmShri(s.schoolType) ? 'pm-shri' : 'non-pm-shri';
+    const typeLabel = isPmShri(s.schoolType) ? 'PM SHRI' : (s.schoolType || 'Non-PM Shri');
+    const statusCls = s.attended ? 'attended' : 'not-attended';
+    const statusLabel = s.attended ? 'Attended' : 'Not Attended';
+    const rowBg = idx % 2 === 0 ? 'rgba(255,255,255,0.025)' : 'transparent';
+
+    let teacherDisplay = '<span style="color:rgba(255,255,255,0.35); font-size:12px;">—</span>';
+    if (s.attended && s.teachers && s.teachers.length > 0) {
+      teacherDisplay = `<span style="font-weight:600; color:#4ade80; font-size:12.5px;">${s.teachers.join(', ')}</span>`;
+    }
+
+    let batchDisplay = '<span style="color:rgba(255,255,255,0.35); font-size:12px;">—</span>';
+    if (s.attended && s.batches && s.batches.length > 0) {
+      const batchBadges = s.batches.map(b => `<span class="badge bg-primary me-1" style="font-size:11px; padding:3px 7px; background: rgba(59, 130, 246, 0.85) !important;">${b}</span>`).join('');
+      const countNote = s.teacherCount > 1 ? `<span style="font-size:11px; color:rgba(255,255,255,0.65); margin-left:3px;">(${s.teacherCount} Teachers)</span>` : '';
+      batchDisplay = `<div style="display:flex; align-items:center; flex-wrap:wrap; gap:3px;">${batchBadges}${countNote}</div>`;
+    }
+
+    return `
+      <tr style="background:${rowBg};">
+        <td>${idx + 1}</td>
+        <td class="school-name-cell" title="${s.schoolName.replace(/"/g, '&quot;')}">${s.schoolName}</td>
+        <td class="district-cell">${s.district.toUpperCase()}</td>
+        <td class="udise-cell">${s.udise || '&mdash;'}</td>
+        <td class="type-cell"><span class="type-badge ${typeCls}">${typeLabel}</span></td>
+        <td>${teacherDisplay}</td>
+        <td>${batchDisplay}</td>
+        <td><span class="status-badge ${statusCls}">${statusLabel}</span></td>
+      </tr>`;
+  }).join('');
+}
+
+/**
+ * Filters the school table based on current search + dropdown states.
+ * Called on every input / change event.
+ */
+function filterSchoolsTable() {
+  if (!_schoolsData.length) return;
+
+  const search = (document.getElementById('schoolsSearch')?.value || '').trim().toLowerCase();
+  const dist = (document.getElementById('schoolsDistrictFilter')?.value || '').toUpperCase();
+  const type = (document.getElementById('schoolsTypeFilter')?.value || '').toLowerCase();
+  const status = (document.getElementById('schoolsStatusFilter')?.value || '');
+
+  const isPmShri = t => /pm\s*shri/i.test(t || '');
+
+  const filtered = _schoolsData.filter(s => {
+    // Search includes schoolName, district, UDISE code, registered batch IDs, or teacher names
+    if (search) {
+      const batchStr = (s.batches || []).join(' ').toLowerCase();
+      const teacherStr = (s.teachers || []).join(' ').toLowerCase();
+      const haystack = `${s.schoolName} ${s.district} ${s.udise} ${batchStr} ${teacherStr}`.toLowerCase();
+      if (!haystack.includes(search)) return false;
+    }
+    // District
+    if (dist && s.district.trim().toUpperCase() !== dist) return false;
+    // School type
+    if (type) {
+      const matchesPm = isPmShri(s.schoolType);
+      if (type.includes('pm shri') && !matchesPm) return false;
+      if (type.includes('non') && matchesPm) return false;
+    }
+    // Status
+    if (status === 'attended' && !s.attended) return false;
+    if (status === 'not-attended' && s.attended) return false;
+    return true;
+  });
+
+  renderSchoolsTable(filtered);
+}
+
+/** Resets all search and filter inputs, then re-renders the full list. */
+function resetSchoolsFilters() {
+  const schoolsSearch = document.getElementById('schoolsSearch');
+  const distFil = document.getElementById('schoolsDistrictFilter');
+  const typeFil = document.getElementById('schoolsTypeFilter');
+  const statFil = document.getElementById('schoolsStatusFilter');
+  if (schoolsSearch) schoolsSearch.value = '';
+  if (distFil) distFil.value = '';
+  if (typeFil) typeFil.value = '';
+  if (statFil) statFil.value = '';
+  renderSchoolsTable(_schoolsData);
+}
+
+/**
+ * Exports all 425 schools (with their training status) as an Excel file.
+ * Columns: S.No | School Name | District | UDISE Code | School Type | Training Status
+ */
+function exportSchoolsExcel() {
+  if (!_schoolsData.length) {
+    alert('Please open the Schools Dashboard first so data can be loaded.');
+    return;
+  }
+
+  const isPmShri = t => /pm\s*shri/i.test(t || '');
+  const dateStr = new Date().toISOString().slice(0, 10);
+
+  // ── Helper: build a worksheet from a list of school objects ──────────
+  function buildSheet(schools) {
+    const sheetRows = schools.map((s, idx) => [
+      idx + 1,
+      s.schoolName,
+      s.district.toUpperCase(),
+      s.udise || '',
+      isPmShri(s.schoolType) ? 'PM SHRI' : (s.schoolType || 'Non-PM Shri'),
+      s.attended && s.teachers && s.teachers.length > 0 ? s.teachers.join(', ') : '—',
+      s.attended && s.batches && s.batches.length > 0 ? s.batches.join(', ') : '—',
+      s.attended ? 'Attended' : 'Not Attended'
+    ]);
+    const ws = XLSX.utils.aoa_to_sheet([
+      ['S. No.', 'School Name', 'District', 'UDISE Code', 'School Type', 'Teacher Name(s)', 'Registered Batch(es)', 'Teacher Training Status'],
+      ...sheetRows
+    ]);
+    ws['!cols'] = [
+      { wch: 7 },
+      { wch: 50 },
+      { wch: 20 },
+      { wch: 16 },
+      { wch: 14 },
+      { wch: 28 },
+      { wch: 22 },
+      { wch: 22 },
+    ];
+    ['A1', 'B1', 'C1', 'D1', 'E1', 'F1', 'G1', 'H1'].forEach(addr => {
+      if (ws[addr]) ws[addr].s = { font: { bold: true } };
+    });
+    return ws;
+  }
+
+  // ── Helper: safe Excel sheet name (max 31 chars, no special chars) ───
+  function safeSheet(name) {
+    return name.replace(/[\\/*?:[\]]/g, '').substring(0, 31);
+  }
+
+  // ── Group schools by district (sorted A-Z) ────────────────────────────
+  const districtMap = {};
+  _schoolsData.forEach(s => {
+    const key = s.district.trim().toUpperCase();
+    if (!districtMap[key]) districtMap[key] = [];
+    districtMap[key].push(s);
+  });
+  const sortedDistricts = Object.keys(districtMap).sort();
+
+  const totalSchools = _schoolsData.length;
+  const totalAttended = _schoolsData.filter(s => s.attended).length;
+  const totalNotAtt = totalSchools - totalAttended;
+
+  const wb = XLSX.utils.book_new();
+
+  // ── Sheet 1: District-wise Summary ───────────────────────────────────
+  const summaryRows = [
+    ['RAFTAAR — Schools Teacher Training Status (District-wise)'],
+    ['Generated On', new Date().toLocaleString('en-IN', { dateStyle: 'long', timeStyle: 'short' })],
+    ['Generated By', 'RAFTAAR — NIELIT Ropar'],
+    [],
+    ['District', 'Total Schools', 'Attended', 'Not Attended', 'Attendance %'],
+  ];
+  sortedDistricts.forEach(d => {
+    const sc = districtMap[d];
+    const att = sc.filter(s => s.attended).length;
+    summaryRows.push([
+      d,
+      sc.length,
+      att,
+      sc.length - att,
+      sc.length > 0 ? ((att / sc.length) * 100).toFixed(1) + '%' : '0%'
+    ]);
+  });
+  summaryRows.push([]);
+  summaryRows.push([
+    'TOTAL', totalSchools, totalAttended, totalNotAtt,
+    totalSchools > 0 ? ((totalAttended / totalSchools) * 100).toFixed(1) + '%' : '0%'
+  ]);
+
+  const summaryWs = XLSX.utils.aoa_to_sheet(summaryRows);
+  summaryWs['!cols'] = [{ wch: 28 }, { wch: 16 }, { wch: 12 }, { wch: 15 }, { wch: 15 }];
+  // Bold the header row (row index 4 = "District", "Total Schools"…)
+  ['A5', 'B5', 'C5', 'D5', 'E5'].forEach(addr => {
+    if (summaryWs[addr]) summaryWs[addr].s = { font: { bold: true } };
+  });
+  XLSX.utils.book_append_sheet(wb, summaryWs, 'Summary');
+
+  // ── Sheet 2: All Schools combined ────────────────────────────────────
+  XLSX.utils.book_append_sheet(wb, buildSheet(_schoolsData), 'All Schools');
+
+  // ── Sheets 3-N: One sheet per district (sorted A-Z) ──────────────────
+  sortedDistricts.forEach(d => {
+    XLSX.utils.book_append_sheet(wb, buildSheet(districtMap[d]), safeSheet(d));
+  });
+
+  XLSX.writeFile(wb, `Raftaar_Schools_Districtwise_${dateStr}.xlsx`);
 }
 
 // ── DASHBOARD LOGIC ────────────────────────────────────────────────
@@ -1481,7 +1836,7 @@ async function loadDashboard() {
     }
 
     // ── 2. Always fetch fresh data from backend ──────────────────────
-    const res  = await fetch(ADMIN_API_URL);
+    const res = await fetch(ADMIN_API_URL);
     const json = await res.json();
     const data = Array.isArray(json) ? json : (json.data || []);
     setCache(data); // update cache with fresh data
@@ -1495,164 +1850,164 @@ async function loadDashboard() {
 
 async function _renderDashboard(data) {
 
-    const total = data.length;
-    
-    // Helper: count by key
-    function countBy(arr, key) {
-      return arr.reduce((acc, s) => {
-        const v = s[key] || 'Unknown';
-        acc[v] = (acc[v] || 0) + 1;
-        return acc;
-      }, {});
+  const total = data.length;
+
+  // Helper: count by key
+  function countBy(arr, key) {
+    return arr.reduce((acc, s) => {
+      const v = s[key] || 'Unknown';
+      acc[v] = (acc[v] || 0) + 1;
+      return acc;
+    }, {});
+  }
+
+  const batches = Object.keys(countBy(data, 'batchId')).length;
+  const districts = Object.keys(countBy(data, 'district')).length;
+  const schools = Object.keys(countBy(data, 'udise')).length;
+  const female = data.filter(s => (s.gender || '').toLowerCase() === 'female').length;
+  const male = data.filter(s => (s.gender || '').toLowerCase() === 'male').length;
+
+  // KPI cards
+  document.getElementById('kpiTotalVal').textContent = total;
+  document.getElementById('kpiBatchesVal').textContent = batches;
+  document.getElementById('kpiDistrictsVal').textContent = districts;
+  document.getElementById('kpiSchoolsVal').textContent = schools;
+  document.getElementById('kpiFemaleVal').textContent = female;
+  document.getElementById('kpiMaleVal').textContent = male;
+
+  // Destroy old charts
+  Object.values(_dashCharts).forEach(c => c.destroy());
+  _dashCharts = {};
+
+  // ── Chart 1: Batch Bar ────────────────────────────────────────
+  const batchCounts = countBy(data, 'batchId');
+  const batchLabels = Object.keys(batchCounts).sort((a, b) => {
+    return (parseInt(a.replace(/\D/g, '')) || 0) - (parseInt(b.replace(/\D/g, '')) || 0);
+  });
+  _dashCharts.batch = new Chart(document.getElementById('chartBatch'), {
+    type: 'bar',
+    data: {
+      labels: batchLabels,
+      datasets: [{
+        label: 'Registrations',
+        data: batchLabels.map(b => batchCounts[b]),
+        backgroundColor: 'rgba(59, 130, 246, 0.85)', // Bright blue for visibility
+        borderRadius: 6,
+        borderSkipped: false,
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        y: {
+          beginAtZero: true,
+          ticks: { stepSize: 1, color: 'rgba(255,255,255,0.7)' },
+          grid: { color: 'rgba(255,255,255,0.1)' }
+        },
+        x: {
+          ticks: { color: 'rgba(255,255,255,0.7)' },
+          grid: { display: false }
+        }
+      }
     }
+  });
 
-    const batches = Object.keys(countBy(data, 'batchId')).length;
-    const districts = Object.keys(countBy(data, 'district')).length;
-    const schools = Object.keys(countBy(data, 'udise')).length;
-    const female = data.filter(s => (s.gender || '').toLowerCase() === 'female').length;
-    const male = data.filter(s => (s.gender || '').toLowerCase() === 'male').length;
-
-    // KPI cards
-    document.getElementById('kpiTotalVal').textContent = total;
-    document.getElementById('kpiBatchesVal').textContent = batches;
-    document.getElementById('kpiDistrictsVal').textContent = districts;
-    document.getElementById('kpiSchoolsVal').textContent = schools;
-    document.getElementById('kpiFemaleVal').textContent = female;
-    document.getElementById('kpiMaleVal').textContent = male;
-
-    // Destroy old charts
-    Object.values(_dashCharts).forEach(c => c.destroy());
-    _dashCharts = {};
-
-    // ── Chart 1: Batch Bar ────────────────────────────────────────
-    const batchCounts = countBy(data, 'batchId');
-    const batchLabels = Object.keys(batchCounts).sort((a,b) => {
-      return (parseInt(a.replace(/\D/g,''))||0) - (parseInt(b.replace(/\D/g,''))||0);
-    });
-    _dashCharts.batch = new Chart(document.getElementById('chartBatch'), {
-      type: 'bar',
-      data: {
-        labels: batchLabels,
-        datasets: [{
-          label: 'Registrations',
-          data: batchLabels.map(b => batchCounts[b]),
-          backgroundColor: 'rgba(59, 130, 246, 0.85)', // Bright blue for visibility
-          borderRadius: 6,
-          borderSkipped: false,
-        }]
-      },
-      options: {
-        responsive: true, maintainAspectRatio: false,
-        plugins: { legend: { display: false } },
-        scales: {
-          y: { 
-            beginAtZero: true, 
-            ticks: { stepSize: 1, color: 'rgba(255,255,255,0.7)' }, 
-            grid: { color: 'rgba(255,255,255,0.1)' } 
-          },
-          x: { 
-            ticks: { color: 'rgba(255,255,255,0.7)' },
-            grid: { display: false } 
-          }
+  // ── Chart 2: Top-10 Districts Horizontal Bar ──────────────────
+  const distCounts = countBy(data, 'district');
+  const distSorted = Object.entries(distCounts).sort((a, b) => b[1] - a[1]).slice(0, 10);
+  _dashCharts.district = new Chart(document.getElementById('chartDistrict'), {
+    type: 'bar',
+    data: {
+      labels: distSorted.map(d => d[0]),
+      datasets: [{
+        label: 'Registrations',
+        data: distSorted.map(d => d[1]),
+        backgroundColor: [
+          '#f97316', '#3b82f6', '#22c55e', '#f43f5e', '#a855f7',
+          '#0ea5e9', '#f59e0b', '#14b8a6', '#ef4444', '#8b5cf6'
+        ],
+        borderRadius: 5,
+        borderSkipped: false,
+      }]
+    },
+    options: {
+      indexAxis: 'y',
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: {
+          beginAtZero: true,
+          ticks: { color: 'rgba(255,255,255,0.7)' },
+          grid: { color: 'rgba(255,255,255,0.1)' }
+        },
+        y: {
+          grid: { display: false },
+          ticks: { font: { size: 11 }, color: 'rgba(255,255,255,0.7)' }
         }
       }
-    });
+    }
+  });
 
-    // ── Chart 2: Top-10 Districts Horizontal Bar ──────────────────
-    const distCounts = countBy(data, 'district');
-    const distSorted = Object.entries(distCounts).sort((a,b) => b[1]-a[1]).slice(0,10);
-    _dashCharts.district = new Chart(document.getElementById('chartDistrict'), {
-      type: 'bar',
-      data: {
-        labels: distSorted.map(d => d[0]),
-        datasets: [{
-          label: 'Registrations',
-          data: distSorted.map(d => d[1]),
-          backgroundColor: [
-            '#f97316','#3b82f6','#22c55e','#f43f5e','#a855f7',
-            '#0ea5e9','#f59e0b','#14b8a6','#ef4444','#8b5cf6'
-          ],
-          borderRadius: 5,
-          borderSkipped: false,
-        }]
-      },
-      options: {
-        indexAxis: 'y',
-        responsive: true, maintainAspectRatio: false,
-        plugins: { legend: { display: false } },
-        scales: {
-          x: { 
-            beginAtZero: true, 
-            ticks: { color: 'rgba(255,255,255,0.7)' },
-            grid: { color: 'rgba(255,255,255,0.1)' } 
-          },
-          y: { 
-            grid: { display: false }, 
-            ticks: { font: { size: 11 }, color: 'rgba(255,255,255,0.7)' } 
-          }
-        }
+  // ── Chart 3: Gender Doughnut ──────────────────────────────────
+  _dashCharts.gender = new Chart(document.getElementById('chartGender'), {
+    type: 'doughnut',
+    data: {
+      labels: ['Female', 'Male', 'Not Specified'],
+      datasets: [{
+        data: [female, male, total - female - male],
+        backgroundColor: ['#f97316', '#3b82f6', '#94a3b8'],
+        borderWidth: 3,
+        borderColor: 'rgba(255,255,255,0.15)',
+        hoverOffset: 10,
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      cutout: '65%',
+      plugins: {
+        legend: { position: 'bottom', labels: { padding: 18, font: { size: 12 }, color: 'rgba(255,255,255,0.7)' } }
       }
-    });
+    }
+  });
 
-    // ── Chart 3: Gender Doughnut ──────────────────────────────────
-    _dashCharts.gender = new Chart(document.getElementById('chartGender'), {
-      type: 'doughnut',
-      data: {
-        labels: ['Female', 'Male', 'Not Specified'],
-        datasets: [{
-          data: [female, male, total - female - male],
-          backgroundColor: ['#f97316','#3b82f6','#94a3b8'],
-          borderWidth: 3,
-          borderColor: 'rgba(255,255,255,0.15)',
-          hoverOffset: 10,
-        }]
-      },
-      options: {
-        responsive: true, maintainAspectRatio: false,
-        cutout: '65%',
-        plugins: {
-          legend: { position: 'bottom', labels: { padding: 18, font: { size: 12 }, color: 'rgba(255,255,255,0.7)' } }
-        }
+  // ── Chart 4: School Type Doughnut ───────────────────────
+  const typeCounts = countBy(data, 'schoolType');
+  _dashCharts.schoolType = new Chart(document.getElementById('chartSchoolType'), {
+    type: 'doughnut',
+    data: {
+      labels: Object.keys(typeCounts),
+      datasets: [{
+        data: Object.values(typeCounts),
+        backgroundColor: ['#22c55e', '#f97316', '#3b82f6', '#0ea5e9', '#a855f7'],
+        borderWidth: 3,
+        borderColor: 'rgba(255,255,255,0.15)',
+        hoverOffset: 10,
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      cutout: '65%',
+      plugins: {
+        legend: { position: 'bottom', labels: { padding: 18, font: { size: 12 }, color: 'rgba(255,255,255,0.7)' } }
       }
-    });
+    }
+  });
 
-    // ── Chart 4: School Type Doughnut ───────────────────────
-    const typeCounts = countBy(data, 'schoolType');
-    _dashCharts.schoolType = new Chart(document.getElementById('chartSchoolType'), {
-      type: 'doughnut',
-      data: {
-        labels: Object.keys(typeCounts),
-        datasets: [{
-          data: Object.values(typeCounts),
-          backgroundColor: ['#22c55e','#f97316','#3b82f6','#0ea5e9','#a855f7'],
-          borderWidth: 3,
-          borderColor: 'rgba(255,255,255,0.15)',
-          hoverOffset: 10,
-        }]
-      },
-      options: {
-        responsive: true, maintainAspectRatio: false,
-        cutout: '65%',
-        plugins: {
-          legend: { position: 'bottom', labels: { padding: 18, font: { size: 12 }, color: 'rgba(255,255,255,0.7)' } }
-        }
-      }
-    });
-
-    // ── District Leaderboard Table ────────────────────
-    const allDist = Object.entries(distCounts).sort((a,b) => b[1]-a[1]);
-    const maxCount = allDist[0]?.[1] || 1;
-    document.getElementById('districtLeaderboard').innerHTML = allDist.map(([dist, cnt], i) => {
-      const pct = Math.round((cnt / maxCount) * 100);
-      const medal = i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : `${i+1}`;
-      const rowBg = i % 2 === 0 ? 'rgba(255,255,255,0.05)' : 'rgba(255,255,255,0.02)';
-      const medalStyle = i < 3
-        ? `font-size:18px; filter:drop-shadow(0 0 6px rgba(251,191,36,0.5));`
-        : `font-size:13px; font-weight:700; color:rgba(255,255,255,0.4); font-family:'Outfit',sans-serif;`;
-      return `
+  // ── District Leaderboard Table ────────────────────
+  const allDist = Object.entries(distCounts).sort((a, b) => b[1] - a[1]);
+  const maxCount = allDist[0]?.[1] || 1;
+  document.getElementById('districtLeaderboard').innerHTML = allDist.map(([dist, cnt], i) => {
+    const pct = Math.round((cnt / maxCount) * 100);
+    const medal = i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : `${i + 1}`;
+    const rowBg = i % 2 === 0 ? 'rgba(255,255,255,0.05)' : 'rgba(255,255,255,0.02)';
+    const medalStyle = i < 3
+      ? `font-size:18px; filter:drop-shadow(0 0 6px rgba(251,191,36,0.5));`
+      : `font-size:13px; font-weight:700; color:rgba(255,255,255,0.4); font-family:'Outfit',sans-serif;`;
+    return `
         <tr style="background:${rowBg}; border-bottom:1px solid rgba(255,255,255,0.06); transition:background 0.2s;" onmouseover="this.style.background='rgba(244,121,32,0.1)'" onmouseout="this.style.background='${rowBg}'">
           <td style="padding:13px 16px; ${medalStyle} text-align:center; width:48px;">${medal}</td>
-          <td style="padding:13px 16px; font-weight:700; font-size:13.5px; color:${i<3?'#fbbf24':'rgba(255,255,255,0.85)'}; letter-spacing:0.5px; text-transform:uppercase;">${dist}</td>
+          <td style="padding:13px 16px; font-weight:700; font-size:13.5px; color:${i < 3 ? '#fbbf24' : 'rgba(255,255,255,0.85)'}; letter-spacing:0.5px; text-transform:uppercase;">${dist}</td>
           <td style="padding:13px 16px; text-align:right; font-weight:800; color:#f97316; font-size:16px; font-family:'Outfit',sans-serif;">${cnt}</td>
           <td style="padding:13px 20px 13px 12px; min-width:180px;">
             <div style="background:rgba(255,255,255,0.08); border-radius:20px; overflow:hidden; height:8px; position:relative;">
@@ -1661,42 +2016,42 @@ async function _renderDashboard(data) {
           </td>
         </tr>
       `;
-    }).join('');
+  }).join('');
 
-    // ── Pre-build batch→district index for instant filtering ──────────────
-    _batchDistrictIndex = {};
-    _batchDistrictIndex['ALL'] = distCounts;
-    data.forEach(s => {
-      const b = s.batchId || 'Unknown';
-      const d = s.district || 'Unknown';
-      if (!_batchDistrictIndex[b]) _batchDistrictIndex[b] = {};
-      _batchDistrictIndex[b][d] = (_batchDistrictIndex[b][d] || 0) + 1;
-    });
+  // ── Pre-build batch→district index for instant filtering ──────────────
+  _batchDistrictIndex = {};
+  _batchDistrictIndex['ALL'] = distCounts;
+  data.forEach(s => {
+    const b = s.batchId || 'Unknown';
+    const d = s.district || 'Unknown';
+    if (!_batchDistrictIndex[b]) _batchDistrictIndex[b] = {};
+    _batchDistrictIndex[b][d] = (_batchDistrictIndex[b][d] || 0) + 1;
+  });
 
-    // ── Punjab District Map ───────────────────────────────────────────────
-    updatePunjabMap(distCounts);
+  // ── Punjab District Map ───────────────────────────────────────────────
+  updatePunjabMap(distCounts);
 
-    // ── Build Batch Filter Buttons ────────────────────────────────────────
-    const bar = document.getElementById('mapBatchBar');
-    if (bar) {
-      bar.querySelectorAll('[data-batch]:not([data-batch="ALL"])').forEach(b => b.remove());
-      const batchSet = [...new Set(data.map(s => s.batchId).filter(Boolean))]
-        .sort((a, b) => (parseInt(a.replace(/\D/g,''))||0) - (parseInt(b.replace(/\D/g,''))||0));
-      batchSet.forEach(bId => {
-        const btn = document.createElement('button');
-        btn.setAttribute('data-batch', bId);
-        btn.className = 'map-batch-btn';
-        btn.textContent = bId.replace('BATCH-', 'B-');
-        btn.title = bId;
-        btn.style.cssText = `flex-shrink:0; padding:5px 12px; border-radius:20px;
+  // ── Build Batch Filter Buttons ────────────────────────────────────────
+  const bar = document.getElementById('mapBatchBar');
+  if (bar) {
+    bar.querySelectorAll('[data-batch]:not([data-batch="ALL"])').forEach(b => b.remove());
+    const batchSet = [...new Set(data.map(s => s.batchId).filter(Boolean))]
+      .sort((a, b) => (parseInt(a.replace(/\D/g, '')) || 0) - (parseInt(b.replace(/\D/g, '')) || 0));
+    batchSet.forEach(bId => {
+      const btn = document.createElement('button');
+      btn.setAttribute('data-batch', bId);
+      btn.className = 'map-batch-btn';
+      btn.textContent = bId.replace('BATCH-', 'B-');
+      btn.title = bId;
+      btn.style.cssText = `flex-shrink:0; padding:5px 12px; border-radius:20px;
           border:1.5px solid rgba(27, 26, 26, 0.15); background:rgba(255,255,255,0.07);
           color:rgba(255,255,255,0.7); font-size:11px; font-weight:700;
           cursor:pointer; white-space:nowrap; transition:all 0.2s;
           letter-spacing:0.3px; font-family:'Inter',sans-serif;`;
-        btn.onclick = () => filterMapByBatch(bId);
-        bar.appendChild(btn);
-      });
-    }
+      btn.onclick = () => filterMapByBatch(bId);
+      bar.appendChild(btn);
+    });
+  }
 
 } // end _renderDashboard
 
@@ -1704,10 +2059,10 @@ async function _renderDashboard(data) {
 function filterMapByBatch(batchId) {
   document.querySelectorAll('.map-batch-btn').forEach(btn => {
     const active = btn.getAttribute('data-batch') === batchId;
-    btn.style.background  = active ? 'rgba(244,121,32,0.22)' : 'rgba(255,255,255,0.07)';
-    btn.style.borderColor = active ? 'rgba(244,121,32,0.8)'  : 'rgba(255,255,255,0.15)';
-    btn.style.color       = active ? '#f47920'                : 'rgba(255,255,255,0.7)';
-    btn.style.boxShadow   = active ? '0 0 12px rgba(244,121,32,0.3)' : 'none';
+    btn.style.background = active ? 'rgba(244,121,32,0.22)' : 'rgba(255,255,255,0.07)';
+    btn.style.borderColor = active ? 'rgba(244,121,32,0.8)' : 'rgba(255,255,255,0.15)';
+    btn.style.color = active ? '#f47920' : 'rgba(255,255,255,0.7)';
+    btn.style.boxShadow = active ? '0 0 12px rgba(244,121,32,0.3)' : 'none';
   });
   const label = document.getElementById('mapBatchLabel');
   if (label) label.textContent = batchId === 'ALL' ? 'Showing: All Batches' : `Showing: ${batchId}`;
@@ -1722,10 +2077,10 @@ document.addEventListener('DOMContentLoaded', () => {
       document.getElementById('form-tab')?.click();
     }
   };
-  
+
   handleHash();
   window.addEventListener('hashchange', handleHash);
-  
+
   // Load dashboard automatically on home page
   loadDashboard();
 });
@@ -1783,7 +2138,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!rawName) return '';
     const c = rawName.trim().toLowerCase().replace(/[^a-z0-9]/g, '');
     if (c.includes('sasnagar') || c.includes('mohali') || c.includes('sahibzada')) return 'SAS NAGAR';
-    if (c.includes('muktsar'))   return 'MUKTSAR';
+    if (c.includes('muktsar')) return 'MUKTSAR';
     if (c.includes('rupnagar') || c.includes('ropar')) return 'RUPNAGAR';
     if (c.includes('nawanshahr') || c.includes('sbsnagar') || c.includes('shahidbhagat') || c.includes('nawanshahr')) return 'NAWANSHAHR';
     if (c.includes('tarntaran') || c.includes('tarantaran') || c.includes('tarn')) return 'TARN TARAN';
@@ -1829,10 +2184,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const maxVal = Math.max(...Object.values(districtCounts), 1);
 
     _geoLayer = L.geoJSON(_geoData, {
-      style: function(feature) {
+      style: function (feature) {
         const rawName = feature.properties.district || feature.properties.dtname || feature.properties.NAME_2 || '';
         const csvName = resolveDistrictName(rawName);
-        const count   = districtCounts[csvName] || 0;
+        const count = districtCounts[csvName] || 0;
         return {
           color: '#1a2d6b',
           weight: count > 0 ? 2 : 1,
@@ -1840,10 +2195,10 @@ document.addEventListener('DOMContentLoaded', () => {
           fillOpacity: count > 0 ? 0.88 : 0.75,
         };
       },
-      onEachFeature: function(feature, layer) {
+      onEachFeature: function (feature, layer) {
         const rawName = feature.properties.district || feature.properties.dtname || feature.properties.NAME_2 || 'Unknown';
         const csvName = resolveDistrictName(rawName);
-        const count   = districtCounts[csvName] || 0;
+        const count = districtCounts[csvName] || 0;
 
         // Tooltip matching ICT project style
         layer.bindTooltip(
@@ -1853,17 +2208,17 @@ document.addEventListener('DOMContentLoaded', () => {
         );
 
         // Hover highlight
-        layer.on('mouseover', function() {
+        layer.on('mouseover', function () {
           layer.setStyle({ weight: 3, color: '#ffffff', fillOpacity: 1 });
         });
-        layer.on('mouseout', function() {
+        layer.on('mouseout', function () {
           if (_highlighted !== layer) {
             _geoLayer.resetStyle(layer);
           }
         });
 
         // Click: bold-highlight the district
-        layer.on('click', function() {
+        layer.on('click', function () {
           if (_highlighted && _highlighted !== layer) _geoLayer.resetStyle(_highlighted);
           _highlighted = layer;
           layer.setStyle({ weight: 3, color: '#f97316', fillOpacity: 1 });
@@ -1880,14 +2235,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const container = document.getElementById('mapLegendItems');
     if (!container) return;
     const ranges = [
-      { label: 'No data',  color: '#e2e8f0' },
-      { label: '1 – 5',    color: '#fef9c3' },
-      { label: '6 – 10',   color: '#fde68a' },
-      { label: '11 – 15',  color: '#fbbf24' },
-      { label: '16 – 20',  color: '#f97316' },
-      { label: '21 – 30',  color: '#ea580c' },
-      { label: '31 – 50',  color: '#dc2626' },
-      { label: '51+',      color: '#991b1b' },
+      { label: 'No data', color: '#e2e8f0' },
+      { label: '1 – 5', color: '#fef9c3' },
+      { label: '6 – 10', color: '#fde68a' },
+      { label: '11 – 15', color: '#fbbf24' },
+      { label: '16 – 20', color: '#f97316' },
+      { label: '21 – 30', color: '#ea580c' },
+      { label: '31 – 50', color: '#dc2626' },
+      { label: '51+', color: '#991b1b' },
     ];
     container.innerHTML = ranges.map(r => `
       <div style="display:flex; align-items:center; gap:8px;">
@@ -1898,7 +2253,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // Public: called from loadDashboard with fresh districtCounts object
-  window.updatePunjabMap = async function(districtCounts) {
+  window.updatePunjabMap = async function (districtCounts) {
     ensureMap();
 
     // Load GeoJSON only once

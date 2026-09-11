@@ -358,6 +358,12 @@
           🛡️ Admin Panel
         </button>
       </li>
+      <li class="nav-item d-none" id="schoolsTabContainer">
+        <button class="nav-link" id="schools-tab" data-bs-toggle="tab" data-bs-target="#schools-pane" role="tab"
+          onclick="loadSchoolsDashboard()">
+          🏫 Schools Dashboard
+        </button>
+      </li>
     </ul>
 
     <!-- =========================================================
@@ -589,9 +595,12 @@
 
             <!-- Map card header with title + batch filter -->
             <div style="padding:16px 20px 0;">
-              <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px; margin-bottom:12px;">
+              <div
+                style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px; margin-bottom:12px;">
                 <div class="dash-chart-title" style="margin:0;">🗺️ Punjab District Participation Map</div>
-                <div id="mapBatchLabel" style="font-size:12px; font-weight:700; color:rgba(244,121,32,0.9); letter-spacing:0.5px; text-transform:uppercase;">Showing: All Batches</div>
+                <div id="mapBatchLabel"
+                  style="font-size:12px; font-weight:700; color:rgba(244,121,32,0.9); letter-spacing:0.5px; text-transform:uppercase;">
+                  Showing: All Batches</div>
               </div>
 
               <!-- Batch filter pill bar -->
@@ -601,9 +610,7 @@
                 scrollbar-width:thin;
                 scrollbar-color:rgba(244,121,32,0.4) transparent;
               ">
-                <button onclick="filterMapByBatch('ALL')" data-batch="ALL"
-                  class="map-batch-btn map-batch-active"
-                  style="flex-shrink:0; padding:5px 14px; border-radius:20px; border:1.5px solid rgba(244,121,32,0.6);
+                <button onclick="filterMapByBatch('ALL')" data-batch="ALL" class="map-batch-btn map-batch-active" style="flex-shrink:0; padding:5px 14px; border-radius:20px; border:1.5px solid rgba(244,121,32,0.6);
                     background:rgba(244,121,32,0.18); color:#f47920; font-size:11.5px; font-weight:700;
                     cursor:pointer; white-space:nowrap; transition:all 0.2s; letter-spacing:0.3px;
                     font-family:'Inter',sans-serif;">
@@ -628,18 +635,29 @@
                 backdrop-filter:blur(6px);
                 white-space:nowrap;
               ">
-                <span style="font-size:13px; font-weight:800; color:#fff; letter-spacing:1.5px; text-transform:uppercase;">Punjab</span>
-                <span style="font-size:11px; font-weight:800; color:rgba(237, 131, 56, 0.9); letter-spacing:1px;">(INDIA)</span>
+                <span
+                  style="font-size:13px; font-weight:800; color:#fff; letter-spacing:1.5px; text-transform:uppercase;">Punjab</span>
+                <span
+                  style="font-size:11px; font-weight:800; color:rgba(237, 131, 56, 0.9); letter-spacing:1px;">(INDIA)</span>
               </div>
 
               <!-- Map container -->
               <div id="punjabDistrictMap" style="width:100%; height:580px; background:#dd7d2e; min-height:320px;"></div>
               <style>
-                #punjabDistrictMap { z-index: 1; }
-                .leaflet-container { background: #cae0dd !important; }
+                #punjabDistrictMap {
+                  z-index: 1;
+                }
+
+                .leaflet-container {
+                  background: #cae0dd !important;
+                }
+
                 path:focus,
                 .leaflet-interactive:focus,
-                #punjabDistrictMap .leaflet-container:focus { outline: none !important; }
+                #punjabDistrictMap .leaflet-container:focus {
+                  outline: none !important;
+                }
+
                 .raftaar-map-tooltip {
                   background: rgba(36, 122, 202, 0.97) !important;
                   border: 1px solid rgba(244, 145, 75, 0.5) !important;
@@ -647,25 +665,36 @@
                   color: rgb(238, 139, 40) !important;
                   box-shadow: 0 8px 32px rgba(26, 25, 25, 0.5) !important;
                   padding: 10px 16px !important;
-                  font-family: 'Outfit','Inter',sans-serif !important;
+                  font-family: 'Outfit', 'Inter', sans-serif !important;
                   text-align: center;
                   pointer-events: none;
                   min-width: 130px;
                 }
+
                 .leaflet-tooltip-top.raftaar-map-tooltip::before {
                   border-top-color: rgba(244, 53, 32, 0.5) !important;
                 }
+
                 /* ── Desktop only ── */
                 @media (min-width: 901px) {
-                  #punjabDistrictMap { height: 650px !important; }
+                  #punjabDistrictMap {
+                    height: 650px !important;
+                  }
                 }
+
                 /* ── Tablet ── */
                 @media (min-width: 601px) and (max-width: 900px) {
-                  #punjabDistrictMap { height: 460px !important; }
+                  #punjabDistrictMap {
+                    height: 460px !important;
+                  }
                 }
+
                 /* ── Mobile ── */
                 @media (max-width: 600px) {
-                  #punjabDistrictMap { height: 360px !important; min-height: 280px !important; }
+                  #punjabDistrictMap {
+                    height: 360px !important;
+                    min-height: 280px !important;
+                  }
                 }
               </style>
             </div>
@@ -1004,7 +1033,108 @@
         </div>
       </div><!-- /admin-pane -->
 
+      <!-- ══ SCHOOLS TRAINING STATUS PANE ══ -->
+      <div class="tab-pane fade" id="schools-pane" role="tabpanel">
+        <div class="schools-dash-card">
 
+          <!-- Header -->
+          <div class="schools-dash-header">
+            <h5>🏫 Schools Teacher Training Status
+              <span style="font-size:12px; font-weight:400; color:rgba(255,255,255,0.55);">— All 425 Participating
+                Schools</span>
+            </h5>
+            <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
+              <button class="btn-schools-excel" id="btnExportSchools" onclick="exportSchoolsExcel()">📊 Download
+                Excel</button>
+              <button class="btn-logout" onclick="logoutAdmin()">↩ Logout</button>
+            </div>
+          </div>
+
+          <!-- KPI Summary Strip -->
+          <div class="schools-kpi-strip">
+            <div class="schools-kpi-card kpi-total">
+              <div class="schools-kpi-icon">🏫</div>
+              <div class="schools-kpi-info">
+                <div class="schools-kpi-num" id="skpiTotal">425</div>
+                <div class="schools-kpi-label">Total Schools</div>
+              </div>
+            </div>
+            <div class="schools-kpi-card kpi-attended">
+              <div class="schools-kpi-icon">✅</div>
+              <div class="schools-kpi-info">
+                <div class="schools-kpi-num" id="skpiAttended">—</div>
+                <div class="schools-kpi-label">Attended Training</div>
+                <div class="schools-kpi-pct" id="skpiAttendedPct"></div>
+              </div>
+            </div>
+            <div class="schools-kpi-card kpi-not-attended">
+              <div class="schools-kpi-icon">⏳</div>
+              <div class="schools-kpi-info">
+                <div class="schools-kpi-num" id="skpiNotAttended">—</div>
+                <div class="schools-kpi-label">Not Yet Attended</div>
+                <div class="schools-kpi-pct" id="skpiNotAttendedPct"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Search + Filters -->
+          <div class="schools-controls-bar">
+            <div class="schools-search-wrap">
+              <span class="search-icon">🔍</span>
+              <input type="text" class="schools-search-input" id="schoolsSearch"
+                placeholder="Search by school name, district, or UDISE code…" oninput="filterSchoolsTable()">
+            </div>
+            <select class="schools-filter-select" id="schoolsDistrictFilter" onchange="filterSchoolsTable()">
+              <option value="">All Districts</option>
+            </select>
+            <select class="schools-filter-select" id="schoolsTypeFilter" onchange="filterSchoolsTable()">
+              <option value="">All School Types</option>
+              <option value="PM SHRI">PM SHRI</option>
+              <option value="Non-PM Shri">Non-PM Shri</option>
+            </select>
+            <select class="schools-filter-select" id="schoolsStatusFilter" onchange="filterSchoolsTable()">
+              <option value="">All Statuses</option>
+              <option value="attended">Attended</option>
+              <option value="not-attended">Not Attended</option>
+            </select>
+            <button class="btn-reset-filters" onclick="resetSchoolsFilters()">✕ Reset</button>
+          </div>
+
+          <!-- Results info -->
+          <div class="schools-results-bar" id="schoolsResultsBar">
+            Showing <span id="schoolsResultCount">425</span> of 425 schools
+          </div>
+
+          <!-- Table -->
+          <div class="schools-table-wrap">
+            <table class="schools-table">
+              <thead>
+                <tr>
+                  <th style="width:52px;">S. No.</th>
+                  <th>School Name</th>
+                  <th>District</th>
+                  <th>UDISE Code</th>
+                  <th>School Type</th>
+                  <th>Teacher Name(s)</th>
+                  <th>Registered Batch(es)</th>
+                  <th>Training Status</th>
+                </tr>
+              </thead>
+              <tbody id="schoolsTableBody">
+                <tr>
+                  <td colspan="8">
+                    <div class="schools-loading">
+                      <div class="spinner"></div>
+                      <p>Loading school data…</p>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+      </div><!-- /schools-pane -->
 
     </div><!-- /tab-content -->
   </main>
