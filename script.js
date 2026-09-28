@@ -2134,17 +2134,25 @@ document.addEventListener('DOMContentLoaded', () => {
 (function initPunjabMap() {
 
   // Resolver: normalise GeoJSON district names → match API district strings
+  // Keys must match exactly what rawSchools / API submissions use as district names.
   function resolveDistrictName(rawName) {
     if (!rawName) return '';
     const c = rawName.trim().toLowerCase().replace(/[^a-z0-9]/g, '');
-    if (c.includes('sasnagar') || c.includes('mohali') || c.includes('sahibzada')) return 'SAS NAGAR';
-    if (c.includes('muktsar')) return 'MUKTSAR';
+    // S.A.S. Nagar (Mohali) — API/dropdown key: "S.A.S NAGAR" (uppercase, with dots preserved)
+    if (c.includes('sasnagar') || c.includes('mohali') || c.includes('sahibzada')) return 'S.A.S NAGAR';
+
+    // Sri Muktsar Sahib — API key: "SRI MUKATSAR SAHIB"
+    if (c.includes('muktsar') || c.includes('mukatsar')) return 'SRI MUKATSAR SAHIB';
+    // SBS Nagar (Shahid Bhagat Singh Nagar / Nawanshahr) — API key: "SBS NAGAR"
+    if (c.includes('sbsnagar') || c.includes('shahidbhagat') || c.includes('shaheedbhagat') || c.includes('nawanshahr')) return 'SBS NAGAR';
+    // Rupnagar / Ropar — API key: "RUPNAGAR"
     if (c.includes('rupnagar') || c.includes('ropar')) return 'RUPNAGAR';
-    if (c.includes('nawanshahr') || c.includes('sbsnagar') || c.includes('shahidbhagat') || c.includes('nawanshahr')) return 'NAWANSHAHR';
-    if (c.includes('tarntaran') || c.includes('tarantaran') || c.includes('tarn')) return 'TARN TARAN';
+    // Tarn Taran — API key: "TARN TARAN"
+    if (c.includes('tarntaran') || c.includes('tarantaran') || c.includes('tarntaran')) return 'TARN TARAN';
+    // Ferozepur — API key: "FEROZEPUR"
     if (c.includes('ferozepur') || c.includes('firozpur')) return 'FEROZEPUR';
+    // Fatehgarh Sahib — API key: "FATEHGARH SAHIB"
     if (c.includes('fatehgarh')) return 'FATEHGARH SAHIB';
-    if (c.includes('srimuktsar') || c.includes('muktsar')) return 'MUKTSAR';
     return rawName.trim().toUpperCase();
   }
 
