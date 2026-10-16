@@ -365,7 +365,7 @@ const rawSchools = [
   [328, "PATIALA", "3170805702", "GHS MARAURI", "PM SHRI"],
   [329, "PATIALA", "3170304502", "Govt Sen Sec Smart School KAPOORI", "Non-PM Shri"],
   [330, "PATIALA", "3170202302", "Govt.Sr.Sec.Smart School Dakala Patiala", "Non-PM Shri"],
-  [331, "PATIALA", "", "GSSS BEHAR JACHH", "Non-PM Shri"],
+  [331, "PATIALA", "3170600602", "GSSS BEHAR JACHH", "Non-PM Shri"],
   [332, "RUPNAGAR", "3070715802", "GSSS PHOOLPUR GAREWAL", "PM SHRI"],
   [333, "RUPNAGAR", "3070607603", "GSSS KAHANPUR KHUHI", "PM SHRI"],
   [334, "RUPNAGAR", "3070704303", "GSSS BHARATGARH", "PM SHRI"],
